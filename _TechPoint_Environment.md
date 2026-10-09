@@ -20,7 +20,8 @@ The environment represents two different sites connected over two routers with t
 in the center of the image below.
 ([link](https://checkpointsw-devsec.github.io/DemoLab-Guides/index.html))
 
-<img width="1655" height="891" alt="network-overview" src="https://github.com/user-attachments/assets/5eb91492-4b5f-410d-baf5-a24fff8396d8" />
+<img width="2193" height="1168" alt="image" src="https://github.com/user-attachments/assets/00713b2e-c73f-4ab4-9876-8205d622c3c5" />
+
 
 
 **Left block: HQ side**
