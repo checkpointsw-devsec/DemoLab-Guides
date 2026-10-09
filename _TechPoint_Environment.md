@@ -18,7 +18,7 @@ The environment represents two different sites connected over two routers with t
 - **Orange:** vyos2
 
 in the center of the image below.
-([link](https://checkpointsw-devsec.github.io/DemoLab-Guides/index.html))
+<a href="[http://example.com/](https://checkpointsw-devsec.github.io/DemoLab-Guides/index.html)" target="_blank">Network Topology</a>
 
 <img width="2193" height="1168" alt="image" src="https://github.com/user-attachments/assets/00713b2e-c73f-4ab4-9876-8205d622c3c5" />
 
