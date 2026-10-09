@@ -21,4 +21,5 @@ flow output shows the different playbooks that are used in this flow. tmp is use
 after all has been done successfully you can see:
 <img width="1935" height="662" alt="image" src="https://github.com/user-attachments/assets/ea0b93b5-aba7-4806-9339-a1212f175cad" />
 
-for more information about AWX or Gitlab please go to the 
+for more information about GitLab components here please open ([link](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/_GitLab.md)) 
+for more information about AWX components here please open ([link](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/_AWX.md))
