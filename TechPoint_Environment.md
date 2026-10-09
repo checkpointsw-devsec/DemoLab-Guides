@@ -19,7 +19,8 @@ The environment represents two different sites connected over two routers with t
 
 in the center of the image below.
 
-![Network overview](images/network-overview.png)
+<img width="1655" height="891" alt="network-overview" src="https://github.com/user-attachments/assets/5eb91492-4b5f-410d-baf5-a24fff8396d8" />
+
 
 **Left block: HQ side**
 
@@ -47,7 +48,8 @@ After receiving your mail:
 - Open the link.
 - VMs in your lab need 5 to 10 minutes to start after clicking on **"VM List"**.
 
-![VM List](images/vm-list.png)
+<img width="2048" height="481" alt="vm-list" src="https://github.com/user-attachments/assets/3cafc4e1-574b-43a9-9712-1bf9008fc4fa" />
+
 
 Connect to your lab over the web link: open the desktop of your admin PC from the tab.
 
@@ -127,14 +129,16 @@ Connect to your lab over the web link: open the desktop of your admin PC from th
 
 Open the **HQ-Win10** or **Branch-Win10** tab to connect to the HQ and Branch side of the infrastructure.
 
-![HQ-Win10 and Branch-Win10 tabs](images/win10-tabs.png)
+<img width="1067" height="610" alt="win10-tabs" src="https://github.com/user-attachments/assets/32fdaa1d-2bdb-492d-b2f5-194cbbe2fd24" />
+
 
 Send **Ctrl+Alt+Del** to log in:
 
 - **Username:** student
 - **Password:** Cpwins1!
 
-![Windows 10 login](images/win10-login.png)
+<img width="795" height="719" alt="win10-login" src="https://github.com/user-attachments/assets/a0191d16-0a67-4d91-a2d6-1490b06b2c95" />
+
 
 Over the **MobaXterm** application you can access:
 
@@ -142,10 +146,12 @@ Over the **MobaXterm** application you can access:
 - HQ site
 - Routers
 
-![MobaXterm sessions](images/mobaxterm-sessions.png)
+<img width="1062" height="713" alt="mobaxterm-sessions" src="https://github.com/user-attachments/assets/ac02aad2-e9bf-4d50-9063-a14865b084cf" />
+
 
 ## Reset or revert a VM
 
 In the VM List you can go to the VM that you want to reset or revert.
 
-![Reset or revert a VM](images/reset-revert-vm.png)
+<img width="1079" height="479" alt="reset-revert-vm" src="https://github.com/user-attachments/assets/85edb06e-ac0a-4672-951c-3c77272a0ed5" />
+
