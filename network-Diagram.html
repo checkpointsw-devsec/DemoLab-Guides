@@ -1,0 +1,825 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab network topology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font:"Barlow","Segoe UI",system-ui,-apple-system,sans-serif;
+  --cond:"Barlow Semi Condensed","Arial Narrow","Segoe UI",system-ui,sans-serif;
+  --bg:#E7ECF0; --panel:#F8FAFB; --ink:#16263A; --muted:#5B6979; --rule:#C9D3DC;
+  --site:#F1F4F7; --site-edge:#A9B7C4; --node:#FFFFFF; --node-edge:#7F8E9C;
+  --isp1:#1D6BB0; --isp2:#B47E0C; --lan:#6A7B8C; --oob:#AD3B6C; --xatt:#4C8636; --inet:#16263A;
+  --sel:#0B4F8A; --dim:.13; --row:#EDF2F6;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121B25; --panel:#18232F; --ink:#E3EAF0; --muted:#93A3B3; --rule:#2D3B4A;
+    --site:#1B2733; --site-edge:#3A4A5B; --node:#22303E; --node-edge:#6C7D8E;
+    --isp1:#5EA8EA; --isp2:#E4B648; --lan:#8C9CAC; --oob:#E37CA8; --xatt:#8DC67B; --inet:#E3EAF0;
+    --sel:#8CC4F5; --dim:.16; --row:#1F2C39;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121B25; --panel:#18232F; --ink:#E3EAF0; --muted:#93A3B3; --rule:#2D3B4A;
+  --site:#1B2733; --site-edge:#3A4A5B; --node:#22303E; --node-edge:#6C7D8E;
+  --isp1:#5EA8EA; --isp2:#E4B648; --lan:#8C9CAC; --oob:#E37CA8; --xatt:#8DC67B; --inet:#E3EAF0;
+  --sel:#8CC4F5; --dim:.16; --row:#1F2C39;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.45;font-variant-numeric:tabular-nums}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--sel);outline-offset:2px}
+
+.app{height:100vh;min-height:620px;display:grid;grid-template-rows:auto 1fr}
+.top{display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding:12px 22px;background:var(--panel);border-bottom:1px solid var(--rule)}
+.top h1{margin:0;font-size:21px;font-weight:700;letter-spacing:-.01em}
+.top p{margin:1px 0 0;color:var(--muted);font-size:14px}
+.top .tools{margin-left:auto;display:flex;gap:10px;align-items:center}
+.top input[type=search]{width:290px;max-width:60vw;padding:8px 12px;border:1px solid var(--rule);border-radius:8px;background:var(--bg)}
+.btn{border:1px solid var(--rule);background:var(--panel);border-radius:8px;padding:7px 12px;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+
+.workspace{display:grid;grid-template-columns:320px 1fr;min-height:0}
+.side{background:var(--panel);border-right:1px solid var(--rule);display:flex;flex-direction:column;min-height:0}
+.tabs{display:flex;border-bottom:1px solid var(--rule)}
+.tabs button{flex:1;padding:11px 8px;background:none;border:0;border-bottom:2px solid transparent;cursor:pointer;color:var(--muted);font-weight:500}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink);font-weight:600}
+.pane{flex:1;overflow:auto;padding:16px 18px 28px}
+.pane[hidden]{display:none}
+.pane h2{font-size:15px;font-weight:600;margin:18px 0 8px}
+.pane h2:first-child{margin-top:0}
+
+.chk{display:flex;align-items:center;gap:9px;padding:4px 0;cursor:pointer;font-size:14.5px}
+.chk input{accent-color:var(--ink);width:16px;height:16px;margin:0}
+.chk .note{margin-left:auto;color:var(--muted);font-size:13px}
+.sw{display:inline-block;width:28px;height:0;border-top:3px solid var(--c,#888);flex:none}
+.sw.dashed{border-top-style:dashed}
+.sw.dotted{border-top:4px dotted var(--c)}
+.sw.multi{border-top:0;height:4px;border-radius:2px;background:var(--grad)}
+.seg{display:flex;border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.seg button{flex:1;padding:7px 6px;border:0;background:none;cursor:pointer;font-size:14px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border:1px solid var(--rule);background:var(--bg);border-radius:20px;padding:5px 11px;cursor:pointer;font-size:13.5px}
+.chips button:hover{border-color:var(--muted)}
+details.notes{margin-top:20px;font-size:13.5px;color:var(--muted)}
+details.notes summary{cursor:pointer;color:var(--ink);font-weight:500}
+details.notes ul{padding-left:18px;margin:8px 0 0}
+details.notes li{margin-bottom:6px}
+
+.stage{position:relative;min-width:0;min-height:0;overflow:hidden}
+#map{display:block;width:100%;height:100%;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+#map.grabbing{cursor:grabbing}
+.zoom{position:absolute;right:14px;bottom:14px;display:flex;gap:6px}
+.zoom .btn{min-width:38px;background:var(--panel)}
+.hint{position:absolute;left:14px;bottom:16px;color:var(--muted);font-size:13px;pointer-events:none}
+
+/* SVG */
+#map text{font-family:var(--cond);fill:var(--ink)}
+.bg{fill:transparent}
+.site-box{fill:var(--site);stroke:var(--site-edge);stroke-width:1.2}
+#map .t-site{font-size:21px;font-weight:600}
+#map .t-name{font-size:16px;font-weight:600}
+#map .t-sub{font-size:13.5px;fill:var(--muted);font-weight:400}
+#map .t-port{font-size:12.5px;fill:var(--muted);font-weight:500}
+#map .t-pill{font-size:14px;font-weight:600}
+#map .t-pill6{font-size:12px;fill:var(--muted)}
+#map .t-inet{font-size:15px;font-weight:600;fill:var(--bg)}
+#map .t-note{font-size:12.5px;fill:var(--muted);font-style:italic}
+.body{fill:var(--node);stroke:var(--node-edge);stroke-width:1.3}
+.stack{fill:var(--node);stroke:var(--node-edge);stroke-width:1.1;opacity:.75}
+.isp .body{stroke-width:1.6}
+.inet-c{fill:var(--inet)}
+.segbar{rx:3}
+.seghit,.hit{fill:none;stroke:transparent;stroke-width:16}
+.seghit{fill:transparent;stroke:none}
+.lk{fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.lk.lan{stroke-width:2.2}
+.lk.inet{stroke-width:2}
+.lk.oob{stroke-dasharray:9 6}
+.lk.xatt{stroke-dasharray:.5 6;stroke-width:3.6}
+.pill{fill:var(--panel);stroke-width:1.6}
+.pill-oob{fill:var(--panel);stroke:var(--oob);stroke-width:1.6;stroke-dasharray:6 4}
+.node,.link,.sublabel{cursor:pointer}
+.node,.link,.sublabel,.site,.xnote{transition:opacity .15s}
+.dim{opacity:var(--dim)}
+.hidden{display:none}
+.link.hl .lk{stroke-width:4.4}
+.link.sel .lk{stroke-width:5.4}
+.node.sel .body,.node.match .body{stroke:var(--sel);stroke-width:2.8}
+.node.sel .segbar{stroke:var(--sel);stroke-width:2.5}
+.node:focus-visible .body{stroke:var(--sel);stroke-width:3}
+.node:focus,.link:focus{outline:none}
+
+/* Details */
+.d-title{font-size:23px;font-weight:700;margin:0;letter-spacing:-.01em}
+.d-kind{color:var(--muted);margin:2px 0 14px}
+dl.props{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0 0 6px}
+dl.props dt{color:var(--muted)}
+dl.props dd{margin:0;font-weight:500}
+table.ifs{width:100%;border-collapse:collapse;font-size:13.5px}
+table.ifs th{text-align:left;font-weight:600;color:var(--muted);padding:6px 6px 6px 0;border-bottom:1px solid var(--rule)}
+table.ifs td{padding:7px 6px 7px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+table.ifs tr[data-ref]{cursor:pointer}
+table.ifs tr[data-ref]:hover td{background:var(--row)}
+.v6{display:block;color:var(--muted);font-size:12.5px}
+.inf{font-style:italic;font-size:11.5px}
+.muted{color:var(--muted)}
+.empty{color:var(--muted);margin-top:0}
+.back{background:none;border:0;padding:0;color:var(--sel);cursor:pointer;margin-bottom:12px}
+
+/* Address plan */
+.plan{padding:26px 22px 48px}
+.plan h2{font-size:20px;margin:0 0 4px}
+.plan p{margin:0 0 14px;color:var(--muted)}
+.plan-wrap{overflow-x:auto;background:var(--panel);border:1px solid var(--rule);border-radius:10px}
+.plan table{width:100%;border-collapse:collapse;min-width:760px;font-size:14px}
+.plan th{text-align:left;padding:10px 14px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--rule);position:sticky;top:0;background:var(--panel)}
+.plan td{padding:9px 14px;border-bottom:1px solid var(--rule)}
+.plan tr:last-child td{border-bottom:0}
+.plan tbody tr{cursor:pointer}
+.plan tbody tr:hover td,.plan tbody tr.on td{background:var(--row)}
+.plan .net{font-weight:600}
+.plan .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;background:var(--c);vertical-align:middle}
+
+@media (max-width:900px){
+  .app{height:auto}
+  .workspace{grid-template-columns:1fr}
+  .stage{height:68vh;order:-1;border-bottom:1px solid var(--rule)}
+  .side{border-right:0;max-height:none}
+  .top .tools{margin-left:0;width:100%}
+  .top input[type=search]{flex:1;max-width:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div>
+      <h1>Lab network topology</h1>
+      <p>HQ and two branches, each dual-homed to ISP1 and ISP2. Hover to trace a connection, click for addresses.</p>
+    </div>
+    <div class="tools">
+      <input id="q" type="search" placeholder="Find a device, IP or subnet" aria-label="Find a device, IP address or subnet">
+      <button class="btn" id="theme" type="button">Dark mode</button>
+    </div>
+  </header>
+
+  <div class="workspace">
+    <aside class="side">
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tab-layers" aria-selected="true" aria-controls="pane-layers" type="button">Layers</button>
+        <button role="tab" id="tab-details" aria-selected="false" aria-controls="pane-details" type="button">Details</button>
+      </div>
+
+      <div class="pane" id="pane-layers" role="tabpanel" aria-labelledby="tab-layers">
+        <h2>Sites</h2>
+        <label class="chk"><input type="checkbox" data-site="hq" checked>HQ<span class="note">2 clusters, 4 hosts</span></label>
+        <label class="chk"><input type="checkbox" data-site="b1" checked>Branch-1<span class="note">1 gateway, 2 hosts</span></label>
+        <label class="chk"><input type="checkbox" data-site="b2" checked>Branch-2<span class="note">1 SMB gateway</span></label>
+        <label class="chk"><input type="checkbox" data-site="core" checked>Internet and ISPs<span class="note">2 ISPs</span></label>
+        <label class="chk"><input type="checkbox" data-site="test" checked>Test host<span class="note">Hacker / JMeter</span></label>
+
+        <h2>Connections</h2>
+        <label class="chk"><input type="checkbox" data-cat="isp1" checked><span class="sw" data-sw="isp1"></span>Transit via ISP1</label>
+        <label class="chk"><input type="checkbox" data-cat="isp2" checked><span class="sw" data-sw="isp2"></span>Transit via ISP2</label>
+        <label class="chk"><input type="checkbox" data-cat="inet" checked><span class="sw" data-sw="inet"></span>Internet uplinks</label>
+        <label class="chk"><input type="checkbox" data-cat="lan" checked><span class="sw" data-sw="lan"></span>Site LANs</label>
+        <label class="chk"><input type="checkbox" data-cat="oob" checked><span class="sw dashed" data-sw="oob"></span>Shared network 10.160.200.0/24</label>
+        <label class="chk"><input type="checkbox" data-cat="xatt" checked><span class="sw dotted" data-sw="xatt"></span>Branch-1 hosts on Branch-2 LAN</label>
+
+        <h2>Labels</h2>
+        <label class="chk"><input type="checkbox" data-label="subnet" checked>Transit subnet labels</label>
+        <label class="chk"><input type="checkbox" data-label="ports" checked>Interface names</label>
+        <label class="chk"><input type="checkbox" data-label="v6">IPv6 prefixes</label>
+
+        <h2>Line colors</h2>
+        <div class="seg" role="group" aria-label="Line colors">
+          <button type="button" data-color="isp" aria-pressed="true">By ISP</button>
+          <button type="button" data-color="orig" aria-pressed="false">As in original drawing</button>
+        </div>
+
+        <h2>Quick views</h2>
+        <div class="chips">
+          <button type="button" data-preset="all">Everything</button>
+          <button type="button" data-preset="isp1">ISP1 paths</button>
+          <button type="button" data-preset="isp2">ISP2 paths</button>
+          <button type="button" data-preset="wan">WAN only</button>
+          <button type="button" data-preset="hq">HQ</button>
+          <button type="button" data-preset="b1">Branch-1</button>
+          <button type="button" data-preset="b2">Branch-2</button>
+        </div>
+
+        <details class="notes">
+          <summary>How the drawing was interpreted</summary>
+          <ul>
+            <li>Site gateways use .1 on each transit network and the ISP routers use .254, as labeled on the ISP clouds.</li>
+            <li>ISP2's interface names aren't labeled in the source, only eth0 .65 toward the Internet.</li>
+            <li>Only IPv6 prefixes are labeled. Host IPv6 addresses shown here follow the ::&lt;host&gt; pattern of the test host (1000:160:201::10) and are marked as inferred.</li>
+            <li>The dotted lines from Branch-Client and Branch-Linux to 172.40.1.0/24 are read as a second connection onto the Branch-2 LAN. Their addresses there aren't labeled.</li>
+            <li>The dashed 10.160.200.0/24 network links HQ-Client, Branch-Client and Branch-Linux. Host addresses on it aren't labeled.</li>
+            <li>Addressing between the ISPs and the Internet isn't labeled.</li>
+          </ul>
+        </details>
+      </div>
+
+      <div class="pane" id="pane-details" role="tabpanel" aria-labelledby="tab-details" hidden></div>
+    </aside>
+
+    <main class="stage">
+      <svg id="map" viewBox="0 0 1550 840" role="group" aria-label="Network topology diagram"></svg>
+      <div class="hint">Scroll to zoom, drag to pan</div>
+      <div class="zoom">
+        <button class="btn" type="button" id="zin" aria-label="Zoom in">+</button>
+        <button class="btn" type="button" id="zout" aria-label="Zoom out">−</button>
+        <button class="btn" type="button" id="zfit">Fit</button>
+      </div>
+    </main>
+  </div>
+</div>
+
+<section class="plan" aria-labelledby="plan-h">
+  <h2 id="plan-h">Address plan</h2>
+  <p>Every network in the drawing. Click a row to show it on the map. The search box above filters this list too.</p>
+  <div class="plan-wrap">
+    <table>
+      <thead><tr><th>IPv4 network</th><th>IPv6 prefix</th><th>Purpose</th><th>Attached</th></tr></thead>
+      <tbody id="plan-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<script>
+(() => {
+/* ---------- Data model (from the source drawing) ---------- */
+const SITES = {
+  hq:{name:'HQ', box:{x:24,y:150,w:500,h:670}},
+  b1:{name:'Branch-1', box:{x:1036,y:150,w:450,h:320}},
+  b2:{name:'Branch-2', box:{x:1036,y:520,w:450,h:300}},
+  core:{name:'Internet and ISPs'},
+  test:{name:'Test host'}
+};
+const CATS = {
+  isp1:{name:'Transit via ISP1'}, isp2:{name:'Transit via ISP2'},
+  inet:{name:'Internet uplink'}, lan:{name:'Site LAN'},
+  oob:{name:'Shared network 10.160.200.0/24'}, xatt:{name:'Branch-1 host on Branch-2 LAN'}
+};
+const ORIG = {lan:'#E9A27E', inet:'var(--inet)', oob:'#E07B39', xatt:'#E9A27E'};
+
+const nodes = [
+  {id:'inet', name:'Internet', kind:'internet', site:'core', cx:770, cy:62, r:40, role:'Public Internet'},
+  {id:'hacker', name:'Hacker / JMeter / Docker', kind:'host', site:'test', cx:560, cy:62, w:220, h:52,
+    ipv4:'10.160.201.10', ipv6:'1000:160:201::10', role:'Test traffic and attack host on the Internet side'},
+  {id:'isp1', name:'ISP1', kind:'isp', site:'core', asn:64529, cx:770, cy:300, w:180, h:104, role:'Provider router. Uses .254 on every transit network.'},
+  {id:'isp2', name:'ISP2', kind:'isp', site:'core', asn:64539, cx:770, cy:590, w:180, h:104, role:'Provider router. Uses .254 on every transit network.'},
+  {id:'hqold', name:'hq-exl', kind:'gw', cluster:true, site:'hq', asn:64551, cx:410, cy:330, w:190, h:56, role:'Two-member gateway cluster with a sync link'},
+  {id:'hqvsn', name:'hq-vsn', kind:'gw', cluster:true, site:'hq', asn:64552, cx:410, cy:600, w:190, h:56, role:'Two-member gateway cluster with a sync link'},
+  {id:'hqlan', name:'HQ LAN', kind:'seg', site:'hq', x:205, y1:235, y2:745, v4:'192.168.30.0/24', v6:'A192:168:30::/64', role:'HQ site LAN'},
+  {id:'hqclient', name:'HQ-Client', kind:'host', site:'hq', cx:110, cy:270, w:150, h:50, role:'Client'},
+  {id:'hqdc', name:'HQ-Win-DC', kind:'host', site:'hq', cx:110, cy:400, w:150, h:50, role:'Windows domain controller'},
+  {id:'hqlinux', name:'HQ-Linux', kind:'host', site:'hq', cx:110, cy:530, w:150, h:50, role:'Linux host'},
+  {id:'hqmdm', name:'MDM+ LSM', kind:'host', site:'hq', cx:110, cy:660, w:150, h:50, role:'Management server (MDM + LSM)'},
+  {id:'bgw', name:'Branch-GW', kind:'gw', site:'b1', asn:64553, cx:1155, cy:310, w:190, h:56, role:'Single gateway'},
+  {id:'b1lan', name:'Branch-1 LAN', kind:'seg', site:'b1', x:1290, y1:215, y2:415, v4:'172.30.1.0/24', v6:'A172:30:1::/64', role:'Branch-1 site LAN'},
+  {id:'bclient', name:'Branch-Client', kind:'host', site:'b1', cx:1395, cy:255, w:150, h:50, role:'Client'},
+  {id:'blinux', name:'Branch-Linux', kind:'host', site:'b1', cx:1395, cy:375, w:150, h:50, role:'Linux host'},
+  {id:'b2gw', name:'Branch2-SMB', kind:'gw', site:'b2', asn:64554, cx:1155, cy:670, w:190, h:56, role:'Single SMB gateway'},
+  {id:'b2lan', name:'Branch-2 LAN', kind:'seg', site:'b2', x:1290, y1:610, y2:730, v4:'172.40.1.0/24', v6:'A172:40:1::/64', role:'Branch-2 site LAN'},
+  {id:'oob', name:'Shared network', kind:'pill', site:'oob', cx:330, cy:120, w:160, v4:'10.160.200.0/24', v6:'1000:160:200::/64',
+    role:'Dashed network in the source. Connects HQ-Client, Branch-Client and Branch-Linux across sites.'}
+];
+
+const links = [
+  // Transit networks: a = site gateway (.1), b = ISP (.254)
+  {id:'t11', cat:'isp1', v4:'10.160.11.0/24', v6:'1000:160:11::/64', orig:'#5DBB49', a:{n:'hqold',port:'eth2',host:1}, b:{n:'isp1',port:'eth1',host:254}, p1:[505,318], p2:[680,298]},
+  {id:'t12', cat:'isp2', v4:'10.160.12.0/24', v6:'1000:160:12::/64', orig:'#B5501C', a:{n:'hqold',port:'eth3',host:1}, b:{n:'isp2',host:254}, p1:[505,342], p2:[680,592]},
+  {id:'t21', cat:'isp1', v4:'10.160.21.0/24', v6:'1000:160:21::/64', orig:'#C86DD7', a:{n:'hqvsn',port:'eth2',host:1}, b:{n:'isp1',port:'eth2',host:254}, p1:[505,588], p2:[680,324]},
+  {id:'t22', cat:'isp2', v4:'10.160.22.0/24', v6:'1000:160:22::/64', orig:'#4A90D9', a:{n:'hqvsn',port:'eth3',host:1}, b:{n:'isp2',host:254}, p1:[505,612], p2:[680,618]},
+  {id:'t31', cat:'isp1', v4:'10.160.31.0/24', v6:'1000:160:31::/64', orig:'#808080', a:{n:'bgw',port:'eth2',host:1}, b:{n:'isp1',port:'eth3',host:254}, p1:[1060,298], p2:[860,298]},
+  {id:'t32', cat:'isp2', v4:'10.160.32.0/24', v6:'1000:160:32::/64', orig:'var(--inet)', a:{n:'bgw',port:'eth3',host:1}, b:{n:'isp2',host:254}, p1:[1060,322], p2:[860,592]},
+  {id:'t41', cat:'isp2', v4:'10.160.41.0/24', v6:'1000:160:41::/64', orig:'#E2A8E2', a:{n:'b2gw',port:'eth1',host:1}, b:{n:'isp2',host:254}, p1:[1060,682], p2:[860,618]},
+  {id:'t42', cat:'isp1', v4:'10.160.42.0/24', v6:'1000:160:42::/64', orig:'#E02020', a:{n:'b2gw',port:'eth2',host:1}, b:{n:'isp1',port:'eth4',host:254}, p1:[1060,658], p2:[860,324]},
+  // Internet side
+  {id:'u1', cat:'inet', a:{n:'isp1',port:'eth0',host:66,tagAt:[778,240]}, b:{n:'inet'}, d:'M770 248 V102'},
+  {id:'u2', cat:'inet', a:{n:'isp2',port:'eth0',host:65,tagAt:[828,531]}, b:{n:'inet'}, d:'M820 538 V510 H892 V62 H810'},
+  {id:'u3', cat:'inet', a:{n:'hacker'}, b:{n:'inet'}, d:'M670 62 H730'},
+  // Site LANs
+  {id:'l1', cat:'lan', a:{n:'hqold',port:'magg1',host:1}, b:{n:'hqlan'}, d:'M315 330 H208', aEnd:[315,330]},
+  {id:'l2', cat:'lan', a:{n:'hqvsn',port:'magg1',host:10}, b:{n:'hqlan'}, d:'M315 600 H208', aEnd:[315,600]},
+  {id:'l3', cat:'lan', a:{n:'hqclient',host:20}, b:{n:'hqlan'}, d:'M185 270 H202'},
+  {id:'l4', cat:'lan', a:{n:'hqdc',host:30}, b:{n:'hqlan'}, d:'M185 400 H202'},
+  {id:'l5', cat:'lan', a:{n:'hqlinux',host:40}, b:{n:'hqlan'}, d:'M185 530 H202'},
+  {id:'l6', cat:'lan', a:{n:'hqmdm',host:50}, b:{n:'hqlan'}, d:'M185 660 H202'},
+  {id:'l7', cat:'lan', a:{n:'bgw',port:'magg1',host:1}, b:{n:'b1lan'}, d:'M1250 310 H1287', aEnd:[1250,310]},
+  {id:'l8', cat:'lan', a:{n:'bclient',host:70}, b:{n:'b1lan'}, d:'M1320 255 H1293'},
+  {id:'l9', cat:'lan', a:{n:'blinux',host:60}, b:{n:'b1lan'}, d:'M1320 375 H1293'},
+  {id:'l10', cat:'lan', a:{n:'b2gw',port:'eth0',host:1}, b:{n:'b2lan'}, d:'M1250 670 H1287', aEnd:[1250,670]},
+  // Shared 10.160.200.0/24 (dashed)
+  {id:'o1', cat:'oob', a:{n:'hqclient'}, b:{n:'oob'}, d:'M250 120 H110 V245'},
+  {id:'o2', cat:'oob', a:{n:'bclient'}, b:{n:'oob'}, d:'M410 120 H1395 V230'},
+  {id:'o3', cat:'oob', a:{n:'blinux'}, b:{n:'oob'}, d:'M410 120 H1528 V368 H1470'},
+  // Branch-1 hosts onto Branch-2 LAN (dotted)
+  {id:'x1', cat:'xatt', a:{n:'bclient'}, b:{n:'b2lan'}, d:'M1470 262 H1505 V690 H1293'},
+  {id:'x2', cat:'xatt', a:{n:'blinux'}, b:{n:'b2lan'}, d:'M1470 384 H1505 V690 H1293'}
+];
+
+const N = Object.fromEntries(nodes.map(n => [n.id, n]));
+const L = Object.fromEntries(links.map(l => [l.id, l]));
+
+/* ---------- Helpers ---------- */
+const v4 = (net, h) => net.split('/')[0].split('.').slice(0,3).join('.') + '.' + h;
+const v6 = (pfx, h) => pfx.replace(/::\/\d+$/, '::' + h);
+const mask = net => net.split('/')[1];
+function linkNet(l){
+  if (l.v4) return {v4:l.v4, v6:l.v6};
+  const b = N[l.b.n];
+  return b.v4 ? {v4:b.v4, v6:b.v6} : null;
+}
+function ifacesOf(id){
+  return links.filter(l => l.a.n === id || l.b.n === id).map(l => {
+    const me = l.a.n === id ? l.a : l.b, other = l.a.n === id ? l.b : l.a;
+    const net = linkNet(l);
+    let addr4 = null, addr6 = null;
+    if (me.host != null && net){ addr4 = v4(net.v4, me.host) + '/' + mask(net.v4); addr6 = v6(net.v6, me.host) + '/64'; }
+    return {l, me, other, port:me.port || '', host:me.host, net, addr4, addr6, peer:N[other.n]};
+  });
+}
+function hostAddr(n){
+  if (n.ipv4) return n.ipv4;
+  const lan = ifacesOf(n.id).find(i => i.l.cat === 'lan' && i.addr4);
+  return lan ? lan.addr4.split('/')[0] : '';
+}
+function curveD(p1, p2){
+  const dx = (p2[0] - p1[0]) / 2;
+  return `M${p1[0]} ${p1[1]} C${p1[0]+dx} ${p1[1]} ${p2[0]-dx} ${p2[1]} ${p2[0]} ${p2[1]}`;
+}
+function bez(p1, p2, t){
+  const dx = (p2[0] - p1[0]) / 2;
+  const P = [p1, [p1[0]+dx, p1[1]], [p2[0]-dx, p2[1]], p2];
+  const m = 1 - t, c = [m*m*m, 3*m*m*t, 3*m*t*t, t*t*t];
+  return [0,1].map(i => P.reduce((s, p, k) => s + p[i]*c[k], 0));
+}
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+nodes.forEach(n => {
+  const parts = [n.name, n.v4, n.v6, n.ipv4, n.ipv6, n.asn && ('as' + n.asn)];
+  ifacesOf(n.id).forEach(i => parts.push(i.addr4, i.addr6, i.net && i.net.v4, i.port));
+  n._s = parts.filter(Boolean).join(' ').toLowerCase();
+});
+links.forEach(l => {
+  const net = linkNet(l);
+  l._s = [l.v4, l.v6, net && net.v4, N[l.a.n].name, N[l.b.n].name, l.a.port, l.b.port, CATS[l.cat].name].filter(Boolean).join(' ').toLowerCase();
+});
+
+/* ---------- State ---------- */
+const state = {
+  sites:{hq:true, b1:true, b2:true, core:true, test:true},
+  cats:{isp1:true, isp2:true, inet:true, lan:true, oob:true, xatt:true},
+  labels:{subnet:true, ports:true, v6:false},
+  color:'isp', selected:null, hover:null, query:''
+};
+const linkColor = l => state.color === 'orig' ? (l.orig || ORIG[l.cat]) : `var(--${l.cat})`;
+
+/* ---------- SVG rendering ---------- */
+const svg = document.getElementById('map');
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function txt(parent, x, y, s, cls, anchor){
+  const t = el('text', {x, y, class:cls || '', 'text-anchor':anchor || 'start'}, parent);
+  t.textContent = s; return t;
+}
+let R = {};
+
+function render(){
+  svg.innerHTML = '';
+  R = {nodes:{}, links:{}, labels:{}, ports:[], sites:{}, notes:[]};
+  el('rect', {class:'bg', x:-3000, y:-3000, width:8000, height:8000}, svg);
+  const gS = el('g', {}, svg), gL = el('g', {}, svg), gT = el('g', {}, svg), gN = el('g', {}, svg);
+
+  for (const [k, s] of Object.entries(SITES)) if (s.box){
+    const g = el('g', {class:'site'}, gS);
+    el('rect', {x:s.box.x, y:s.box.y, width:s.box.w, height:s.box.h, rx:16, class:'site-box'}, g);
+    txt(g, s.box.x + 18, s.box.y + 30, s.name, 't-site');
+    R.sites[k] = g;
+  }
+
+  for (const l of links){
+    const g = el('g', {class:'link', 'data-link':l.id, tabindex:0, role:'button', 'aria-label':linkAria(l)}, gL);
+    const d = l.p1 ? curveD(l.p1, l.p2) : l.d;
+    const col = linkColor(l);
+    el('path', {d, class:`lk ${l.cat}`, style:`stroke:${col}`}, g);
+    el('path', {d, class:'hit'}, g);
+    R.links[l.id] = g;
+    if (l.p1){
+      const [x, y] = bez(l.p1, l.p2, 0.4);
+      const six = state.labels.v6, w = 118, h = six ? 40 : 24;
+      const lg = el('g', {class:'sublabel', 'data-link':l.id}, gT);
+      el('rect', {x:x - w/2, y:y - h/2, width:w, height:h, rx:5, class:'pill', style:`stroke:${col}`}, lg);
+      txt(lg, x, six ? y - 3 : y + 5, l.v4, 't-pill', 'middle');
+      if (six) txt(lg, x, y + 14, l.v6, 't-pill6', 'middle');
+      R.labels[l.id] = lg;
+    }
+  }
+  // note for dotted attachments
+  const ng = el('g', {class:'xnote'}, gT);
+  txt(ng, 1302, 664, 'Branch-Client and Branch-Linux', 't-note');
+  txt(ng, 1302, 680, 'also attach here (dotted)', 't-note');
+  R.notes.push(ng);
+
+  for (const n of nodes){
+    const g = el('g', {class:`node k-${n.kind}`, 'data-node':n.id, tabindex:0, role:'button', 'aria-label':nodeAria(n)}, gN);
+    R.nodes[n.id] = g;
+    if (n.kind === 'gw'){
+      const x = n.cx - n.w/2, y = n.cy - n.h/2;
+      const t = el('text', {x, y:y - 10, class:'t-name'}, g); t.textContent = n.name;
+      const ts = el('tspan', {class:'t-sub', dx:8}, t); ts.textContent = 'AS ' + n.asn + (n.cluster ? ', cluster of 2' : '');
+      if (n.cluster) el('rect', {x:x+5, y:y+5, width:n.w, height:n.h, rx:7, class:'stack'}, g);
+      el('rect', {x, y, width:n.w, height:n.h, rx:7, class:'body'}, g);
+      ports(n, g);
+    } else if (n.kind === 'isp'){
+      const x = n.cx - n.w/2, y = n.cy - n.h/2;
+      el('rect', {x, y, width:n.w, height:n.h, rx:24, class:'body'}, g);
+      g.classList.add('isp');
+      const t = el('text', {x:n.cx, y:n.cy - 25, class:'t-name', 'text-anchor':'middle'}, g); t.textContent = n.name;
+      const ts = el('tspan', {class:'t-sub', dx:8}, t); ts.textContent = 'AS ' + n.asn;
+      ports(n, g);
+    } else if (n.kind === 'internet'){
+      el('circle', {cx:n.cx, cy:n.cy, r:n.r, class:'inet-c body', style:'fill:var(--inet);stroke:none'}, g);
+      txt(g, n.cx, n.cy + 5, 'Internet', 't-inet', 'middle');
+    } else if (n.kind === 'host'){
+      const x = n.cx - n.w/2, y = n.cy - n.h/2;
+      el('rect', {x, y, width:n.w, height:n.h, rx:6, class:'body'}, g);
+      txt(g, x + 12, n.cy - 3, n.name, 't-name');
+      txt(g, x + 12, n.cy + 15, hostAddr(n), 't-sub');
+    } else if (n.kind === 'seg'){
+      el('rect', {x:n.x - 9, y:n.y1 - 6, width:18, height:n.y2 - n.y1 + 12, class:'seghit'}, g);
+      el('rect', {x:n.x - 3, y:n.y1, width:6, height:n.y2 - n.y1, rx:3, class:'segbar', style:`fill:${state.color === 'orig' ? ORIG.lan : 'var(--lan)'}`}, g);
+      txt(g, n.x, n.y2 + 22, n.v4, 't-port', 'middle').style.fontWeight = 600;
+      if (state.labels.v6) txt(g, n.x, n.y2 + 37, n.v6, 't-pill6', 'middle');
+    } else if (n.kind === 'pill'){
+      const h = state.labels.v6 ? 40 : 26;
+      el('rect', {x:n.cx - n.w/2, y:n.cy - h/2, width:n.w, height:h, rx:h/2, class:'body pill-oob', style:`stroke:${state.color === 'orig' ? ORIG.oob : 'var(--oob)'}`}, g);
+      txt(g, n.cx, state.labels.v6 ? n.cy - 3 : n.cy + 5, n.v4, 't-pill', 'middle');
+      if (state.labels.v6) txt(g, n.cx, n.cy + 14, n.v6, 't-pill6', 'middle');
+    }
+  }
+  applyState();
+}
+
+function ports(n, g){
+  for (const l of links){
+    let side, end;
+    if (l.a.n === n.id){ side = l.a; end = l.p1 || l.aEnd; }
+    else if (l.b.n === n.id){ side = l.b; end = l.p2 || l.bEnd; }
+    else continue;
+    if (side.host == null) continue;
+    const label = (side.port ? side.port + ' ' : '') + '.' + side.host;
+    let t;
+    if (side.tagAt) t = txt(g, side.tagAt[0], side.tagAt[1], label, 't-port');
+    else if (end){
+      const left = end[0] <= n.cx;
+      t = txt(g, left ? n.cx - n.w/2 + 8 : n.cx + n.w/2 - 8, end[1] + 4.5, label, 't-port', left ? 'start' : 'end');
+    }
+    if (t) R.ports.push({el:t, link:l});
+  }
+}
+
+function nodeAria(n){
+  const bits = [n.name];
+  if (n.asn) bits.push('AS ' + n.asn);
+  if (n.v4) bits.push(n.v4);
+  const a = n.kind === 'host' && hostAddr(n); if (a) bits.push(a);
+  return bits.join(', ');
+}
+function linkAria(l){
+  const net = linkNet(l);
+  return `${net ? net.v4 + ', ' : ''}${N[l.a.n].name} to ${N[l.b.n].name}`;
+}
+
+/* ---------- Visibility and highlight ---------- */
+function baseVisible(n){ return n.site === 'oob' ? state.cats.oob : !!state.sites[n.site]; }
+function linkVisible(l){ return state.cats[l.cat] && baseVisible(N[l.a.n]) && baseVisible(N[l.b.n]); }
+function nodeVisible(n){
+  if (n.site === 'oob') return state.cats.oob && links.some(l => l.cat === 'oob' && linkVisible(l));
+  return baseVisible(n);
+}
+function focusSet(){
+  const f = state.hover || state.selected;
+  if (!f) return null;
+  const ns = new Set(), ls = new Set();
+  if (f.type === 'node'){
+    ns.add(f.id);
+    links.forEach(l => { if ((l.a.n === f.id || l.b.n === f.id) && linkVisible(l)){ ls.add(l.id); ns.add(l.a.n); ns.add(l.b.n); } });
+  } else {
+    const l = L[f.id]; ls.add(l.id); ns.add(l.a.n); ns.add(l.b.n);
+  }
+  return {ns, ls};
+}
+function matchSet(){
+  const q = state.query.trim().toLowerCase();
+  if (!q) return null;
+  const ns = new Set(), ls = new Set();
+  nodes.forEach(n => { if (n._s.includes(q)) ns.add(n.id); });
+  links.forEach(l => { if (l._s.includes(q)){ ls.add(l.id); ns.add(l.a.n); ns.add(l.b.n); } });
+  return {ns, ls};
+}
+function applyState(){
+  const f = focusSet(), m = f ? null : matchSet();
+  const sel = state.selected;
+  for (const n of nodes){
+    const g = R.nodes[n.id];
+    g.classList.toggle('hidden', !nodeVisible(n));
+    g.classList.toggle('dim', f ? !f.ns.has(n.id) : (m ? !m.ns.has(n.id) : false));
+    g.classList.toggle('sel', !!sel && sel.type === 'node' && sel.id === n.id);
+    g.classList.toggle('match', !!m && m.ns.has(n.id) && n._s.includes(state.query.trim().toLowerCase()));
+  }
+  for (const l of links){
+    const vis = linkVisible(l);
+    const dim = f ? !f.ls.has(l.id) : (m ? !m.ls.has(l.id) : false);
+    const g = R.links[l.id];
+    g.classList.toggle('hidden', !vis);
+    g.classList.toggle('dim', dim);
+    g.classList.toggle('hl', !!f && f.ls.has(l.id));
+    g.classList.toggle('sel', !!sel && sel.type === 'link' && sel.id === l.id);
+    const lb = R.labels[l.id];
+    if (lb){ lb.classList.toggle('hidden', !vis || !state.labels.subnet); lb.classList.toggle('dim', dim); }
+  }
+  R.ports.forEach(p => p.el.classList.toggle('hidden', !state.labels.ports || !linkVisible(p.link)));
+  for (const k in R.sites) R.sites[k].classList.toggle('hidden', !state.sites[k]);
+  const xVis = links.some(l => l.cat === 'xatt' && linkVisible(l));
+  R.notes.forEach(g => { g.classList.toggle('hidden', !xVis); g.classList.toggle('dim', !!f || !!m); });
+  document.querySelectorAll('#plan-body tr').forEach(tr => {
+    tr.classList.toggle('on', !!sel && tr.dataset.ref === sel.type + ':' + sel.id);
+  });
+}
+
+/* ---------- Details panel ---------- */
+const pane = document.getElementById('pane-details');
+function addrCell(i){
+  if (i.addr4) return `${esc(i.addr4)}<span class="v6">${esc(i.addr6)} <span class="inf">inferred</span></span>`;
+  if (i.host != null) return `.${i.host} <span class="muted">(network not labeled)</span>`;
+  return '<span class="muted">Not labeled</span>';
+}
+function peerCell(i){
+  const p = i.peer, port = i.other.port;
+  return `${esc(p.name)}${port ? ' <span class="muted">' + esc(port) + '</span>' : ''}${p.v4 ? '<span class="v6">' + esc(p.v4) + '</span>' : ''}`;
+}
+function renderPanel(){
+  const s = state.selected;
+  if (!s){ pane.innerHTML = overview(); return; }
+  let h = '<button class="back" type="button" data-clear>Clear selection</button>';
+  if (s.type === 'node'){
+    const n = N[s.id];
+    const site = n.site === 'oob' ? 'Spans all sites' : SITES[n.site].name;
+    h += `<h3 class="d-title">${esc(n.name)}</h3><p class="d-kind">${esc(n.role)}</p><dl class="props"><dt>Site</dt><dd>${esc(site)}</dd>`;
+    if (n.asn) h += `<dt>AS number</dt><dd>${n.asn}</dd>`;
+    if (n.v4) h += `<dt>IPv4</dt><dd>${esc(n.v4)}</dd><dt>IPv6</dt><dd>${esc(n.v6)}</dd>`;
+    if (n.ipv4) h += `<dt>IPv4</dt><dd>${esc(n.ipv4)}</dd><dt>IPv6</dt><dd>${esc(n.ipv6)}</dd>`;
+    h += '</dl>';
+    const ifs = ifacesOf(n.id);
+    if (n.kind === 'seg' || n.kind === 'pill' || n.kind === 'internet'){
+      h += `<h2>Attached (${ifs.length})</h2><table class="ifs"><thead><tr><th>Device</th><th>Port</th><th>Address</th></tr></thead><tbody>`;
+      ifs.forEach(i => {
+        const other = i.other, peerIf = ifacesOf(other.n).find(x => x.l === i.l);
+        h += `<tr data-ref="node:${other.n}"><td>${esc(i.peer.name)}</td><td>${esc(other.port || '—')}</td><td>${n.kind === 'internet' ? (other.host != null ? '.' + other.host : esc(i.peer.ipv4 || '—')) : addrCell(peerIf)}</td></tr>`;
+      });
+      h += '</tbody></table>';
+    } else {
+      h += `<h2>Interfaces (${ifs.length})</h2><table class="ifs"><thead><tr><th>Port</th><th>Address</th><th>Connects to</th></tr></thead><tbody>`;
+      ifs.forEach(i => {
+        const addr = (n.ipv4 && i.l.cat === 'inet') ? esc(n.ipv4) : addrCell(i);
+        h += `<tr data-ref="link:${i.l.id}"><td>${esc(i.port || '—')}</td><td>${addr}</td><td>${peerCell(i)}</td></tr>`;
+      });
+      h += '</tbody></table>';
+      if (n.cluster) h += '<p class="muted" style="font-size:13.5px">Drawn as two stacked members joined by a sync link. Addresses are the cluster addresses shown in the source.</p>';
+    }
+  } else {
+    const l = L[s.id], net = linkNet(l);
+    const title = l.v4 || `${N[l.a.n].name} to ${N[l.b.n].name}`;
+    h += `<h3 class="d-title">${esc(title)}</h3><p class="d-kind">${esc(CATS[l.cat].name)}</p>`;
+    if (net) h += `<dl class="props"><dt>IPv4</dt><dd>${esc(net.v4)}</dd><dt>IPv6</dt><dd>${esc(net.v6)}</dd></dl>`;
+    h += '<h2>Endpoints</h2><table class="ifs"><thead><tr><th>Device</th><th>Port</th><th>Address</th></tr></thead><tbody>';
+    [l.a, l.b].forEach(side => {
+      const i = ifacesOf(side.n).find(x => x.l === l);
+      const n = N[side.n];
+      const addr = n.kind === 'seg' || n.kind === 'pill' || n.kind === 'internet' ? '<span class="muted">Network</span>' : (n.ipv4 ? esc(n.ipv4) : addrCell(i));
+      h += `<tr data-ref="node:${n.id}"><td>${esc(n.name)}</td><td>${esc(side.port || '—')}</td><td>${addr}</td></tr>`;
+    });
+    h += '</tbody></table>';
+  }
+  pane.innerHTML = h;
+}
+function overview(){
+  const asns = nodes.filter(n => n.asn);
+  let h = '<p class="empty">Select a device, network or link on the map to see its interfaces and addresses.</p>';
+  h += '<h2>AS numbers</h2><table class="ifs"><thead><tr><th>AS</th><th>Device</th><th>Site</th></tr></thead><tbody>';
+  asns.forEach(n => { h += `<tr data-ref="node:${n.id}"><td>${n.asn}</td><td>${esc(n.name)}</td><td>${esc(SITES[n.site].name)}</td></tr>`; });
+  h += '</tbody></table>';
+  h += '<h2>Uplinks per site</h2><table class="ifs"><thead><tr><th>Gateway</th><th>Via ISP1</th><th>Via ISP2</th></tr></thead><tbody>';
+  nodes.filter(n => n.kind === 'gw').forEach(n => {
+    const t1 = links.find(l => l.a.n === n.id && l.cat === 'isp1'), t2 = links.find(l => l.a.n === n.id && l.cat === 'isp2');
+    h += `<tr data-ref="node:${n.id}"><td>${esc(n.name)}</td><td>${t1 ? esc(t1.v4) : '—'}</td><td>${t2 ? esc(t2.v4) : '—'}</td></tr>`;
+  });
+  h += '</tbody></table>';
+  return h;
+}
+
+/* ---------- Address plan ---------- */
+function planRows(){
+  const rows = [];
+  ['hqlan','b1lan','b2lan'].forEach(id => {
+    const n = N[id];
+    rows.push({ref:'node:' + id, v4:n.v4, v6:n.v6, c:state.color === 'orig' ? ORIG.lan : 'var(--lan)', type:'Site LAN, ' + SITES[n.site].name,
+      where:ifacesOf(id).map(i => i.peer.name + (i.other.host != null ? ' .' + i.other.host : (i.l.cat === 'xatt' ? ' (dotted, address not labeled)' : ''))).join(', ')});
+  });
+  links.filter(l => l.p1).sort((a, b) => a.v4.localeCompare(b.v4, undefined, {numeric:true})).forEach(l => {
+    rows.push({ref:'link:' + l.id, v4:l.v4, v6:l.v6, c:linkColor(l), type:CATS[l.cat].name,
+      where:`${N[l.a.n].name} ${l.a.port} .1, ${N[l.b.n].name}${l.b.port ? ' ' + l.b.port : ''} .254`});
+  });
+  rows.push({ref:'node:oob', v4:N.oob.v4, v6:N.oob.v6, c:state.color === 'orig' ? ORIG.oob : 'var(--oob)', type:'Shared network across sites (dashed)', where:'HQ-Client, Branch-Client, Branch-Linux (addresses not labeled)'});
+  rows.push({ref:'node:hacker', v4:'10.160.201.10', v6:'1000:160:201::10', c:'var(--muted)', type:'Test host on the Internet side', where:'Hacker / JMeter / Docker (prefix length not labeled)'});
+  rows.push({ref:'node:inet', v4:'Not labeled', v6:'Not labeled', c:'var(--inet)', type:'ISP upstream to the Internet', where:'ISP1 eth0 .66, ISP2 eth0 .65'});
+  return rows;
+}
+function renderPlan(){
+  const q = state.query.trim().toLowerCase();
+  const rows = planRows().filter(r => !q || [r.v4, r.v6, r.type, r.where].join(' ').toLowerCase().includes(q));
+  document.getElementById('plan-body').innerHTML = rows.length ? rows.map(r =>
+    `<tr data-ref="${r.ref}"><td class="net"><span class="dot" style="--c:${r.c}"></span>${esc(r.v4)}</td><td>${esc(r.v6)}</td><td>${esc(r.type)}</td><td>${esc(r.where)}</td></tr>`).join('')
+    : `<tr><td colspan="4" class="muted">No networks match "${esc(state.query)}". Clear the search to see all of them.</td></tr>`;
+  applyState();
+}
+
+/* ---------- Interaction ---------- */
+function refFrom(t){
+  const g = t.closest && t.closest('[data-node],[data-link]');
+  if (!g) return null;
+  return g.dataset.node ? {type:'node', id:g.dataset.node} : {type:'link', id:g.dataset.link};
+}
+const same = (a, b) => (!a && !b) || (a && b && a.type === b.type && a.id === b.id);
+function select(ref){
+  state.selected = ref;
+  state.hover = null;
+  renderPanel(); applyState();
+  if (ref) showTab('details');
+}
+function parseRef(s){ const [type, id] = s.split(':'); return {type, id}; }
+
+svg.addEventListener('pointerover', e => { if (drag) return; const r = refFrom(e.target); if (!same(r, state.hover)){ state.hover = r; applyState(); } });
+svg.addEventListener('pointerleave', () => { state.hover = null; applyState(); });
+svg.addEventListener('click', e => { const r = refFrom(e.target); if (r) select(same(r, state.selected) ? null : r); });
+svg.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const r = refFrom(e.target); if (r){ e.preventDefault(); select(r); }
+});
+svg.addEventListener('focusin', e => { const r = refFrom(e.target); state.hover = r; applyState(); });
+svg.addEventListener('focusout', () => { state.hover = null; applyState(); });
+
+// pan and zoom
+const VB0 = {x:0, y:0, w:1550, h:840};
+let vb = {...VB0}, drag = null;
+const setVB = () => svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+function toSvg(cx, cy){ const p = svg.createSVGPoint(); p.x = cx; p.y = cy; return p.matrixTransform(svg.getScreenCTM().inverse()); }
+function zoomAt(f, x, y){
+  const nw = Math.min(4000, Math.max(300, vb.w * f)), k = nw / vb.w;
+  vb = {x:x - (x - vb.x)*k, y:y - (y - vb.y)*k, w:nw, h:vb.h*k}; setVB();
+}
+svg.addEventListener('wheel', e => { e.preventDefault(); const p = toSvg(e.clientX, e.clientY); zoomAt(e.deltaY > 0 ? 1.12 : 1/1.12, p.x, p.y); }, {passive:false});
+svg.addEventListener('pointerdown', e => {
+  if (refFrom(e.target)) return;
+  drag = {x:e.clientX, y:e.clientY, vx:vb.x, vy:vb.y, s:svg.getScreenCTM().a, moved:false};
+  svg.setPointerCapture(e.pointerId); svg.classList.add('grabbing');
+});
+svg.addEventListener('pointermove', e => {
+  if (!drag) return;
+  const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+  if (Math.abs(dx) + Math.abs(dy) > 4) drag.moved = true;
+  vb.x = drag.vx - dx / drag.s; vb.y = drag.vy - dy / drag.s; setVB();
+});
+const endDrag = () => { if (!drag) return; if (!drag.moved && state.selected) select(null); drag = null; svg.classList.remove('grabbing'); };
+svg.addEventListener('pointerup', endDrag);
+svg.addEventListener('pointercancel', () => { drag = null; svg.classList.remove('grabbing'); });
+const center = () => [vb.x + vb.w/2, vb.y + vb.h/2];
+document.getElementById('zin').onclick = () => zoomAt(1/1.25, ...center());
+document.getElementById('zout').onclick = () => zoomAt(1.25, ...center());
+document.getElementById('zfit').onclick = () => { vb = {...VB0}; setVB(); };
+
+// tabs
+function showTab(which){
+  const d = which === 'details';
+  document.getElementById('tab-layers').setAttribute('aria-selected', String(!d));
+  document.getElementById('tab-details').setAttribute('aria-selected', String(d));
+  document.getElementById('pane-layers').hidden = d;
+  pane.hidden = !d;
+}
+document.getElementById('tab-layers').onclick = () => showTab('layers');
+document.getElementById('tab-details').onclick = () => showTab('details');
+
+pane.addEventListener('click', e => {
+  if (e.target.closest('[data-clear]')){ select(null); return; }
+  const tr = e.target.closest('tr[data-ref]'); if (tr) select(parseRef(tr.dataset.ref));
+});
+pane.addEventListener('mouseover', e => { const tr = e.target.closest('tr[data-ref]'); state.hover = tr ? parseRef(tr.dataset.ref) : null; applyState(); });
+pane.addEventListener('mouseleave', () => { state.hover = null; applyState(); });
+
+const planBody = document.getElementById('plan-body');
+planBody.addEventListener('click', e => {
+  const tr = e.target.closest('tr[data-ref]'); if (!tr) return;
+  const r = parseRef(tr.dataset.ref);
+  if (r.type === 'node') state.sites[N[r.id].site] = true;
+  if (r.type === 'link'){ const l = L[r.id]; state.cats[l.cat] = true; state.sites[N[l.a.n].site] = true; state.sites[N[l.b.n].site] = true; }
+  if (r.id === 'oob') state.cats.oob = true;
+  syncControls(); select(r);
+  svg.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'center'});
+});
+planBody.addEventListener('mouseover', e => { const tr = e.target.closest('tr[data-ref]'); state.hover = tr ? parseRef(tr.dataset.ref) : null; applyState(); });
+planBody.addEventListener('mouseleave', () => { state.hover = null; applyState(); });
+
+// layer controls
+const layers = document.getElementById('pane-layers');
+layers.addEventListener('change', e => {
+  const t = e.target;
+  if (t.dataset.site) state.sites[t.dataset.site] = t.checked;
+  if (t.dataset.cat) state.cats[t.dataset.cat] = t.checked;
+  if (t.dataset.label){ state.labels[t.dataset.label] = t.checked; render(); return; }
+  applyState();
+});
+layers.querySelectorAll('[data-color]').forEach(b => b.onclick = () => {
+  state.color = b.dataset.color;
+  layers.querySelectorAll('[data-color]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  paintSwatches(); render(); renderPlan();
+});
+const PRESETS = {
+  all:{sites:['hq','b1','b2','core','test'], cats:['isp1','isp2','inet','lan','oob','xatt']},
+  isp1:{sites:['hq','b1','b2','core','test'], cats:['isp1','inet','lan']},
+  isp2:{sites:['hq','b1','b2','core','test'], cats:['isp2','inet','lan']},
+  wan:{sites:['hq','b1','b2','core','test'], cats:['isp1','isp2','inet']},
+  hq:{sites:['hq','core'], cats:['isp1','isp2','inet','lan','oob']},
+  b1:{sites:['b1','core'], cats:['isp1','isp2','inet','lan','oob']},
+  b2:{sites:['b2','core'], cats:['isp1','isp2','inet','lan']}
+};
+layers.querySelectorAll('[data-preset]').forEach(b => b.onclick = () => {
+  const p = PRESETS[b.dataset.preset];
+  for (const k in state.sites) state.sites[k] = p.sites.includes(k);
+  for (const k in state.cats) state.cats[k] = p.cats.includes(k);
+  syncControls(); applyState();
+});
+function syncControls(){
+  layers.querySelectorAll('[data-site]').forEach(i => i.checked = state.sites[i.dataset.site]);
+  layers.querySelectorAll('[data-cat]').forEach(i => i.checked = state.cats[i.dataset.cat]);
+}
+function paintSwatches(){
+  layers.querySelectorAll('[data-sw]').forEach(s => {
+    const c = s.dataset.sw;
+    s.classList.remove('multi');
+    if (state.color === 'orig' && (c === 'isp1' || c === 'isp2')){
+      const cols = links.filter(l => l.cat === c).map(l => l.orig);
+      s.classList.add('multi');
+      s.style.setProperty('--grad', `linear-gradient(90deg, ${cols.map((x, i) => `${x} ${i*25}% ${(i+1)*25}%`).join(', ')})`);
+    } else {
+      s.style.setProperty('--c', state.color === 'orig' ? ORIG[c] || `var(--${c})` : `var(--${c})`);
+    }
+  });
+}
+
+// search
+document.getElementById('q').addEventListener('input', e => { state.query = e.target.value; renderPlan(); });
+document.getElementById('q').addEventListener('keydown', e => {
+  if (e.key === 'Enter'){
+    const m = matchSet(); if (!m) return;
+    const q = state.query.trim().toLowerCase();
+    const hit = nodes.find(n => n._s.includes(q) && nodeVisible(n)) ;
+    const lhit = links.find(l => l._s.includes(q) && linkVisible(l));
+    if (lhit && (!hit || lhit.v4 && lhit.v4.toLowerCase().includes(q))) select({type:'link', id:lhit.id});
+    else if (hit) select({type:'node', id:hit.id});
+  }
+  if (e.key === 'Escape'){ e.target.value = ''; state.query = ''; renderPlan(); }
+});
+
+// theme
+const themeBtn = document.getElementById('theme');
+const isDark = () => (document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark';
+const syncTheme = () => themeBtn.textContent = isDark() ? 'Light mode' : 'Dark mode';
+themeBtn.onclick = () => { document.documentElement.dataset.theme = isDark() ? 'light' : 'dark'; syncTheme(); };
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', syncTheme);
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && state.selected && document.activeElement.id !== 'q') select(null); });
+
+/* ---------- Boot ---------- */
+syncTheme(); paintSwatches(); render(); renderPanel(); renderPlan();
+})();
+</script>
+</body>
+</html>
