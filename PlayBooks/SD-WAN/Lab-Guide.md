@@ -5,15 +5,18 @@ NOTE: If the instructor has not already asked you to do so reboot the management
 
 Opening SmartConsole from the desktop of Management Client, you can see that you have a fully deployed environment with a working security policy and working VPN configuration. 
 
-As you see the environment consists of GW1 where windows client will use this getaway to access internet, and by default it can even use the second internet connection. 
+a. As you see the environment consists of GW1 where windows client will use this getaway to access internet, and by default it can even use the second internet connection. 
+
+<img width="967" height="320" alt="image" src="https://github.com/user-attachments/assets/f3c5d323-27b0-4870-bebb-973ffa4a06ee" />
 
 
+b. The Client will use VPN to connect over internet to GW3 to reach the web server 
 
-The Client will use VPN to connect over internet to GW3 to reach the web server 
-   
+<img width="933" height="460" alt="image" src="https://github.com/user-attachments/assets/2e749103-55fa-4216-9716-2b3033186bfc" />
+
 
 In SmartConsole you should see that SIC is established and communication is working to GW1. GW2 and GW3.  
-NOTE: GW2 is just acting as a router in this environment. 
+**NOTE: GW2 is just acting as a router in this environment**
 
 Review the configuration of GW1 and GW3,  
 
