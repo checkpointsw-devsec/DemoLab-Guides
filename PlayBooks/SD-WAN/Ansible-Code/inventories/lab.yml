@@ -1,0 +1,14 @@
+---
+all:
+  hosts:
+    CMA:
+      ansible_host: 192.168.30.50
+      checkpoint_cloud_mgmt_id: "Sub1_Domain"
+
+    MDS:
+      ansible_host: 192.168.30.50
+
+  children:
+    checkpoint_mgmt:
+      hosts:
+        CMA:

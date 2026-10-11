@@ -1,0 +1,414 @@
+---
+- name: SD-WAN Policy Pack — DC package and rules
+  hosts: checkpoint_mgmt
+  gather_facts: false
+  connection: httpapi
+
+  vars_files:
+    - group_vars/vault.yml
+    - group_vars/vars.yml
+
+  vars:
+    n: "{{ resource_name_map }}"
+    ansible_network_os: check_point.mgmt.checkpoint
+
+    ansible_httpapi_use_ssl: true
+    ansible_checkpoint_validate_certs: false
+    ansible_httpapi_validate_certs: false
+
+    ansible_user: ""
+    ansible_password: ""
+    ansible_checkpoint_use_api_key: true
+    ansible_api_key: "{{ vault_checkpoint_api_key }}"
+    ansible_checkpoint_domain: "{{ checkpoint_cloud_mgmt_id }}"
+
+  tasks:
+
+
+    # ------------------------------------------------------------------
+    # Access Layer for DC Policy Package
+    # ------------------------------------------------------------------
+    - name: Create policy package — {{ dc_policy_package_name }}
+      check_point.mgmt.cp_mgmt_package:
+        name: "{{ dc_policy_package_name }}"
+        access: true
+        threat_prevention: false
+        color: "{{ n.dc_package_color }}"
+        comments: "{{ n.package_comments }}"
+        installation_targets:
+          - "{{ n.gateway_datacenter }}"
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: add appctl and URL filtering to access layer — {{ n.layer_dc_policy_network }}
+      check_point.mgmt.cp_mgmt_access_layer:
+        name: "{{ n.layer_dc_policy_network }}"
+        applications_and_url_filtering: true
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    # ------------------------------------------------------------------
+    # Policy Package
+    # ------------------------------------------------------------------
+
+    - name: Create policy package — {{ dc_policy_package_name }}
+      check_point.mgmt.cp_mgmt_package:
+        name: "{{ dc_policy_package_name }}"
+        access: true
+        threat_prevention: false
+        color: "{{ n.dc_package_color }}"
+        comments: "{{ n.package_comments }}"
+        installation_targets:
+          - "{{ n.gateway_datacenter }}"
+          - "{{ n.gateway2_datacenter }}"
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: Attach only DC access layer to policy package — {{ dc_policy_package_name }}
+      check_point.mgmt.cp_mgmt_package:
+        name: "{{ dc_policy_package_name }}"
+        access_layers:
+          value:
+            - "{{ n.layer_dc_policy_network }}"
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    # ------------------------------------------------------------------
+    # DC-policy — Sections labels
+    # ------------------------------------------------------------------
+
+    - name: "DC | Section — {{ n.section_management }}"
+      check_point.mgmt.cp_mgmt_access_section:
+        name: "{{ n.section_management }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        position: top
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: "DC | Section — {{ n.section_sdwan_vpn_probing }}"
+      check_point.mgmt.cp_mgmt_access_section:
+        name: "{{ n.section_sdwan_vpn_probing }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        position: bottom
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: "DC | Section — {{ n.section_isp_probing }}"
+      check_point.mgmt.cp_mgmt_access_section:
+        name: "{{ n.section_isp_probing }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        position: bottom
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: "DC | Section — {{ n.section_services }}"
+      check_point.mgmt.cp_mgmt_access_section:
+        name: "{{ n.section_services }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        position: bottom
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: "DC | Section — {{ n.section_vpn_overlay }}"
+      check_point.mgmt.cp_mgmt_access_section:
+        name: "{{ n.section_vpn_overlay }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        position: bottom
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: "DC | Section — {{ n.section_outbound }}"
+      check_point.mgmt.cp_mgmt_access_section:
+        name: "{{ n.section_outbound }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        position: bottom
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: "DC | Section — {{ n.section_cleanup }}"
+      check_point.mgmt.cp_mgmt_access_section:
+        name: "{{ n.section_cleanup }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        position: bottom
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    # ------------------------------------------------------------------
+    # DC-policy Network — Rules
+    # ------------------------------------------------------------------
+
+    - name: "DC | Rule 1 — {{ n.rule_management }}"
+      check_point.mgmt.cp_mgmt_access_rule:
+        name: "{{ n.rule_management }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        relative_position:
+          top: "{{ n.section_management }}"
+        search_entire_rulebase: true
+        enabled: true
+        action: "{{ n.action_accept }}"
+        source:
+          - "{{ n.object_any }}"
+        destination:
+          - "{{ n.gateway_datacenter }}"
+        service:
+          - "{{ n.service_tcp_gaiawebui }}"
+          - "{{ n.service_ssh }}"
+        track:
+          type: "{{ n.track_log }}"
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: "DC | Rule 2 — {{ n.rule_sdwan_vpn_probing }}"
+      check_point.mgmt.cp_mgmt_access_rule:
+        name: "{{ n.rule_sdwan_vpn_probing }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        relative_position:
+          top: "{{ n.section_sdwan_vpn_probing }}"
+        search_entire_rulebase: true
+        enabled: true
+        action: "{{ n.action_accept }}"
+        source:
+          - "{{ n.gateway_datacenter }}"
+          - "{{ n.gateway_branch }}"
+        destination:
+          - "{{ n.gateway_branch }}"
+          - "{{ n.gateway_datacenter }}"
+        service:
+          - "{{ n.service_echo_request }}"
+        track:
+          type: "{{ n.track_log }}"
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: "DC | Rule 3 — {{ n.rule_isp_probing }}"
+      check_point.mgmt.cp_mgmt_access_rule:
+        name: "{{ n.rule_isp_probing }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        relative_position:
+          top: "{{ n.section_isp_probing }}"
+        search_entire_rulebase: true
+        enabled: true
+        action: "{{ n.action_accept }}"
+        source:
+          - "{{ n.gateway_datacenter }}"
+          - "{{ n.host_isp1_gw }}"
+          - "{{ n.host_isp2_gw }}"
+        destination:
+          - "{{ n.host_isp1_gw }}"
+          - "{{ n.host_isp2_gw }}"
+          - "{{ n.gateway_datacenter }}"
+        service:
+          - "{{ n.service_echo_request }}"
+        track:
+          type: "{{ n.track_log }}"
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: "DC | Rule 4 — {{ n.rule_icmp }}"
+      check_point.mgmt.cp_mgmt_access_rule:
+        name: "{{ n.rule_icmp }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        relative_position:
+          top: "{{ n.section_services }}"
+        search_entire_rulebase: true
+        enabled: true
+        action: "{{ n.action_accept }}"
+        source:
+          - "{{ n.net_datacenter_v4 }}"
+          - "{{ n.net_branch1_v4 }}"
+        destination:
+          - "{{ n.object_any }}"
+        service:
+          - "{{ n.service_echo_request }}"
+        track:
+          type: "{{ n.track_log }}"
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: "DC | Rule 5 — {{ n.rule_dns }}"
+      check_point.mgmt.cp_mgmt_access_rule:
+        name: "{{ n.rule_dns }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        relative_position:
+          below: "{{ n.rule_icmp }}"
+        search_entire_rulebase: true
+        enabled: true
+        action: "{{ n.action_accept }}"
+        source:
+          - "{{ n.net_datacenter_v4 }}"
+          - "{{ n.net_branch1_v4 }}"
+        destination:
+          - "{{ n.object_any }}"
+        service:
+          - "{{ n.service_dns }}"
+        track:
+          type: "{{ n.track_log }}"
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: "DC | Rule 6 — {{ n.rule_ntp }}"
+      check_point.mgmt.cp_mgmt_access_rule:
+        name: "{{ n.rule_ntp }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        relative_position:
+          below: "{{ n.rule_dns }}"
+        search_entire_rulebase: true
+        enabled: true
+        action: "{{ n.action_accept }}"
+        source:
+          - "{{ n.net_datacenter_v4 }}"
+          - "{{ n.net_branch1_v4 }}"
+        destination:
+          - "{{ n.object_any }}"
+        service:
+          - "{{ n.service_ntp }}"
+        track:
+          type: "{{ n.track_log }}"
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: "DC | Rule 7 — {{ n.rule_vpn_dc_to_branch }}"
+      check_point.mgmt.cp_mgmt_access_rule:
+        name: "{{ n.rule_vpn_dc_to_branch }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        relative_position:
+          top: "{{ n.section_vpn_overlay }}"
+        search_entire_rulebase: true
+        enabled: true
+        action: "{{ n.action_accept }}"
+        source:
+          - "{{ n.net_datacenter_v4 }}"
+        destination:
+          - "{{ n.net_branch1_v4 }}"
+        service:
+          - "{{ n.object_any }}"
+        vpn_list:
+          - community:
+              - "{{ n.object_bra_dc_community }}"
+        track:
+          type: "{{ n.track_log }}"
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: "DC | Rule 8 — {{ n.rule_vpn_branch_to_dc }}"
+      check_point.mgmt.cp_mgmt_access_rule:
+        name: "{{ n.rule_vpn_branch_to_dc }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        relative_position:
+          below: "{{ n.rule_vpn_dc_to_branch }}"
+        search_entire_rulebase: true
+        enabled: true
+        action: "{{ n.action_accept }}"
+        source:
+          - "{{ n.net_branch1_v4 }}"
+        destination:
+          - "{{ n.net_datacenter_v4 }}"
+        service:
+          - "{{ n.object_any }}"
+        vpn_list:
+          - community:
+              - "{{ n.object_bra_dc_community }}"
+        track:
+          type: "{{ n.track_log }}"
+          per_connection: true
+          per_session: true
+          accounting: true
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: "DC | Rule 9 — {{ n.rule_to_internet_via_vpn }}"
+      check_point.mgmt.cp_mgmt_access_rule:
+        name: "{{ n.rule_to_internet_via_vpn }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        relative_position:
+          below: "{{ n.rule_vpn_branch_to_dc }}"
+        search_entire_rulebase: true
+        enabled: true
+        action: "{{ n.action_accept }}"
+        source:
+          - "{{ n.net_branch1_v4 }}"
+        destination:
+          - "{{ n.testDomain_object }}"
+        service:
+          - "{{ n.object_any }}"
+        vpn_list:
+          - community:
+              - "{{ n.object_bra_dc_community }}"
+        track:
+          type: "{{ n.track_log }}"
+          per_connection: true
+          per_session: true
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: "DC | Rule 10 — {{ n.rule_internet }}"
+      check_point.mgmt.cp_mgmt_access_rule:
+        name: "{{ n.rule_internet }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        relative_position:
+          top: "{{ n.section_outbound }}"
+        search_entire_rulebase: true
+        enabled: true
+        action: "{{ n.action_accept }}"
+        source:
+          - "{{ n.net_datacenter_v4 }}"
+        destination:
+          - "{{ n.network_internet }}"
+        service:
+          - "{{ n.object_any }}"
+        track:
+          type: "{{ n.track_detailed_log }}"
+          per_connection: true
+          per_session: true
+          accounting: true
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    - name: "DC | Rule 11 — {{ n.rule_cleanup }}"
+      check_point.mgmt.cp_mgmt_access_rule:
+        name: "{{ n.rule_cleanup }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        relative_position:
+          top: "{{ n.section_cleanup }}"
+        search_entire_rulebase: true
+        enabled: true
+        action: "{{ n.action_drop }}"
+        source:
+          - "{{ n.object_any }}"
+        destination:
+          - "{{ n.object_any }}"
+        service:
+          - "{{ n.object_any }}"
+        track:
+          type: "{{ n.track_log }}"
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
+    # ------------------------------------------------------------------
+    # Publish
+    # ------------------------------------------------------------------
+
+    - name: Publish session
+      check_point.mgmt.cp_mgmt_publish:

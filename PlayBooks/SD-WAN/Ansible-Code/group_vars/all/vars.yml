@@ -1,0 +1,264 @@
+# --- Management connection ────────────────────────────────────────────
+checkpoint_server:                    "192.168.30.51"
+checkpoint_session_name:              "SD-WAN policy pack session"
+checkpoint_ignore_server_certificate: true
+ignore_warnings:                      true
+
+
+# --- Policy package and lazers─────────────────────────────────────────
+branch_policy_package_name:      "SD-WAN-Branch"
+dc_policy_package_name:          "SD-WAN-DC"
+
+# --- Unified resource name map ─────────────────────────────────────────
+resource_name_map: 
+  layer_branch_policy_network: "SD-WAN-Branch Network"
+  layer_dc_policy_network:     "SD-WAN-DC Network"
+
+  host_hq_win10-v4:            "hq-win10-ipv4"
+  host_hq_win10_ipv4:          "192.168.30.20"
+
+  host_hq_win10-v6:             "hq-win10-ipv6"
+  host_hq-win10_ipv6:           "a192:168:30::20"
+
+  host_hq_winDC-v4:            "hq-winDC-ipv4"
+  host_hq_winDC_ipv4:          "192.168.30.30"
+
+  host_hq_winDC-v6:             "hq-winDC-ipv6"
+  host_hq-winDC_ipv6:           "a192:168:30::30"
+
+  host_hq_lnx-v4:              "hq-Linux-ipv4"
+  host_hq_lnx_ipv4:            "192.168.30.40"
+
+  host_hq_lnx-v6:              "hq-Linux-ipv6"
+  host_hq-lnx_ipv6:            "a192:168:30::40"
+
+
+  host_gw_back_int-v4:         "Branch1-gw_magg1_int-v4"
+  host_gw_back_int_ipv4:       "172.30.1.1"
+
+  host_gw_back_int-v6:         "Branch1-gw_magg1_int-v6"
+  host_gw_back_int_ipv6:       "a172:30:1::1"
+
+  host_Branch1_lnx-v4:         "Branch1-LNX-ipv4"
+  host_Branch1_lnx_ipv4:       "172.30.1.60"
+
+  host_Branch1_lnx0-v6:        "Branch1-LNX-ipv6"
+  host_Branch1_lnx_ipv6:       "a172:30:1::60"
+
+  host_Branch1_win10-v4:       "Branch1-win10-ipv4"
+  host_Branch1_win10_ipv4:     "172.30.1.70"
+
+  host_Branch1_win10-v6:       "Branch1-win10-ipv6"
+  host_Branch1_win10_ipv6:     "a172:30:1::70"
+
+  host_Branch2_lnx-v4:         "Branch2-LNX-ipv4"
+  host_Branch2_lnx_ipv4:       "172.40.1.60"
+
+  host_Branch2_lnx0-v6:        "Branch2-LNX-ipv6"
+  host_Branch2_lnx_ipv6:       "a172:40:1::60"
+
+  host_Branch2_win10-v4:       "Branch2-win10-ipv4"
+  host_Branch2_win10_ipv4:     "172.40.1.70"
+
+  host_Branch2_win10-v6:       "Branch2-win10-ipv6"
+  host_Branch2_win10_ipv6:     "a172:40:1::70"
+
+  # ── Generated Networks ───────────────────────────────────────────────
+  net_ISP1_DC1_v4:              "net_10.160.11.0_24"
+  net_ISP1_DC1_ipv4:            "10.160.11.0"
+  net_ISP1_DC1_v6:              "net_1000:160:11::_64"
+  net_ISP1_DC1_ipv6:            "1000:160:11::"
+
+  net_ISP2_DC1_v4:               "net_10.160.12.0_24"
+  net_ISP2_DC1_ipv4:             "10.160.12.0"
+  net_ISP2_DC1_v6:               "net_1000:160:12::_64"
+  net_ISP2_DC1_ipv6:             "1000:160:12::"
+
+  net_ISP1_DC2_v4:               "net_10.160.21.0_24"
+  net_ISP1_DC2_ipv4:            "10.160.21.0"
+  net_ISP1_DC2_v6:              "net_1000:160:21::_64"
+  net_ISP1_DC2_ipv6:            "1000:160:21::"
+
+  net_ISP2_DC2_v4:               "net_10.160.22.0_24"
+  net_ISP2_DC2_ipv4:            "10.160.22.0"
+  net_ISP2_DC2_v6:              "net_1000:160:22::_64"
+  net_ISP2_DC2_ipv6:            "1000:160:22::"
+
+  net_ISP1_branch1_v4:           "net_10.160.31.0_24"
+  net_ISP1_branch1_ipv4:        "10.160.31.0"
+  net_ISP1_branch1_v6:          "net_1000:160:31::_64"
+  net_ISP1_branch1_ipv6:        "1000:160:31::"
+
+  net_ISP2_branch1_v4:           "net_10.160.32.0_24"
+  net_ISP2_branch1_ipv4:        "10.160.32.0"
+  net_ISP2_branch1_v6:          "net_1000:160:32::_64"
+  net_ISP2_branch1_ipv6:        "1000:160:32::"
+
+  net_ISP1_branch2_v4:           "net_10.160.41.0_24"
+  net_ISP1_branch2_ipv4:        "10.160.41.0"
+  net_ISP1_branch2_v6:          "net_1000:160:41::_64"
+  net_ISP1_branch2_ipv6:        "1000:160:41::"
+
+  net_ISP2_branch2_v4:           "net_10.160.42.0_24"
+  net_ISP2_branch2_ipv4:        "10.160.42.0"
+  net_ISP2_branch2_v6:          "net_1000:160:42::_64"
+  net_ISP2_branch2_ipv6:        "1000:160:42::"
+
+  net_branch1_v4:               "net_172.30.1.0_24"
+  net_branch1_ipv4:            "172.30.1.0"
+  net_branch1_v6:               "net_a172:30:1::_64"
+  net_branch1_ipv6:            "a172:30:1::"
+  
+  net_branch2_v4:               "net_172.40.1.0_24"
+  net_branch2_ipv4:            "172.40.1.0"
+  net_branch2_v6:               "net_a172:40:1::_64"
+  net_branch2_ipv6:            "a172:40:1::"
+  
+  net_datacenter_v4:           "net_192.168.30.0_24"
+  net_datacenter_ipv4:         "192.168.30.0"
+  net_datacenter_v6:           "net_a192:168:30::_64"
+  net_datacenter_ipv6:         "a192:168:30::"
+
+  testDomain_object:          ".heise.de"
+
+  # ── Pre-existing objects (must already exist on the target) ─────────
+  object_any:                       "Any"
+  object_bra_dc_community:          "Bra_DC_Community"
+
+  service_echo_request:             "echo-request"
+  service_dns:                      "DNS"
+  service_ntp:                      "NTP"
+  service_ssh:                      "SSH"
+
+  network_branch:                   "Branch_Network"
+  network_datacenter:               "Datacenter_Network"
+  network_internet:                 "Internet"
+
+  host_isp1_gw:                      "ISP1"
+  host_isp2_gw:                      "ISP2"
+
+  gateway_branch:                   "branch-gw"
+  gateway_smb:                      "branch2-smb1"
+  gateway_datacenter:               "hq-exl-gw"
+  gateway2_datacenter:               "hq-vsn-gw"
+
+  # ── Sections (shared across both layers) ────────────────────────────
+  section_management:               "Management"
+  section_sdwan_vpn_probing:        "SD-WAN VPN Probing"
+  section_isp_probing:              "ISP-Probing"
+  section_services:                 "Services"
+  section_vpn_overlay:              "VPN Overlay"
+  section_outbound:                 "Outbound"
+  section_cleanup:                  "Cleanup"
+
+  # ── Rule names (shared across both layers) ──────────────────────────
+  rule_management:                  "Allow Management"
+  rule_sdwan_vpn_probing:           "Allow SD-WAN VPN Probing"
+  rule_isp_probing:                 "Allow ISP-Probing"
+  rule_icmp:                        "icmp"
+  rule_dns:                         "DNS"
+  rule_ntp:                         "NTP"
+  rule_vpn_dc_to_branch:            "VPN traffic DC to Branch"
+  rule_vpn_branch_to_dc:            "VPN traffic Branch to DC"
+  rule_to_internet_via_vpn:         "to internet via VPN"
+  rule_internet:                    "Internet"
+  rule_cleanup:                     "Cleanup rule"
+
+  # ── Rule actions ────────────────────────────────────────────────────
+  action_accept:                    "Accept"
+  action_drop:                      "Drop"
+
+  # ── Track types ─────────────────────────────────────────────────────
+  track_log:                        "Log"
+  track_detailed_log:               "Detailed Log"
+
+  # ── Position keyword ────────────────────────────────────────────────
+  position_top:                     "top"
+
+  # ── Boolean values ──────────────────────────────────────────────────
+  val_true:                         true
+  val_false:                        false
+
+  # ── Object colours ──────────────────────────────────────────────────
+  color_black:                      "black"
+  color_blue:                       "blue"
+
+  # ── Service object settings ─────────────────────────────────────────
+  service_tcp_gaiawebui:            "GaiaWebUI"
+  service_gaiawebui_port:           "443"
+  
+  # ── Network object settings ─────────────────────────────────────────
+  network_mask_length:              24
+  network_broadcast:                "allow"
+  nat_method_hide:                  "hide"
+  nat_hide_behind:                  "gateway"
+
+  # ── Access layer settings ───────────────────────────────────────────
+  layer_implicit_cleanup:           "drop"
+
+  # ── Gateway / variables ─────────────────────────────────────────────
+  val_sic_datacenter:               "vpn123"
+  val_sic_branch:                   "vpn123"
+  iface_type_external:              "External"
+  iface_topology_external:          "EXTERNAL"
+  iface_type_internal:              "Internal"
+  iface_topology_internal:          "INTERNAL"
+  iface_spoofing_action:            "Detect"
+  iface_topology_internal_desc:     "Network defined by the interface ip and net mask"
+
+  # ── VPN community settings ──────────────────────────────────────────
+  vpn_enc_method:                   "PREFER_IKEV2_SUPPORT_IKEV1"
+  vpn_enc_suite:                    "CUSTOM"
+  vpn_p1_integrity:                 "SHA-256"
+  vpn_p1_dh_group:                  "GROUP_14"
+  vpn_p1_encryption:                "AES-256"
+  vpn_p1_rekey_time:                1440
+  vpn_p2_integrity:                 "SHA-256"
+  vpn_p2_encryption:                "AES-256"
+  vpn_p2_dh_group:                  "GROUP_14"
+  vpn_p2_rekey_time:                3600
+
+  # ── Policy package settings ─────────────────────────────────────────
+  branch_package_color:                    "blue"
+  dc_package_color:                 "red"
+  package_comments:                 "SD-WAN policy: branch and datacenter layers"
+  package_layer_branch_position:    1
+  package_layer_dc_position:        2
+
+
+# --- Gateway configuration -------------------------------------------
+# Interface names must match the actual NIC names on each gateway.
+
+gateway_config:
+
+  gw_version:                       "R82.10"
+
+  # Branch gateway (ISG-GW) ───────────────────────────────────────────
+  gw_branch_ip:                     "10.160.31.1"
+
+  gw_branch_ext1_name:              "eth0"
+  gw_branch_ext1_ip:                "10.160.31.1"     # ISP-1 external IP
+  gw_branch_ext1_masklen:           "24"
+
+  gw_branch_ext2_name:              "eth1"
+  gw_branch_ext2_ip:                "10.160.32.1"     # ISP-2 external IP
+  gw_branch_ext2_masklen:           "24"
+
+  gw_branch_int_name:               "eth2"
+  gw_branch_int_ip:                 "172.30.1.1"      # LAN-side IP
+  gw_branch_int_masklen:            "24"
+
+  # Datacenter gateway ────────────────────────────────────────────────
+  gw_dc_ip:                         "192.168.30.1"
+
+  gw_dc_ext1_name:                  "eth0"
+  gw_dc_ext1_ip:                    "10.160.11.1"     # ISP-1 external IP
+  gw_dc_ext1_masklen:               "24"
+
+  gw_dc_ext2_name:                  "eth1"
+  gw_dc_ext2_ip:                    "10.160.12.1"     # ISP-2 external IP
+  gw_dc_ext2_masklen:               "24"
+
+  gw_dc_int_name:                   "eth2"
+  gw_dc_int_ip:                     "192.168.30.1"    # LAN-side IP
+  gw_dc_int_masklen:                "24"

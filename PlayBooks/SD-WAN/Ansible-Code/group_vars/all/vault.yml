@@ -1,0 +1,11 @@
+# =============================================================
+# SD-WAN Policy Pack — Secrets (encrypt this file with ansible-vault)
+#
+# Encrypt:   ansible-vault encrypt group_vars/all/vault.yml
+# Edit:      ansible-vault edit   group_vars/all/vault.yml
+# Run:       ansible-playbook site.yml --ask-vault-pass
+# =============================================================
+
+# Check Point Management API key
+vault_checkpoint_admin_pw: "vpn123"
+vault_checkpoint_api_key: "KEMHqUuXvXaPanTjoNWFLQ=="

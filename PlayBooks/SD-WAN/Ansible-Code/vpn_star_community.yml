@@ -1,0 +1,48 @@
+---
+- name: Create Star VPN Community
+  hosts: checkpoint_mgmt
+  gather_facts: false
+  connection: httpapi
+
+  vars_files:
+    - group_vars/vault.yml
+    - group_vars/vars.yml
+
+  vars:
+    n: "{{ resource_name_map }}"
+
+    ansible_network_os: check_point.mgmt.checkpoint
+    ansible_httpapi_use_ssl: true
+    ansible_checkpoint_validate_certs: false
+    ansible_httpapi_validate_certs: false
+
+    ansible_user: ""
+    ansible_password: ""
+    ansible_checkpoint_use_api_key: true
+    ansible_api_key: "{{ vault_checkpoint_api_key }}"
+    ansible_checkpoint_domain: "{{ checkpoint_cloud_mgmt_id }}"
+
+  tasks:
+
+    - name: Create star VPN community — {{ n.object_bra_dc_community }}
+      check_point.mgmt.cp_mgmt_vpn_community_star:
+        name: "{{ n.object_bra_dc_community }}"
+        comments: "Star VPN community: datacenter as center, branch as satellite"
+        color: "{{ n.color_blue }}"
+
+        center_gateways:
+          - "{{ n.gateway_datacenter }}"
+
+        satellite_gateways:
+          - "{{ n.gateway_branch }}"
+
+        tunnel_granularity: "per_subnet"
+        vpn_routing: "to center other satellites and internet"
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+        wait_for_task: true
+
+    - name: Publish VPN community changes
+      check_point.mgmt.cp_mgmt_publish:
+        wait_for_task: true
