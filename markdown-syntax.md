@@ -613,7 +613,9 @@ $$
 
 ## 20. Mermaid diagrams
 
-Put [Mermaid](https://mermaid.js.org/) diagram syntax in a fenced code block marked `mermaid`. GitHub will render it as a diagram.
+Put [Mermaid](https://mermaid.js.org/) diagram syntax inside a fenced code block marked `mermaid`. GitHub renders it as a diagram. Mermaid is useful for workflows, decisions, application architecture, and deployment processes.
+
+### 20.1 Basic flowchart
 
 **Syntax:**
 
@@ -633,7 +635,203 @@ flowchart LR
     B --> C[View rendered page]
 ```
 
-GitHub also supports other diagram formats; Mermaid is a good starting point for flowcharts and sequence diagrams.
+### 20.2 Flowchart directions: left, right, top, and bottom
+
+Set the direction immediately after `flowchart`:
+
+| Direction | Meaning | Flow |
+| --- | --- | --- |
+| `LR` | Left to right | Left → Right |
+| `RL` | Right to left | Right → Left |
+| `TB` or `TD` | Top to bottom | Top ↓ Bottom |
+| `BT` | Bottom to top | Bottom ↑ Top |
+
+**Four copyable examples:**
+
+````markdown
+```mermaid
+flowchart LR
+    A[Start] --> B[Review] --> C[Finish]
+```
+
+```mermaid
+flowchart RL
+    A[Start] --> B[Review] --> C[Finish]
+```
+
+```mermaid
+flowchart TB
+    A[Start] --> B[Review] --> C[Finish]
+```
+
+```mermaid
+flowchart BT
+    A[Start] --> B[Review] --> C[Finish]
+```
+````
+
+**Rendered examples:**
+
+*Left → right (`LR`)*
+
+```mermaid
+flowchart LR
+    A[Start] --> B[Review] --> C[Finish]
+```
+
+*Right → left (`RL`)*
+
+```mermaid
+flowchart RL
+    A[Start] --> B[Review] --> C[Finish]
+```
+
+*Top ↓ bottom (`TB`)*
+
+```mermaid
+flowchart TB
+    A[Start] --> B[Review] --> C[Finish]
+```
+
+*Bottom ↑ top (`BT`)*
+
+```mermaid
+flowchart BT
+    A[Start] --> B[Review] --> C[Finish]
+```
+
+### 20.3 Advanced: mix four directions in ONE diagram
+
+The *main* diagram flows **left to right**. Each `subgraph` (group of steps) uses its own internal direction: `LR`, `TB`, `RL`, or `BT`. This example also demonstrates decisions, success/error branches, a retry loop, labels, emoji, and colors.
+
+**Syntax (copy the whole block into a `.md` file):**
+
+````markdown
+```mermaid
+flowchart LR
+    Start([🚀 Start]) --> Planning
+
+    subgraph Planning["1. Plan - LEFT to RIGHT"]
+        direction LR
+        Idea["💡 Idea"] --> Requirements["📋 Requirements"] --> Design["🧩 Design"]
+    end
+
+    Planning --> QA
+
+    subgraph QA["2. Test - TOP to BOTTOM"]
+        direction TB
+        Build["🔧 Build"] --> Tests["🧪 Unit tests"] --> Scan["🔒 Security scan"]
+    end
+
+    QA --> Passed{"Checks passed?"}
+    Passed -->|No| Fix["❌ Fix errors"]
+    Fix -.->|Retry| Start
+    Passed -->|Yes| Review
+
+    subgraph Review["3. Approve - RIGHT to LEFT"]
+        direction RL
+        PR["🔎 Code review"] --> Approve["👍 Approve"] --> Tag["🏷️ Release tag"]
+    end
+
+    Review --> Deployment
+
+    subgraph Deployment["4. Deploy - BOTTOM to TOP"]
+        direction BT
+        Stage["🟡 Staging"] --> Prod["🟢 Production"] --> Monitor["📈 Monitor"]
+    end
+
+    Deployment --> Done(["✅ Done"])
+
+    classDef success fill:#dcfce7,stroke:#166534,color:#14532d
+    classDef problem fill:#fee2e2,stroke:#b91c1c,color:#991b1b
+    classDef decision fill:#fef3c7,stroke:#a16207,color:#713f12
+    class Done,Prod success
+    class Fix problem
+    class Passed decision
+```
+````
+
+**Result:**
+
+```mermaid
+flowchart LR
+    Start([🚀 Start]) --> Planning
+
+    subgraph Planning["1. Plan - LEFT to RIGHT"]
+        direction LR
+        Idea["💡 Idea"] --> Requirements["📋 Requirements"] --> Design["🧩 Design"]
+    end
+
+    Planning --> QA
+
+    subgraph QA["2. Test - TOP to BOTTOM"]
+        direction TB
+        Build["🔧 Build"] --> Tests["🧪 Unit tests"] --> Scan["🔒 Security scan"]
+    end
+
+    QA --> Passed{"Checks passed?"}
+    Passed -->|No| Fix["❌ Fix errors"]
+    Fix -.->|Retry| Start
+    Passed -->|Yes| Review
+
+    subgraph Review["3. Approve - RIGHT to LEFT"]
+        direction RL
+        PR["🔎 Code review"] --> Approve["👍 Approve"] --> Tag["🏷️ Release tag"]
+    end
+
+    Review --> Deployment
+
+    subgraph Deployment["4. Deploy - BOTTOM to TOP"]
+        direction BT
+        Stage["🟡 Staging"] --> Prod["🟢 Production"] --> Monitor["📈 Monitor"]
+    end
+
+    Deployment --> Done(["✅ Done"])
+
+    classDef success fill:#dcfce7,stroke:#166534,color:#14532d
+    classDef problem fill:#fee2e2,stroke:#b91c1c,color:#991b1b
+    classDef decision fill:#fef3c7,stroke:#a16207,color:#713f12
+    class Done,Prod success
+    class Fix problem
+    class Passed decision
+```
+
+**Important:** Mermaid automatically arranges the nodes; `LR`, `RL`, `TB`, and `BT` describe the intended *flow*, not exact x/y positions. A subgraph's `direction` may be ignored if one of its **internal nodes** is connected directly to a node outside that subgraph. Connecting **subgraph to subgraph**, as above, helps preserve independent directions. Complex diagrams may look different in different Mermaid renderer versions.
+
+### 20.4 Arrow styles, labels, decisions, and node shapes
+
+**Common syntax:**
+
+| Mermaid | Meaning |
+| --- | --- |
+| `A --> B` | Solid arrow |
+| `A --- B` | Line without arrow |
+| `A -.-> B` | Dashed arrow |
+| `A ==> B` | Thick arrow |
+| `A -- Yes --> B` | Labeled arrow with text `Yes` |
+| `A <--> B` | Two-way arrow |
+| `A[Rectangular]` | Rectangle node |
+| `A(Rounded)` | Rounded node |
+| `A{Decision?}` | Diamond decision node |
+| `A([Start or End])` | Stadium-shaped start/end node |
+| `subgraph Name ... end` | Group related nodes |
+| `direction TB` | Direction inside a subgraph |
+| `%% Comment` | Comment not shown in diagram |
+
+**Example:**
+
+```mermaid
+flowchart TD
+    Start([Start]) --> Validate{Valid data?}
+    Validate -->|Yes| Save[Save data]
+    Validate -.->|No - retry| Edit[Edit input]
+    Edit --> Validate
+    Save ==> End([Success])
+```
+
+> A Mermaid diagram is created by code, but is displayed visually on GitHub. To see the Mermaid source, use the file's **Code** / **Raw** view or edit the file.
+
+Official reference: [Mermaid flowchart syntax and directions](https://mermaid.js.org/syntax/flowchart.html). GitHub supports Mermaid code blocks as well as other diagrams.
 
 ## 21. GitHub issue and pull request references
 
