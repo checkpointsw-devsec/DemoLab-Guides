@@ -5,7 +5,7 @@ open firefox browser and click on prepared AWX (ansible Works) bookmark
 <img width="852" height="326" alt="Open-link" src="https://github.com/user-attachments/assets/4bda181e-52d5-4eeb-b3a6-77737f2f892e" />
 
 go to the Templates and launch "Flow-SD-WAN"
-ansible scripts are synced with [content of the](https://github.com/checkpointsw-devsec/DemoLab-Guides/tree/main/PlayBooks/SD-WAN/Ansible-Code) 
+<br>ansible scripts are synced with [Link](https://github.com/checkpointsw-devsec/DemoLab-Guides/tree/main/PlayBooks/SD-WAN/Ansible-Code) 
 
 <img width="2302" height="505" alt="image" src="https://github.com/user-attachments/assets/36a641f9-f6f5-4a6c-a485-326d9a0f3864" />
 
