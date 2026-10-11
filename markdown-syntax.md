@@ -21,7 +21,8 @@
 | Quote | `> Quoted text` |
 | Horizontal rule | `---` |
 | Table row | `| Left | Right |` |
-| Emoji | `:rocket:` |
+| Emoji / status icon | `:rocket:` / `:white_check_mark:` |
+| Error / warning | `:x:` / `:warning:` |
 
 ## Contents
 
@@ -38,7 +39,7 @@
 11. [Tables](#11-tables)
 12. [Escaping special characters](#12-escaping-special-characters)
 13. [Automatic links and email links](#13-automatic-links-and-email-links)
-14. [Emoji](#14-emoji)
+14. [Emoji and status icons](#14-emoji-and-status-icons)
 15. [Footnotes](#15-footnotes)
 16. [GitHub alerts](#16-github-alerts)
 17. [Collapsible sections](#17-collapsible-sections)
@@ -358,11 +359,11 @@ Wrap a URL or email address in angle brackets to make it an explicit link. Many 
 
 <https://github.com> · <hello@example.com> · [Email the team](mailto:hello@example.com)
 
-## 14. Emoji
+## 14. Emoji and status icons
 
-GitHub supports emoji shortcodes, and you can also insert regular Unicode emoji.
+GitHub supports emoji **shortcodes** (`:name:`), and you can also paste regular **Unicode emoji** directly into your Markdown. Both are useful for READMEs, changelogs, checklists, and project documentation.
 
-**Syntax:**
+**Basic syntax:**
 
 ```markdown
 :rocket: :tada: :white_check_mark: :warning: :heart:
@@ -373,6 +374,121 @@ GitHub supports emoji shortcodes, and you can also insert regular Unicode emoji.
 **Result:**
 
 :rocket: :tada: :white_check_mark: :warning: :heart:
+
+### Status and utility icons
+
+Copy either the **icon** or its **GitHub shortcode** into your Markdown. For clarity, include a word after status icons rather than relying on the symbol or color alone.
+
+| Icon | Meaning / use | GitHub shortcode |
+| :---: | --- | --- |
+| ✅ | Success / passed / done | `:white_check_mark:` |
+| ✔️ | Check / confirmed | `:heavy_check_mark:` |
+| ☑️ | Checked item | `:ballot_box_with_check:` |
+| 🆗 | OK / accepted | `:ok:` |
+| 👍 | Approved / looks good | `:+1:` |
+| ❌ | Error / failed / rejected | `:x:` |
+| ⛔ | Blocked / prohibited | `:no_entry:` |
+| ⚠️ | Warning / needs attention | `:warning:` |
+| ℹ️ | Information / note | `:information_source:` |
+| ❓ | Question / needs clarification | `:question:` |
+| ⏳ | Pending / waiting | `:hourglass_flowing_sand:` |
+| 🔄 | In progress / refreshing | `:arrows_counterclockwise:` |
+| 🚧 | Work in progress | `:construction:` |
+| 🟢 | Active / healthy / online | `:green_circle:` |
+| 🟡 | Degraded / review needed | `:yellow_circle:` |
+| 🔴 | Down / unhealthy / stopped | `:red_circle:` |
+| 🐛 | Bug / defect | `:bug:` |
+| 🧪 | Testing / experimental | `:test_tube:` |
+| 🔒 | Secure / private / locked | `:lock:` |
+| 🔓 | Unlocked / public | `:unlock:` |
+| ✨ | New / improvement | `:sparkles:` |
+| 📌 | Pinned / important | `:pushpin:` |
+| 📦 | Package / release | `:package:` |
+| 🚀 | Launched / deployed | `:rocket:` |
+| 👀 | Under review | `:eyes:` |
+| 📝 | Notes / documentation | `:memo:` |
+
+> **Tip:** For a checkbox you can tick in a Markdown task list, use `- [x] Done` or `- [ ] To do` (see [Task lists](#7-task-lists)). A `✅` emoji is only a visual symbol; it is not an interactive task-list checkbox.
+
+### Copy-paste examples for your repository
+
+**Example 1: Release notes or feature status**
+
+```markdown
+## Project status
+
+- ✅ Authentication: completed
+- 🔄 API integration: in progress
+- ⏳ Documentation: pending
+- ⚠️ Search: experimental
+- ❌ Legacy login: not supported
+- ⛔ Mobile release: blocked by a dependency
+```
+
+**Result:**
+
+- ✅ Authentication: completed
+- 🔄 API integration: in progress
+- ⏳ Documentation: pending
+- ⚠️ Search: experimental
+- ❌ Legacy login: not supported
+- ⛔ Mobile release: blocked by a dependency
+
+**Example 2: Status table**
+
+```markdown
+| Component | Status | Notes |
+| --- | --- | --- |
+| Website | ✅ Healthy | Available |
+| API | ⚠️ Degraded | Elevated latency |
+| Payments | ❌ Down | Under investigation |
+| New dashboard | 🚧 In progress | Not yet released |
+```
+
+**Result:**
+
+| Component | Status | Notes |
+| --- | --- | --- |
+| Website | ✅ Healthy | Available |
+| API | ⚠️ Degraded | Elevated latency |
+| Payments | ❌ Down | Under investigation |
+| New dashboard | 🚧 In progress | Not yet released |
+
+**Example 3: Shortcodes instead of pasted emojis**
+
+```markdown
+:white_check_mark: Tests passed  
+:x: Build failed  
+:warning: Requires manual review  
+:information_source: Read the setup instructions
+```
+
+**Result:**
+
+:white_check_mark: Tests passed  
+:x: Build failed  
+:warning: Requires manual review  
+:information_source: Read the setup instructions
+
+**Example 4: Combine GitHub alerts with icons**
+
+```markdown
+> [!WARNING]
+> ⚠️ This feature is experimental.
+
+> [!TIP]
+> ✅ Run tests before opening a pull request.
+```
+
+> [!WARNING]
+> ⚠️ This feature is experimental.
+
+> [!TIP]
+> ✅ Run tests before opening a pull request.
+
+**Compatibility:** Shortcodes such as `:white_check_mark:` are expanded when GitHub renders Markdown, but other Markdown viewers may show the shortcode literally. Unicode icons usually travel better between platforms, although their appearance varies by device and font. Icons and status labels in these examples are illustrative, not live health checks.
+
+For a searchable list of additional codes, see [GitHub's emoji cheat sheet](https://github.com/ikatyang/emoji-cheat-sheet).
 
 ## 15. Footnotes
 
@@ -545,9 +661,13 @@ Badges are small images frequently used in READMEs to display build status, lice
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
 [![Documentation](https://img.shields.io/badge/docs-online-green)](https://example.com/docs)
+
+![Build passing](https://img.shields.io/badge/build-passing-brightgreen)
+![Build failing](https://img.shields.io/badge/build-failing-red)
+![Work in progress](https://img.shields.io/badge/status-in%20progress-yellow)
 ```
 
-> These use [Shields.io](https://shields.io/) and require an internet connection. Replace labels, destinations, and status information with accurate project details.
+> These use [Shields.io](https://shields.io/) and require an internet connection. **The examples above are static badges, not automatically updated build results.** Replace labels, destinations, and status information with accurate project details. For live build status, use a badge tied to your CI provider.
 
 ## 23. Starter README template
 
@@ -582,6 +702,12 @@ Explain how to run or use the project.
 - `src/` — source code
 - `docs/` — documentation
 - `tests/` — tests
+
+## Status
+
+✅ Core features ready  
+🚧 Documentation in progress  
+⚠️ API is experimental
 
 ## Roadmap
 
