@@ -15,14 +15,14 @@ b. The Client will use VPN to connect over internet to GW3 to reach the web serv
 <img width="933" height="460" alt="image" src="https://github.com/user-attachments/assets/2e749103-55fa-4216-9716-2b3033186bfc" />
 
 
-In SmartConsole you should see that SIC is established and communication is working to GW1. GW2 and GW3.  
+3. In SmartConsole you should see that SIC is established and communication is working to GW1. GW2 and GW3.  
 **NOTE: GW2 is just acting as a router in this environment**
 
 Review the configuration of GW1 and GW3,  
 
 You should see that access control and Threat prevention is configured. 
 
-Review the VPN domain defined for the gateways 
+4. Review the VPN domain defined for the gateways 
 
 For GW1 you should se net_10.160.10.0  
 
@@ -39,39 +39,38 @@ GW2 - eth2 (10.160.30.30)
 
 for establishing VPN. 
 
-Review the gw1-policy-package to familiarize yourself with the rule base.  
+5. Review the gw1-policy-package to familiarize yourself with the rule base.  
 
-In the VPN Rules section, you will see that the VPN-Star community is used sending traffic over VPN. 
+6. In the VPN Rules section, you will see that the VPN-Star community is used sending traffic over VPN. 
 
-Review the settings of this community and validate that the Center gateway is gw3 and the satellite gateway is gw1 
+a. Review the settings of this community and validate that the Center gateway is gw3 and the satellite gateway is gw1 
 
-Verify that Nat is disabled within the community 
+b. Verify that Nat is disabled within the community 
 
-Verify that “IKEv2 Only” is used as encryption settings 
+c. Verify that “IKEv2 Only” is used as encryption settings 
 
-Verify that VPN routing from satellites is configured “To center and other satellites through center” 
+d. Verify that VPN routing from satellites is configured “To center and other satellites through center” 
 
-Make sure the policy is corrected loaded on the gateways by installing the access control and Threat Prevention policy on gw1 and gw3 
-
- 
+7. Make sure the policy is corrected loaded on the gateways by installing the access control and Threat Prevention policy on gw1 and gw3 
 
  
 
-After policy installation completed, go to the Windows Client, log in as Alice and use the Microsoft Edge browser to Test connectivity to internet and to connectivity over VPN to the web server 
-
  
-A screenshot of a computer
 
-AI-generated content may be incorrect. 
+8. After policy installation completed, go to the Windows Client, log in as Alice and use the Microsoft Edge browser to Test connectivity to internet and to connectivity over VPN to the web server 
+
+ <img width="870" height="257" alt="image" src="https://github.com/user-attachments/assets/84203c7c-3c86-41e5-9a1e-50c7cc826ea0" />
+
+
 NOTE: if you do not see the quick launch bar with the link to the Web Server (Demo Sever) just click on the + top open a new tab and the quick launch bar will be visible. 
 
  
 
-Open the logs views in SmartConsole and search for log entries with destination 10.160.40.100 to verify that we have traffic across the VPN. 
+9. Open the logs views in SmartConsole and search for log entries with destination 10.160.40.100 to verify that we have traffic across the VPN. 
 
  
 
-Verify that the threat prevention is configured correctly and activated by opening the console for Attacker using CloudShare web UI 
+10. Verify that the threat prevention is configured correctly and activated by opening the console for Attacker using CloudShare web UI 
 
 login using to Attacker machine by CloudShare UI 'Keyboard > Send Password' menu 
 
@@ -83,11 +82,7 @@ If there is a “Manage add-ons” window appearing just close that.
 
 on ZAP UI execute 'Automated Scan' 
 
-A green circle with a lightning bolt and red arrow
-
-AI-generated content may be incorrect. 
-
- 
+<img width="815" height="227" alt="image" src="https://github.com/user-attachments/assets/15ec57ef-9950-4eff-a10c-2e7b4a84517f" />
 
 Enter URL to the web server; http://10.160.40.100  
 
@@ -134,9 +129,8 @@ In the section 2 of 2 - Provide Evaluation Info:
 In the User Center Account field, select the account with your name.  
 “sd-wan-ws-[your name]” 
 
-A screenshot of a survey
-
-AI-generated content may be incorrect. 
+<img width="467" height="205" alt="image" src="https://github.com/user-attachments/assets/319e5261-ef52-462b-8480-d2f1b5eaea12" />
+. 
 
 In the Purpose of Evaluation section, select the applicable option. 
 
@@ -154,15 +148,15 @@ Select the “sd-wan-ws-[your name]” in the top of the dropdown list in the in
 
 Verify that the user center account is connected to your Infinity portal account by going to services and contracts under Account settings 
 
-A screen shot of a computer
+ <img width="189" height="96" alt="image" src="https://github.com/user-attachments/assets/d689b4fc-c538-4a1c-afa5-28be47f547b5" />
 
-AI-generated content may be incorrect. 
 
 Click on Manage Accounts and click on Sync 
 
 Refresh the browser window and you should see a SD-WAN evaluation contract in the table and can continue with the SD-WAN evaluation process. 
 
- 
+ <img width="1062" height="123" alt="image" src="https://github.com/user-attachments/assets/14f27593-b360-404e-b82b-93753e7986b9" />
+
 
  
 
@@ -177,11 +171,13 @@ NOTE: If you use “Send Text” function in CloudShare make sure to have Englis
 
 Enable Configuration Sharing, this option can be found under the three dots in the upper right corner 
 
-A screenshot of a computer
+<img width="524" height="272" alt="image" src="https://github.com/user-attachments/assets/1025b26a-dfe4-48ea-9c93-9aba613e5f71" />
 
-AI-generated content may be incorrect. 
 
 The first step is to prepare the security gateways to run the SD-WAN functionality, you do this by connecting to the gateways via the Gaia Web portal from you Microsoft Edge Browser on the Management Client.  
+
+<img width="337" height="439" alt="image" src="https://github.com/user-attachments/assets/e29a3bec-e2bd-4625-90fa-ed686d7280fc" />
+
 
 On GW1 go to Network Interfaces and select the interfaces used for external / WAN access which is eth3 and eth1. On these interfaces enable the SD-WAN functionality, do not forget to provide a description for the interface. 
 
@@ -222,6 +218,7 @@ Do the same for gw3
 When the command execution is completed go back to the SD-WAN service in the Infinity Portal and check that the gateways are connected via the agent. This can be seen under Network > Agents. As you see the SD-WAN functionality is not yet enabled 
  
  
+<img width="337" height="439" alt="image" src="https://github.com/user-attachments/assets/de7a7029-0bfb-485e-a40e-7f59420b74c1" />
 
  
 
@@ -235,9 +232,8 @@ Select gw1 and gw3 to be used
 
 For WAN link mapping use the tags you previously defined on the gateway 
 
-A screenshot of a computer
-
-AI-generated content may be incorrect. 
+<img width="1067" height="508" alt="image" src="https://github.com/user-attachments/assets/bc609ee0-2ef5-4862-a50a-dd0b40cc87b0" />
+ 
 
 Completer the wizards, you can publish the changes later. 
 
@@ -255,7 +251,8 @@ Enforce the policy, this will ask you to publish the any changes
 
 Go to the Agents view, you will eventually see that the agents have downloaded the new policy and activated SD-WAN 
 
- 
+ <img width="1065" height="92" alt="image" src="https://github.com/user-attachments/assets/3d697dd7-19e8-4506-a04b-0fa167c6056e" />
+
 
 Go to the monitoring dashboard to observe more details, where you can see that you have two connected gateways  
 
@@ -270,16 +267,19 @@ Inhere you can see that the encrypt log is now including the information that tr
 
 NOTE: If you do not see this in the log entry, go back to the client and refresh the connection by clicking crl+F5 a couple of times in the incognito windows in the edge browser. You even might need to restart the browser. 
 
- 
+ <img width="571" height="272" alt="image" src="https://github.com/user-attachments/assets/c54ce19f-1b73-4f25-a86a-fb96247044bc" />
+
 
 Search the logs for traffic to bbc to review the local breakout log.  
 As you can see the log is generated by the URL filtering blade and of type session log, session logs are logical abstraction summarizing multiple connection logs. 
 
 To see the SD-WAN information go to the Connections tab and open one of the connection logs that was generated by the firewall blade. 
 
- 
+ <img width="1015" height="287" alt="image" src="https://github.com/user-attachments/assets/38346c91-fc39-4043-b90d-2ebdda15c358" />
 
- 
+
+ <img width="731" height="349" alt="image" src="https://github.com/user-attachments/assets/6b0d28ac-a211-4d4d-b84f-82943204ca2b" />
+
 
  
 
@@ -290,40 +290,35 @@ Basic troubleshooting
 Go to the SD-WAN service in the infinity portal click on Monitoring. 
 In there you can see that the Overlay Tunnels are down. 
 
-A screenshot of a computer
+<img width="441" height="363" alt="image" src="https://github.com/user-attachments/assets/f6220726-46b8-4d44-9b30-3c057d7a318a" />
 
-AI-generated content may be incorrect. 
 
 Open Putty and connect to gw1 and start cpview, in cpview go to Advanced and SDWAN 
 
 In there you can see information about Local Breakout probing Results, Next Hop Probing Results and Overlay Probing Results. 
-A screenshot of a computer
 
-AI-generated content may be incorrect. 
+<img width="787" height="400" alt="image" src="https://github.com/user-attachments/assets/039c6ffe-2101-4dff-9f74-3da4dc51a003" />
+
 
 Looking at Overlay Probing Results we can see that the probing method is ICMP, State is DOWN and we have a high number of Consecutive drops. 
 
-A screen shot of a computer
-
-AI-generated content may be incorrect. 
+<img width="1066" height="165" alt="image" src="https://github.com/user-attachments/assets/82b2a9b0-fd40-4778-974d-ad4f87a9bd3d" />
 
 Go to logs view in SmartConsole and filter on service icmp-requets we can see that echo request packages are dropped between gw1 and gw3 indicating that we are missing a rule to allow VPN overlay probing between gw1 and gw3. 
 
-A screenshot of a computer
+<img width="1071" height="200" alt="image" src="https://github.com/user-attachments/assets/d3ce316d-f239-47af-9bf9-5952b0822485" />
 
-AI-generated content may be incorrect. 
 
 On SmartConsole, in the two policy packages for gw1 and gw2 create a VPN probing rule. 
 Put the rule in its own Section just below the Management rules in top of the two policy packages 
 The rule should look like this: 
-A screenshot of a computer
 
-AI-generated content may be incorrect. 
+<img width="1067" height="162" alt="image" src="https://github.com/user-attachments/assets/6c3ce24a-abc6-437f-8e6a-e647f4a80022" />
+ 
  
 TIP: You can copy the entire section with rules to the other policy package by collapsing the section, right click on the section title and select copy, go to the other policy package and just right click and paste below the section title 
-A screenshot of a computer
+<img width="826" height="320" alt="image" src="https://github.com/user-attachments/assets/8d9ed3c7-8445-4f35-a2ab-ff6c415ce9bf" />
 
-AI-generated content may be incorrect. 
 
 Do not forget to install the policies to gw1 and gw3 
 
@@ -331,9 +326,8 @@ Once policy installation completed, click on the rule and check that you have ec
 
 go to the SD-WAN service in the infinity portal click on monitoring. There should now be 8 tunnels that are up. 
 Under Overlay Tunnels Monitoring pick GW1 from the dropdown list, you should now be able to see information like Latency, Jitter, Packet Loss and SLA for the different VPN tunnels. 
-A screenshot of a computer
+<img width="1070" height="191" alt="image" src="https://github.com/user-attachments/assets/d7eba17a-aad8-4d01-bed5-40313e2796ee" />
 
-AI-generated content may be incorrect. 
 
 Open Putty and connect to gw1 and start cpview. In cpview go to Advanced and SDWAN 
 
@@ -358,9 +352,6 @@ We will change the configuration of eth1 on gw1 and gw3 to use gw2 as a router s
 
 On the Management Client open Microsoft Edge and connect to the Gaia portal of gw1, as youi can see the Circuit ID of the SD-WAN interfaces are the same for both interfaces 
 
-A screenshot of a computer
-
-AI-generated content may be incorrect. 
 
 A screenshot of a computer
 
@@ -370,16 +361,19 @@ the SD-WAN Next Hop IP-address to be
 indicate a private connectivity,  
 in this case we call it MPLS 
 
- 
+  0000000000000000000000000000000000000000000000000000000000000
 
  You also need to change the secondary default rout to point to 10.160.21.20 
-A screenshot of a computer
 
-AI-generated content may be incorrect. 
+ <img width="719" height="134" alt="image" src="https://github.com/user-attachments/assets/74f77954-8052-48ed-aba9-2c77055bb5ce" />
+
+<img width="328" height="388" alt="image" src="https://github.com/user-attachments/assets/f601c657-bbb9-4509-9ebb-b762336080a6" />
 
 You need to perform the same configuration on gw2, set the SD-WAN Next Hop IP-address of eth1 to be 10.160.31.20 and the tag to be MPLS 
 
 Change the secondary default route to be 10.160.31.20 
+<img width="502" height="494" alt="image" src="https://github.com/user-attachments/assets/b301ca40-0e88-49b5-a368-1051d6197a29" />
+
 
 Change the configuration of the WAN Link mapping 
 
