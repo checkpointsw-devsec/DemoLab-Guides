@@ -25,3 +25,5 @@ Some sites may block headless browsing or require JS-heavy interactions. If you 
 If you use the Cisco Umbrella list, it can include entries like com / net which aren’t browsable. The script filters out domains without a dot, but Tranco tends to be more “browser-friendly.” [s3-us-west...zonaws.com], [tranco-list.eu]
 For better “application variety,” a curated domains.txt often gives the cleanest demos (news, social, shopping, streaming, tech, finance, etc.).
 
+output example:
+<img width="1096" height="273" alt="image" src="https://github.com/user-attachments/assets/45b722c6-34d7-4d08-87c3-e577ac08211d" />
