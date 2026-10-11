@@ -48,7 +48,7 @@ The instructor will send you an email with a web link.
 After receiving your mail:
 
 - Open the link.
-- VMs in your lab need 5 to 10 minutes to start after clicking on **"VM List"**.
+- ==VMs in your lab need 5 to 10 minutes to start after clicking on **"VM List"**==.
 
 <img width="2048" height="481" alt="vm-list" src="https://github.com/user-attachments/assets/3cafc4e1-574b-43a9-9712-1bf9008fc4fa" />
 
