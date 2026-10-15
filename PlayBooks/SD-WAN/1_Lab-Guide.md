@@ -1,4 +1,4 @@
-Getting familiar with the environment 
+**Getting familiar with the environment**
 
 From the Management Client you have SSH access to the gateways via the putty client on the desktop.	 
 NOTE: If the instructor has not already asked you to do so reboot the management server by issuing the command “reboot” in clish via SSH. 
