@@ -1,9 +1,9 @@
 **Getting familiar with the environment**
 
-From the Management Client you have SSH access to the gateways via the putty client on the desktop.	 
+1. From the Management Client you have SSH access to the gateways via the putty client on the desktop.	 
 NOTE: If the instructor has not already asked you to do so reboot the management server by issuing the command “reboot” in clish via SSH. 
 
-Opening SmartConsole from the desktop of Management Client, you can see that you have a fully deployed environment with a working security policy and working VPN configuration. 
+2. Opening SmartConsole from the desktop of Management Client, you can see that you have a fully deployed environment with a working security policy and working VPN configuration. 
 
 a. As you see the environment consists of GW1 where windows client will use this getaway to access internet, and by default it can even use the second internet connection. 
 
@@ -18,24 +18,24 @@ b. The Client will use VPN to connect over internet to GW3 to reach the web serv
 3. In SmartConsole you should see that SIC is established and communication is working to GW1. GW2 and GW3.  
 **NOTE: GW2 is just acting as a router in this environment**
 
-Review the configuration of GW1 and GW3,  
+4. Review the configuration of GW1 and GW3,  
 
-You should see that access control and Threat prevention is configured. 
+a. You should see that access control and Threat prevention is configured. 
 
-4. Review the VPN domain defined for the gateways 
+b. Review the VPN domain defined for the gateways 
 
-For GW1 you should se net_10.160.10.0  
+i. For GW1 you should se net_10.160.10.0  
 
-For GW1 you should se net_10.160.40.0  
+ii. For GW1 you should se net_10.160.40.0  
 
-NOTE: Best practices are to use a group object here 
+***NOTE***: Best practices are to use a group object here 
 
-Review the setting of Link Selection.  
+c. Review the setting of Link Selection.  
 NOTE: Since the gateways have multiple external interfaces, it has been configured to use the primary internet connection interfaces  
 
-GW1 - eth3 (10.160.20.10) 
+i. GW1 - eth3 (10.160.20.10) 
 
-GW2 - eth2 (10.160.30.30) 
+ii. GW2 - eth2 (10.160.30.30) 
 
 for establishing VPN. 
 
@@ -53,10 +53,6 @@ d. Verify that VPN routing from satellites is configured “To center and other 
 
 7. Make sure the policy is corrected loaded on the gateways by installing the access control and Threat Prevention policy on gw1 and gw3 
 
- 
-
- 
-
 8. After policy installation completed, go to the Windows Client, log in as Alice and use the Microsoft Edge browser to Test connectivity to internet and to connectivity over VPN to the web server 
 
  <img width="870" height="257" alt="image" src="https://github.com/user-attachments/assets/84203c7c-3c86-41e5-9a1e-50c7cc826ea0" />
@@ -64,165 +60,149 @@ d. Verify that VPN routing from satellites is configured “To center and other 
 
 NOTE: if you do not see the quick launch bar with the link to the Web Server (Demo Sever) just click on the + top open a new tab and the quick launch bar will be visible. 
 
- 
-
 9. Open the logs views in SmartConsole and search for log entries with destination 10.160.40.100 to verify that we have traffic across the VPN. 
-
- 
 
 10. Verify that the threat prevention is configured correctly and activated by opening the console for Attacker using CloudShare web UI 
 
-login using to Attacker machine by CloudShare UI 'Keyboard > Send Password' menu 
+a. login using to Attacker machine by CloudShare UI 'Keyboard > Send Password' menu 
 
-On Kali Linux UI use start menu and start "zaproxy" 
+b. On Kali Linux UI use start menu and start "zaproxy" 
 
-When asked, select “No, I do not want to persist this session at this moment in time” and press start 
+c. When asked, select “No, I do not want to persist this session at this moment in time” and press start 
 
-If there is a “Manage add-ons” window appearing just close that. 
+d. If there is a “Manage add-ons” window appearing just close that. 
 
-on ZAP UI execute 'Automated Scan' 
+e. on ZAP UI execute 'Automated Scan' 
 
 <img width="815" height="227" alt="image" src="https://github.com/user-attachments/assets/15ec57ef-9950-4eff-a10c-2e7b4a84517f" />
 
-Enter URL to the web server; http://10.160.40.100  
+f. Enter URL to the web server; http://10.160.40.100  
 
-Execute 'use ajax spider' by pressing 'attack' button and see in the lower window the progress 
+g. Execute 'use ajax spider' by pressing 'attack' button and see in the lower window the progress 
 
- 
 
-Check logs on SmartConsole for IPS logs  
+11. Check logs on SmartConsole for IPS logs  
 
 TIP: you can filter them with the following query (dst:10.160.40.100 AND blade:IPS) 
 
- 
-
- 
-
-Part-1 Getting started 
+***Part-1 Getting started***
 
 Activate an evaluation subscription for SD-WAN to get ingestion quota for SD-WAN logs 
 
 Note: If you start the SD-WAN product evaluation without an active SD-WAN contract activated in an attached user center account for your Infinity Portal Tenant, the log sharing for SD-WAN logs is not allowed. As a result, logs will be capped, and you are at risk of critical data loss. 
 
-On the Management Client open the Edge browser and go to Check Point Usercenter 
+1. On the Management Client open the Edge browser and go to Check Point Usercenter 
 
-Log in as workshop@checkpointlab.uk with password “Cpwins!W0rkSh0p!” 
+2. Log in as workshop@checkpointlab.uk with password “Cpwins!W0rkSh0p!” 
 
-Go to “Try Our Products” > “Product Evaluation” 
+3. Go to “Try Our Products” > “Product Evaluation” 
 
-As instructed in the License section of the SD-WAN admin Guide, follow these steps: 
+4. As instructed in the License section of the SD-WAN admin Guide, follow these steps: 
 
-In the section “1 of 2 - Select Evaluation Product:” 
+a. In the section “1 of 2 - Select Evaluation Product:” 
 
-On the right side, select the radio button OTHER EVALUTION OPTIONS. 
+b. On the right side, select the radio button OTHER EVALUTION OPTIONS. 
 
-Click Select a product. 
+c. Click Select a product. 
 
-Search for SD-WAN and select Quantum SD-WAN Evaluation. 
+d. Search for SD-WAN and select Quantum SD-WAN Evaluation. 
 
-In the bottom right corner, click Select. 
+e. In the bottom right corner, click Select. 
 
-In the bottom right corner, click Next. 
+f. In the bottom right corner, click Next. 
 
-In the section 2 of 2 - Provide Evaluation Info: 
+g. In the section 2 of 2 - Provide Evaluation Info: 
 
-In the User Center Account field, select the account with your name.  
+h. In the User Center Account field, select the account with your name.  
 “sd-wan-ws-[your name]” 
 
 <img width="467" height="205" alt="image" src="https://github.com/user-attachments/assets/319e5261-ef52-462b-8480-d2f1b5eaea12" />
-. 
 
-In the Purpose of Evaluation section, select the applicable option. 
 
-Select I confirm and acknowledge that .... 
+i. In the Purpose of Evaluation section, select the applicable option. 
 
-In the bottom right corner, click Get Evaluation. 
+j. Select I confirm and acknowledge that .... 
 
-Wait for the page to show the configuration and the evaluation steps. 
+k. In the bottom right corner, click Get Evaluation. 
 
-Go to https://portal.checkpoint.com and login 
+l. Wait for the page to show the configuration and the evaluation steps. 
+
+5. Go to https://portal.checkpoint.com and login 
 
 Note: A new tenant called “sd-wan-ws-[your name]” has been created for you by the instructor. This tenant will be deleted after the workshop. 
 
-Select the “sd-wan-ws-[your name]” in the top of the dropdown list in the infinity portal. 
+6. Select the “sd-wan-ws-[your name]” in the top of the dropdown list in the infinity portal. 
 
-Verify that the user center account is connected to your Infinity portal account by going to services and contracts under Account settings 
+7. Verify that the user center account is connected to your Infinity portal account by going to services and contracts under Account settings 
 
  <img width="189" height="96" alt="image" src="https://github.com/user-attachments/assets/d689b4fc-c538-4a1c-afa5-28be47f547b5" />
 
 
-Click on Manage Accounts and click on Sync 
+8. Click on Manage Accounts and click on Sync 
 
-Refresh the browser window and you should see a SD-WAN evaluation contract in the table and can continue with the SD-WAN evaluation process. 
+9. Refresh the browser window and you should see a SD-WAN evaluation contract in the table and can continue with the SD-WAN evaluation process. 
 
  <img width="1062" height="123" alt="image" src="https://github.com/user-attachments/assets/14f27593-b360-404e-b82b-93753e7986b9" />
 
+***Prepare your Infinity portal tenant and gw1 and gw3 for SD-WAN***
 
- 
+1. In infinity portal start by going to service Quantum > Security Management & Smart-1 Cloud to connect your on-premisses security management server to the infinity portal 
 
-Prepare your Infinity portal tenant and gw1 and gw3 for SD-WAN 
+2. Select “Connect an existing Self-hosted Management” and agree to the policy 
 
-In infinity portal start by going to service Quantum > Security Management & Smart-1 Cloud to connect your on-premisses security management server to the infinity portal 
-
-Select “Connect an existing Self-hosted Management” and agree to the policy 
-
-Copy the token. Go to Infinity Services in SmartConsole, click "Get Started", paste the token, leave the settings as default and click Connect 
+3. Copy the token. Go to Infinity Services in SmartConsole, click "Get Started", paste the token, leave the settings as default and click Connect 
 NOTE: If you use “Send Text” function in CloudShare make sure to have English keyboard layout on the Management Client otherwise the token is going to be filled with incorrect characters and the connection will fail  
 
-Enable Configuration Sharing, this option can be found under the three dots in the upper right corner 
+4. Enable Configuration Sharing, this option can be found under the three dots in the upper right corner 
 
 <img width="524" height="272" alt="image" src="https://github.com/user-attachments/assets/1025b26a-dfe4-48ea-9c93-9aba613e5f71" />
 
 
-The first step is to prepare the security gateways to run the SD-WAN functionality, you do this by connecting to the gateways via the Gaia Web portal from you Microsoft Edge Browser on the Management Client.  
+5. The first step is to prepare the security gateways to run the SD-WAN functionality, you do this by connecting to the gateways via the Gaia Web portal from you Microsoft Edge Browser on the Management Client.  
 
 <img width="337" height="439" alt="image" src="https://github.com/user-attachments/assets/e29a3bec-e2bd-4625-90fa-ed686d7280fc" />
 
 
-On GW1 go to Network Interfaces and select the interfaces used for external / WAN access which is eth3 and eth1. On these interfaces enable the SD-WAN functionality, do not forget to provide a description for the interface. 
+6. On GW1 go to Network Interfaces and select the interfaces used for external / WAN access which is eth3 and eth1. On these interfaces enable the SD-WAN functionality, do not forget to provide a description for the interface. 
 
-eth3, Comment: Primary external WAN,  
+a. eth3, Comment: Primary external WAN,  
 enable use as SD-WAN interface, Next Hop address 10.160.20.1, Tag ISP1 
 
-eth1, Comment: Secondary external WAN,  
+b. eth1, Comment: Secondary external WAN,  
 enable use as SD-WAN interface, Next Hop address 10.160.21.1, Tag ISP2 
 
- 
+7. Do the same on GW3, use the following values for the parameters 
 
-Do the same on GW3, use the following values for the parameters 
-
-eth2, Comment: Primary external WAN,  
+a. eth2, Comment: Primary external WAN,  
 Enable use as SD-WAN interface, Next hop address 10.160.30.1, Tag ISP1 
 
-eth1, Comment: Primary external WAN,  
+b. eth1, Comment: Primary external WAN,  
 enable use as SD-WAN interface, Next hop address 10.160.31.1, Tag ISP2 
 
- 
+<img width="292" height="383" alt="image" src="https://github.com/user-attachments/assets/95ba9bb9-f06c-496c-9d6d-f6667b0b6dbf" />
 
-Once the gateways are prepared go back to SmartConsole to check that the configuration sharing process has finished by clicking the three dots. We are now ready start configuring SD-WAN for the environment by going to the SD-WAN service in the infinity portal and clicking “Request Evaluation” 
 
-Once the SD-WAN Service has loaded you can see that the management server is connected, and configuration sharing is working by clicking “DETAILS” 
+8. Once the gateways are prepared go back to SmartConsole to check that the configuration sharing process has finished by clicking the three dots. We are now ready start configuring SD-WAN for the environment by going to the SD-WAN service in the infinity portal and clicking “Request Evaluation” 
+
+9. Once the SD-WAN Service has loaded you can see that the management server is connected, and configuration sharing is working by clicking “DETAILS” 
 
 NOTE: Log sharing is disabled and not necessary for SD-WAN, this can be activated at later stage when needed. 
 
-You enable the connectivity layer between the gateways and the infinity portal by using the quantum profile that you can find under the Network view > Profiles in the SD-WAN page. 
+10. You enable the connectivity layer between the gateways and the infinity portal by using the quantum profile that you can find under the Network view > Profiles in the SD-WAN page. 
 
 Note: You can see that this Quantum Profile is associated with the on-premises management server. 
 
-Open the profile and copy the deployment command “nano-egg --install --token ******” 
+11. Open the profile and copy the deployment command “nano-egg --install --token ******” 
 
-Go back to SmartConsole and open the Gateways & Servers view, select gw1 and run a one time script by pasting the deployment command into the script body window and click Run. 
+12. Go back to SmartConsole and open the Gateways & Servers view, select gw1 and run a one time script by pasting the deployment command into the script body window and click Run. 
 
-Do the same for gw3 
+13. Do the same for gw3 
 
-When the command execution is completed go back to the SD-WAN service in the Infinity Portal and check that the gateways are connected via the agent. This can be seen under Network > Agents. As you see the SD-WAN functionality is not yet enabled 
- 
+14. When the command execution is completed go back to the SD-WAN service in the Infinity Portal and check that the gateways are connected via the agent. This can be seen under Network > Agents. As you see the SD-WAN functionality is not yet enabled 
  
 <img width="337" height="439" alt="image" src="https://github.com/user-attachments/assets/de7a7029-0bfb-485e-a40e-7f59420b74c1" />
 
- 
-
-Configure SD-WAN for GW1 and GW3 
+***Configure SD-WAN for GW1 and GW3***
 
 To enable the SD-WAN functionality, go to the “getting started” section in the SD-WAN service in the Infinity Portal and open the wizard  
 
