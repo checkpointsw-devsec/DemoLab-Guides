@@ -118,7 +118,7 @@ By the end of this exercise you should have proven that Workforce AI security in
 
 
 
-# Exercise 4 is now complete, and we have shown that the AI Network Firewall is able to block communications containing Corporate Intellectual Property.
+Exercise 4 is now complete, and we have shown that the AI Network Firewall is able to block communications containing Corporate Intellectual Property.
 
 
 Summary
