@@ -16,53 +16,53 @@ The Workforce AI Security feature uses HTTPS Inspection to provide visibility in
 
 ## In SmartConsole, Edit the branch-gw firewall object and enable the required software blades:
 
-a. Application Control
+### Application Control
 
-b. URL Filtering
+### URL Filtering
 
-c. Content Awareness
+### Content Awareness
 
-d. Workforce AI Security
+### Workforce AI Security
 
-2. Enable HTTPS Inspection as follows:
+## Enable HTTPS Inspection as follows:
 
-a. The certificates required for HTTPS Inspection are already created and trusted by the test client. Enable HTTPS Inspection with these settings:
+### The certificates required for HTTPS Inspection are already created and trusted by the test client. Enable HTTPS Inspection with these settings:
 
 <img width="567" height="544" alt="image" src="https://github.com/user-attachments/assets/65a2285a-238f-4852-9f4a-0aa712596e56" />
 
 
-c. Click OK on the smaller popup then OK the branch-gw properties panel.
+### Click OK on the smaller popup then OK the branch-gw properties panel.
 
-d. Publish the changes and install the policy to activate the software blades.
-
-
+### Publish the changes and install the policy to activate the software blades.
 
 
-Lab exercise 3: Setting Up the Policies
+
+
+# Lab exercise 3: Setting Up the Policies
 
 Now that the required framework is in place, we can proceed to setting up the Security Policy.
 
 By the end of this exercise you should understand the required policy structure and be able to set a policy to prevent users from releasing confidential information such as corporate intellectual property or personally identifiable information to SaaS AI platforms.
 
 
-## Return to the HQ-Win10 VM
+### Return to the HQ-Win10 VM
 
-## In SmartConsole goto policy package AI-Network-Firewall. Find rule 10 in the Outbound section and change the action from Accept to be a new Inline layer. Name the layer something descriptive and enable the checkboxes for Applications & URL Filtering and for Content Awareness.
+ In SmartConsole goto policy package AI-Network-Firewall. Find rule 10 in the Outbound section and change the action from Accept to be a new Inline layer. Name the layer something descriptive and enable the checkboxes for Applications & URL Filtering and for Content Awareness.
 
 <img width="301" height="251" alt="image" src="https://github.com/user-attachments/assets/0b2af980-1681-4c37-ad73-019572ee62a1" />
 
 
 ## Publish and install the policy to make the Workforce AI objects available.
 
-## Adding the new rules to control use of AI:
+### Adding the new rules to control use of AI:
 
-### Add a new rule above 10.1 to create our Workforce AI controls.
+ Add a new rule above 10.1 to create our Workforce AI controls.
 
-### Copy the source and destination objects from rule 10 into the new rule 10.1.
+ Copy the source and destination objects from rule 10 into the new rule 10.1.
 
-## In the Services & Applications column, choose Workforce AI Supported App.
+ In the Services & Applications column, choose Workforce AI Supported App.
 
-## In the Content column, add some data types. Choose from the Workforce AI Data Types list.
+ In the Content column, add some data types. Choose from the Workforce AI Data Types list.
 
 ### For the first test, chose Source Code - Python.
 
