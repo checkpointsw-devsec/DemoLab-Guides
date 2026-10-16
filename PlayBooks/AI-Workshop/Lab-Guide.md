@@ -1,3 +1,8 @@
+Prepare a Lab Tenant
+<a href="https://checkpointsw-devsec.github.io/DemoLab-Guides/Shared-Books/Portal-Test-Tenent.md" target="_blank" rel="noopener noreferrer">Network topology</a>
+
+create trust between your Lab Management server and the tenant
+
 Lab exercise 2: Enabling the Software Blades and features
 
 The Workforce AI Security feature on the firewall requires supporting features to be enabled. Since most attendees will be familiar with management of Check Point firewalls, the following instructions are less detailed and will contain fewer screenshots. This provides an opportunity for attendees to think about how to achieve the goal, rather than being led step by step.
