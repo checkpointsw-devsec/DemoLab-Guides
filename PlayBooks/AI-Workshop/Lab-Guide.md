@@ -85,30 +85,30 @@ By the end of this exercise you should have proven that Workforce AI security in
 
 ## Return to the Branch-Win10 VM, ither via MobaXterm RDP on HQ-win10 or via the tab in the top.
 
-### Open an explorer window, navigate to the Documents folder and open the file “test prompt.txt”
+- Open an explorer window, navigate to the Documents folder and open the file “test prompt.txt”
 
-### In Notepad read the file and see that it contains python code, but does not have a complete python script. This code happens to check for the existence of a file path.
+- In Notepad read the file and see that it contains python code, but does not have a complete python script. This code happens to check for the existence of a file path.
 
-### Select all text using CTRL+A, and then use the mouse right-click to copy the text.
+- Select all text using CTRL+A, and then use the mouse right-click to copy the text.
 
 ## Open Chrome and browse to gemini.google.com
 
-### Using the mouse right-click action, paste in the text that you copied.
+- Using the mouse right-click action, paste in the text that you copied.
 
-### Submit the prompt.
+- Submit the prompt.
 
-### The prompt attempts to submit, and you should see the activity animation displayed below the prompt.
+- The prompt attempts to submit, and you should see the activity animation displayed below the prompt.
 
-### After a short while the screen will return to the starting state, with the prompt ready to submit.
+- After a short while the screen will return to the starting state, with the prompt ready to submit.
 
 ## Return to the HQ-Win10 machine and to SmartConsole.
 
-### Click on the Logs & Events tab. Filter the logs for blade:”Application Control” and find a Drop log:
+- Click on the Logs & Events tab. Filter the logs for blade:”Application Control” and find a Drop log:
 
 <img width="561" height="170" alt="image" src="https://github.com/user-attachments/assets/e11d5b2a-2451-4d1e-921d-362e1c1232f5" />
 
 
-### Inspect one of the logs. There are several interesting details shown:
+- Inspect one of the logs. There are several interesting details shown:
 
 
 <img width="567" height="521" alt="image" src="https://github.com/user-attachments/assets/a6f4974f-0f1f-43d7-80f0-42834eba140f" />
