@@ -20,7 +20,8 @@ d. Workforce AI Security
 
 a. The certificates required for HTTPS Inspection are already created and trusted by the test client. Enable HTTPS Inspection with these settings:
 
-b.
+<img width="567" height="544" alt="image" src="https://github.com/user-attachments/assets/65a2285a-238f-4852-9f4a-0aa712596e56" />
+
 
 c. Click OK on the smaller popup then OK the branch-gw properties panel.
 
@@ -40,7 +41,8 @@ By the end of this exercise you should understand the required policy structure 
 
 2. In SmartConsole goto policy package AI-Network-Firewall. Find rule 10 in the Outbound section and change the action from Accept to be a new Inline layer. Name the layer something descriptive and enable the checkboxes for Applications & URL Filtering and for Content Awareness.
 
-a.
+<img width="301" height="251" alt="image" src="https://github.com/user-attachments/assets/0b2af980-1681-4c37-ad73-019572ee62a1" />
+
 
 3. Publish and install the policy to make the Workforce AI objects available.
 
@@ -63,6 +65,9 @@ c. Leave the action set to drop and set the logging to Detailed or Extended. Acc
 7. Create another rule below this to allow other default services traffic to the Internet. Add the DNS service and the Web Browsing application objects to the Services & Applications column.
 
 8. The inline policy for Workforce AI should look something like this:
+
+<img width="585" height="94" alt="image" src="https://github.com/user-attachments/assets/b132d0d4-09f4-437f-9c96-c99f89a7065b" />
+
 
 9. Publish and install the policy.
 
@@ -95,13 +100,14 @@ d. After a short while the screen will return to the starting state, with the pr
 
 a. Click on the Logs & Events tab. Filter the logs for blade:”Application Control” and find a Drop log:
 
-b.
+<img width="561" height="170" alt="image" src="https://github.com/user-attachments/assets/e11d5b2a-2451-4d1e-921d-362e1c1232f5" />
+
 
 c. Inspect one of the logs. There are several interesting details shown:
 
-shown:
 
-d.
+<img width="567" height="521" alt="image" src="https://github.com/user-attachments/assets/a6f4974f-0f1f-43d7-80f0-42834eba140f" />
+
 
 
 Exercise 4 is now complete, and we have shown that the AI Network Firewall is able to block communications containing Corporate Intellectual Property.
