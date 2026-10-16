@@ -1,5 +1,4 @@
-Prepare a Lab Tenant
-[a link](https://github.com/checkpointsw-devsec/DemoLab-Guides/Shared-Books/Portal-Test-Tenent.md)
+[Prepare a Lab Tenant](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/Portal-Test-Tenent.md)
 
 create trust between your Lab Management server and the tenant
 
