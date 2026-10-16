@@ -16,27 +16,24 @@ The Workforce AI Security feature uses HTTPS Inspection to provide visibility in
 
 ## In SmartConsole, Edit the branch-gw firewall object and enable the required software blades:
 
-### Application Control
+- Application Control
 
-### URL Filtering
+- URL Filtering
 
-### Content Awareness
+- Content Awareness
 
-### Workforce AI Security
+- Workforce AI Security
 
 ## Enable HTTPS Inspection as follows:
 
-### The certificates required for HTTPS Inspection are already created and trusted by the test client. Enable HTTPS Inspection with these settings:
+The certificates required for HTTPS Inspection are already created and trusted by the test client. Enable HTTPS Inspection with these settings:
 
 <img width="567" height="544" alt="image" src="https://github.com/user-attachments/assets/65a2285a-238f-4852-9f4a-0aa712596e56" />
 
 
-### Click OK on the smaller popup then OK the branch-gw properties panel.
+Click OK on the smaller popup then OK the branch-gw properties panel.
 
-### Publish the changes and install the policy to activate the software blades.
-
-
-
+Publish the changes and install the policy to activate the software blades.
 
 # Lab exercise 3: Setting Up the Policies
 
@@ -52,7 +49,7 @@ By the end of this exercise you should understand the required policy structure 
 <img width="301" height="251" alt="image" src="https://github.com/user-attachments/assets/0b2af980-1681-4c37-ad73-019572ee62a1" />
 
 
-## Publish and install the policy to make the Workforce AI objects available.
+- Publish and install the policy to make the Workforce AI objects available.
 
 ### Adding the new rules to control use of AI:
 
@@ -66,13 +63,13 @@ By the end of this exercise you should understand the required policy structure 
 
 ### For the first test, chose Source Code - Python.
 
-### Once you have chosen the data types, set the direction to upload.
+Once you have chosen the data types, set the direction to upload.
 
-### Leave the action set to drop and set the logging to Detailed or Extended. Accounting is not relevant for this test but leaving it on will do no harm.
+Leave the action set to drop and set the logging to Detailed or Extended. Accounting is not relevant for this test but leaving it on will do no harm.
 
-## Create another rule below this to allow other default services traffic to the Internet. Add the DNS service and the Web Browsing application objects to the Services & Applications column.
+Create another rule below this to allow other default services traffic to the Internet. Add the DNS service and the Web Browsing application objects to the Services & Applications column.
 
-## The inline policy for Workforce AI should look something like this:
+### The inline policy for Workforce AI should look something like this:
 
 <img width="585" height="94" alt="image" src="https://github.com/user-attachments/assets/b132d0d4-09f4-437f-9c96-c99f89a7065b" />
 
