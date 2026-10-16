@@ -1,6 +1,10 @@
+create a test Tenant in check Point Portal
+
 [Prepare a Lab Tenant](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/Portal-Test-Tenent.md)
 
 create trust between your Lab Management server and the tenant
+
+[trusted token](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/Trust-relation.md)
 
 Lab exercise 2: Enabling the Software Blades and features
 
