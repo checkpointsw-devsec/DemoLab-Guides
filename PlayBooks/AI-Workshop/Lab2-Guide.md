@@ -79,7 +79,9 @@ Branch-Win10 (10.160.200.70) – user workstation at the branch site. Use it to 
 
 ### Lab Topology
 
-![Lab topology diagram](AI-Workshop/media/image3.jpg)
+<a href="https://checkpointsw-devsec.github.io/DemoLab-Guides/Notes/index.html" target="_blank" rel="noopener noreferrer">Lab topology</a>
+
+<img width="2193" height="1168" alt="image" src="https://github.com/user-attachments/assets/00713b2e-c73f-4ab4-9876-8205d622c3c5" />
 
 **Note:** Branch-gw also has the AI Agents farm network 172.30.2.0/24 configured, which hosts AI-Server (172.30.2.10). This network is not yet shown in the topology diagram.
 
