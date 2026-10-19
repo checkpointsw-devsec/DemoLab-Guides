@@ -337,7 +337,21 @@ MCP Tool List in SmartLog
 - **Nothing is detected at all:** confirm that the MCP server uses Streamable HTTP or HTTP+SSE, not a local stdio transport, and that the Application Control package on the gateway is up to date.
 
 
-- **Escalation to R&D:** collect a kernel debug on **branch-gw** while you reproduce the test, and send it with the related connection log. Run fw ctl debug -buf 32000, then fw ctl debug -m APPI + all, fw ctl debug -m UP + all, fw ctl debug -m WS + all, fw ctl debug -m cmi_loader all, and fw ctl kdebug -f \>& mcp_dbg. Reset debug flags with fw ctl debug 0 when finished.
+- **Escalation to R&D:** collect a kernel debug on **branch-gw** while you reproduce the test, and send it with the related connection log. Run
+```
+fw ctl debug -buf 32000
+fw ctl debug -m APPI + all
+fw ctl debug -m UP + all
+fw ctl debug -m WS + all
+fw ctl debug -m cmi_loader all
+fw ctl kdebug -f \>& mcp_dbg
+
+Reset debug flags with
+
+fw ctl debug 0
+
+when finished.
+```
 
 # Lab exercise 2: Configure AI Agent Security and detect Prompt Injection
 
