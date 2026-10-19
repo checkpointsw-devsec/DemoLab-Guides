@@ -142,7 +142,7 @@ By the end of the exercise, you will be able to verify four outcomes: the AI Ser
 
 1.  On **HQ-Win10**, open SmartConsole R82.20 and log in to the Security Management Server **MDS-HQ-Domain** (192.168.30.51).
 
-<!-- -->
+
 
 1.  Go to **Gateways & Servers** and double-click the **branch-gw** Security Gateway object.
 
@@ -152,12 +152,12 @@ By the end of the exercise, you will be able to verify four outcomes: the AI Ser
 
 4.  Open **Network Management** and confirm that the topology is defined for every interface. The interface towards the AI Agents farm (172.30.2.0/24) must be **Internal**, and the interface towards the MCP server (the ISP1 and ISP2 interfaces) must be **External**. Without a defined topology, rules that use the **Internet** object do not match as expected.
 
-<!-- -->
+
 
 2.  Open **HTTPS Inspection** and select **Enable HTTPS Inspection**. If an outbound inspection certificate does not exist, create one and export it. You will install it on the AI Server in Task 2.  
     **Note:** To facilitate the tests, the HTTPS Inspection certificate has already been imported to the relevant Branch systems, including the lab client (**Branch-Win10**).
 
-<!-- -->
+
 
 5.  Confirm that **NAT** is configured for outbound traffic from the AI Agents farm (172.30.2.0/24), for example Hide NAT behind **branch-gw**.
 
@@ -167,11 +167,11 @@ By the end of the exercise, you will be able to verify four outcomes: the AI Ser
 
 1.  In SmartConsole on **HQ-Win10**, create a **Host** object for the AI Server, for example **AI-Server**, with IP 172.30.2.10.
 
-<!-- -->
+
 
 3.  Go to **Security Policies,** in **AI-Network-Firewall** Policy open the **HTTPS Inspection** policy.
 
-<!-- -->
+
 
 2.  Add an outbound rule above any bypass rules that could match the lab traffic, and configure:
 
@@ -219,19 +219,19 @@ MCP fields appear only when the traffic matches a rule that explicitly uses the 
 
 7.  **Action:** Accept
 
-<!-- -->
+
 
 1.  Make sure your internet rule is set to **Accept** with track **Detailed per session**, and that you add **AI Server** to source column of that rule.
 
-<!-- -->
+
 
 8.  In the **Track** column of the rule, right-click and select **More** (or **Custom log**). Select **Detailed Log** or **Extended Log**, then click **OK**. A standard log does not include the MCP tool names.
 
-<!-- -->
+
 
 2.  In the **Monitor other traffic** section, add a new rule directly below the **MCP Detection and Visibility** rule to allow the rest of the AI Server traffic, and configure:
 
-<!-- -->
+
 
 1.  **Name:** AI Server - Other Traffic
 
@@ -245,11 +245,11 @@ MCP fields appear only when the traffic matches a rule that explicitly uses the 
 
 6.  **Track:** Detailed per session
 
-<!-- -->
+
 
 9.  Click **Publish**.
 
-<!-- -->
+
 
 3.  Click **Install Policy**, select the **AI-Network-Firewall** policy package and the **branch-gw** gateway, and select **Access Control**. Click **Install** and wait until the task list reports that installation succeeded.
 
@@ -262,7 +262,7 @@ MCP Detection and Visibility rule in Access Control policy
 
 10. From **Branch-Win10**, connect to **AI-Server** (172.30.2.10) in the AI Agents farm over SSH, using the credentials in the Credentials table. (sysadmin/qWUJ8hKxxr)
 
-<!-- -->
+
 
 1.  On **AI-Server**, run the supplied curl client script to generate the traffic by hand by sending the following request from **AI-Server** (172.30.2.10) to remote MCP Server. It returns the list of tools that the server exposes. You can find the bellow command in the README file on the **Branch-Win10** desktop.
 
@@ -292,11 +292,11 @@ Note: Alternatively, you can run script “/home/sysadmin/mcp-query.sh”.
 
     6.  **MCP tools:** the names of the tools the agent called, for example read_documentation, search_documentation, list_regions, and get_regional_availability
 
-<!-- -->
+
 
 12. Compare the tool names in the log with the tools that the agent reported calling. You can see that they match.
 
-<!-- -->
+
 
 4.  Capture a screenshot of the log details that show the application, the resource, and the MCP tools list.
 
@@ -309,8 +309,6 @@ MCP Tool List in SmartLog
 
 1.  In SmartConsole on **HQ-Win10**, open the MCP Visibility rule and change the **Action** to **Drop**. Keep the Detailed Log tracking setting.
 
-<!-- -->
-
 13. Publish the session and install the **AI-Network-Firewall** Access Control policy.
 
 14. From **Branch-Win10**, repeat the test from Task 4. Confirm that the agent cannot reach the MCP server and reports a connection or tool error.
@@ -319,8 +317,6 @@ MCP Tool List in SmartLog
 
 
 15. In Logs & Events on **HQ-Win10**, confirm that the new log shows **Application: Model Context Protocol (MCP)** and **Action: Drop**.
-
-<!-- -->
 
 2.  Change the Action back to **Accept**, publish, and install the **AI-Network-Firewall** policy, so that the AI Agents farm can use MCP again.
 
@@ -336,11 +332,10 @@ MCP Tool List in SmartLog
 
 - **Nothing is detected for an MCP server on a non-standard port:** add the port to the HTTPS Inspection rule services, and confirm that the gateway inspects that port as HTTP or HTTPS.
 
-<!-- -->
+
 
 - **Nothing is detected at all:** confirm that the MCP server uses Streamable HTTP or HTTP+SSE, not a local stdio transport, and that the Application Control package on the gateway is up to date.
 
-<!-- -->
 
 - **Escalation to R&D:** collect a kernel debug on **branch-gw** while you reproduce the test, and send it with the related connection log. Run fw ctl debug -buf 32000, then fw ctl debug -m APPI + all, fw ctl debug -m UP + all, fw ctl debug -m WS + all, fw ctl debug -m cmi_loader all, and fw ctl kdebug -f \>& mcp_dbg. Reset debug flags with fw ctl debug 0 when finished.
 
@@ -398,20 +393,16 @@ By the end of the exercise, you will be able to verify four outcomes: the AI Gua
 
 16. On **HQ-Win10**, open SmartConsole R82.20 and log in to the Security Management Server **MDS-HQ-Domain** (192.168.30.51).
 
-<!-- -->
-
 1.  Go to **Gateways & Servers** and double-click the **branch-gw** Security Gateway object.
 
 2.  On the **General Properties** page, confirm that the platform version is **R82.20**.
 
 3.  On the **Threat Prevention** blades section, enable at least one of **IPS**, **Anti-Bot**, or **Anti-Virus**.
 
-<!-- -->
-
 17. Enable **HTTPS Inspection** on the gateway. If an outbound inspection certificate does not exist, create one and export it for the lab client (**Branch-Win10**).  
     **Note:** To facilitate the tests, the HTTPS Inspection certificate has already been imported to the relevant Branch systems, including the lab client (**Branch-Win10**).
 
-<!-- -->
+
 
 4.  Confirm that **NAT** is configured for outbound traffic from the AI agent host (**AI-Server**, 172.30.2.10), for example Hide NAT behind **branch-gw**.
 
@@ -433,7 +424,7 @@ By the end of the exercise, you will be able to verify four outcomes: the AI Gua
 
     5.  **Action:** Inspect
 
-<!-- -->
+
 
 18. **Track:** Log
 
@@ -441,7 +432,7 @@ By the end of the exercise, you will be able to verify four outcomes: the AI Gua
 
 19. In the **AI-Network-Firewall** Access Control policy, confirm that a rule accepts HTTPS from the AI agent host (**AI-Server**, 172.30.2.10) to the LLM provider.
 
-<!-- -->
+
 
 3.  Install the outbound inspection certificate in the trusted root store of the lab client (**Branch-Win10**).
 
@@ -490,7 +481,7 @@ AI Agent Security Threat Prevention profile
 
     2.  **Protected Scope:** the AI agent host, AI-Server(172.30.2.10)
 
-<!-- -->
+
 
 20. **Action:** the **AI Agent Security** profile
 
@@ -503,7 +494,7 @@ AI Agent Security Threat Prevention rule
 
 21. Click **Publish**.
 
-<!-- -->
+
 
 3.  Click **Install Policy**, select the **AI-Network-Firewall** policy package and the **branch-gw** gateway, and select both **Access Control** and **Threat Prevention**.
 
@@ -518,7 +509,7 @@ AI Agent Security Threat Prevention rule
 
 1.  ~~From **HQ-Win10**, connect to **branch-gw** over SSH (credentials in the Credentials table) and enter Expert mode.~~
 
-<!-- -->
+
 
 23. ~~Create the file \$FWDIR/amw/prompt_injection_apps_config.json.~~
 
