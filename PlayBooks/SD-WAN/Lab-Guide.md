@@ -3,7 +3,7 @@
 1. From the HQ-Win10 Client you have prepared SSH sessions to connect gateways with ssh.
   <p align="center">
 <img width="573" height="507" alt="image" src="https://github.com/user-attachments/assets/8036e25a-d444-4449-a912-3adbee8df04a" />
-p>
+
 
 Please Open SmartConsole from the HQ-Win10 desktop. 
 
