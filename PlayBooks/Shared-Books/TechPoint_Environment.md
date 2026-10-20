@@ -155,6 +155,7 @@ Over the **MobaXterm** application you can access:
 
 In the VM List you can go to the VM that you want to reset or revert.
 
-<img width="755" height="604" alt="image" src="https://github.com/user-attachments/assets/669bed6f-1e6f-4553-82e0-4abd872b1e93" />
+<img width="755" height="604" alt="image" src="https://github.com/user-attachments/assets/de697f17-87ae-42bf-8e3a-d5a41ca1355d" />
+
 
 
