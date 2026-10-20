@@ -1,5 +1,5 @@
 ## start with the Environment document
-[Environment-description:](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/TechPoint_Environment.md)
+<a href="https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/TechPoint_Environment.md" target="_blank" rel="noopener noreferrer">Environment-description:</a>
 
 ## sync codebase from github to gitlab
 start powershell 
