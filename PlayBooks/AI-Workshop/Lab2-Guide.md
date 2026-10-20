@@ -1,7 +1,5 @@
 # Check Point AI Agent Security with MCP Detection and Visibility
 
-![Check Point — We Secure Your AI Transformation](AI-Workshop/media/image1.png)
-
 ## Contents
 
 - [Introduction](#introduction)
