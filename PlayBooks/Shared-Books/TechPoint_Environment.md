@@ -50,7 +50,7 @@ After receiving your mail:
 - Open the link.
 - VMs in your lab need 5 to 10 minutes to start after clicking on **"VM List"**.
 
-<img width="2048" height="481" alt="vm-list" src="https://github.com/user-attachments/assets/3cafc4e1-574b-43a9-9712-1bf9008fc4fa" />
+<img width="755" height="604" alt="image" src="https://github.com/user-attachments/assets/558e509c-7e12-4bbe-838e-ee2e102f601f" />
 
 
 Connect to your lab over the web link: open the desktop of your admin PC from the tab.
