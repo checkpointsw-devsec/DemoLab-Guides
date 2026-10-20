@@ -1,9 +1,18 @@
 **Getting familiar with the environment**
 
-1. From the Management Client you have SSH access to the gateways via the putty client on the desktop.	 
-NOTE: If the instructor has not already asked you to do so reboot the management server by issuing the command “reboot” in clish via SSH. 
+1. From the HQ-Win10 Client you have prepared SSH sessions to connect gateways with ssh.
+  
+<img width="573" height="507" alt="image" src="https://github.com/user-attachments/assets/8036e25a-d444-4449-a912-3adbee8df04a" />
 
-2. Opening SmartConsole from the desktop of Management Client, you can see that you have a fully deployed environment with a working security policy and working VPN configuration. 
+
+Please Open SmartConsole from the HQ-Win10 desktop. 
+
+<img width="890" height="204" alt="image" src="https://github.com/user-attachments/assets/b658e9ab-c4e1-424e-8961-2d8c5c0edc31" />
+
+Please Check Gateways and make sure Gateways are shown with healty status.
+
+Standard security policy package shows one cleanup polica that allows any communication.
+A VPN Community is prepared configuration. 
 
 a. As you see the environment consists of GW1 where windows client will use this getaway to access internet, and by default it can even use the second internet connection. 
 
