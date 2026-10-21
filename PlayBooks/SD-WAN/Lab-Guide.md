@@ -1,11 +1,6 @@
 **Getting familiar with the environment**
 
-1. From the HQ-Win10 Client you have prepared SSH sessions to connect gateways with ssh.
-  <p align="center">
-<img width="570" height="507" alt="image" src="https://github.com/user-attachments/assets/8036e25a-d444-4449-a912-3adbee8df04a" />
-
-
-Please Open SmartConsole from the HQ-Win10 desktop. 
+Please Open Web SmartConsole from the HQ-Win10 desktop. 
 
 <img width="890" height="204" alt="image" src="https://github.com/user-attachments/assets/b658e9ab-c4e1-424e-8961-2d8c5c0edc31" />
 
