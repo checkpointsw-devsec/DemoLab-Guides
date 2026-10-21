@@ -58,6 +58,7 @@ button,input{font:inherit;color:inherit}
 .chk{display:flex;align-items:center;gap:9px;padding:4px 0;cursor:pointer;font-size:14.5px}
 .chk input{accent-color:var(--ink);width:16px;height:16px;margin:0}
 .chk .note{margin-left:auto;color:var(--muted);font-size:13px}
+.chk.sub{padding-left:25px;font-size:14px}
 .sw{display:inline-block;width:28px;height:0;border-top:3px solid var(--c,#888);flex:none}
 .sw.dashed{border-top-style:dashed}
 .sw.dotted{border-top:4px dotted var(--c)}
@@ -164,7 +165,7 @@ table.ifs tr[data-ref]:hover td{background:var(--row)}
   <header class="top">
     <div>
       <h1>Lab network topology</h1>
-      <p>HQ and two branches, each dual-homed to ISP1 and ISP2. Hover to trace a connection, click for addresses.</p>
+      <p>HQ and two branches, each dual-homed to ISP1 and ISP2. Hover to trace a connection, click for addresses and credentials.</p>
     </div>
     <div class="tools">
       <input id="q" type="search" placeholder="Find a device, IP or subnet" aria-label="Find a device, IP address or subnet">
@@ -182,6 +183,8 @@ table.ifs tr[data-ref]:hover td{background:var(--row)}
       <div class="pane" id="pane-layers" role="tabpanel" aria-labelledby="tab-layers">
         <h2>Sites</h2>
         <label class="chk"><input type="checkbox" data-site="hq" checked>HQ<span class="note">2 clusters, 4 hosts</span></label>
+        <label class="chk sub"><input type="checkbox" data-device="hqexl" checked>hq-exl<span class="note">cluster</span></label>
+        <label class="chk sub"><input type="checkbox" data-device="hqvsn" checked>hq-vsn<span class="note">cluster</span></label>
         <label class="chk"><input type="checkbox" data-site="b1" checked>Branch-1<span class="note">1 gateway, 2 hosts</span></label>
         <label class="chk"><input type="checkbox" data-site="b2" checked>Branch-2<span class="note">1 SMB gateway</span></label>
         <label class="chk"><input type="checkbox" data-site="core" checked>Internet and ISPs<span class="note">2 ISPs</span></label>
@@ -273,24 +276,26 @@ const CATS = {
 };
 const ORIG = {lan:'#E9A27E', inet:'var(--inet)', oob:'#E07B39', xatt:'#E9A27E'};
 
+/* Change credentials separately for any node below by editing its credentials field.
+   NOTE: Values in an HTML file are visible to anyone with access to the file. */
 const nodes = [
   {id:'inet', name:'Internet', kind:'internet', site:'core', cx:770, cy:62, r:40, role:'Public Internet'},
-  {id:'hacker', name:'Hacker / JMeter / Docker', kind:'host', site:'test', cx:560, cy:62, w:220, h:52,
+  {id:'hacker', credentials:'admin / vpn123', name:'Hacker / JMeter / Docker', kind:'host', site:'test', cx:560, cy:62, w:220, h:52,
     ipv4:'10.160.201.10', ipv6:'1000:160:201::10', role:'Test traffic and attack host on the Internet side'},
-  {id:'isp1', name:'ISP1', kind:'isp', site:'core', asn:64529, cx:770, cy:300, w:180, h:104, role:'Provider router. Uses .254 on every transit network.'},
-  {id:'isp2', name:'ISP2', kind:'isp', site:'core', asn:64539, cx:770, cy:590, w:180, h:104, role:'Provider router. Uses .254 on every transit network.'},
-  {id:'hqold', name:'hq-exl', kind:'gw', cluster:true, site:'hq', asn:64551, cx:410, cy:330, w:190, h:56, role:'Two-member gateway cluster with a sync link'},
-  {id:'hqvsn', name:'hq-vsn', kind:'gw', cluster:true, site:'hq', asn:64552, cx:410, cy:600, w:190, h:56, role:'Two-member gateway cluster with a sync link'},
-  {id:'hqlan', name:'HQ LAN', kind:'seg', site:'hq', x:205, y1:235, y2:745, v4:'192.168.30.0/24', v6:'A192:168:30::/64', role:'HQ site LAN'},
-  {id:'hqclient', name:'HQ-Client', kind:'host', site:'hq', cx:110, cy:270, w:150, h:50, role:'Client'},
-  {id:'hqdc', name:'HQ-Win-DC', kind:'host', site:'hq', cx:110, cy:400, w:150, h:50, role:'Windows domain controller'},
-  {id:'hqlinux', name:'HQ-Linux', kind:'host', site:'hq', cx:110, cy:530, w:150, h:50, role:'Linux host'},
-  {id:'hqmdm', name:'MDM+ LSM', kind:'host', site:'hq', cx:110, cy:660, w:150, h:50, role:'Management server (MDM + LSM)'},
-  {id:'bgw', name:'Branch-GW', kind:'gw', site:'b1', asn:64553, cx:1155, cy:310, w:190, h:56, role:'Single gateway'},
+  {id:'isp1', credentials:'vyos / vpn123', name:'ISP1', kind:'isp', site:'core', asn:64529, cx:770, cy:300, w:180, h:104, role:'Provider router. Uses .254 on every transit network.'},
+  {id:'isp2', credentials:'vyos / vpn123', name:'ISP2', kind:'isp', site:'core', asn:64539, cx:770, cy:590, w:180, h:104, role:'Provider router. Uses .254 on every transit network.'},
+  {id:'hqexl', credentials:'admin / vpn123', name:'hq-exl', kind:'gw', cluster:true, site:'hq', asn:64551, cx:410, cy:330, w:190, h:56, role:'Two-member gateway cluster with a sync link'},
+  {id:'hqvsn', credentials:'admin / vpn123', name:'hq-vsn', kind:'gw', cluster:true, site:'hq', asn:64552, cx:410, cy:600, w:190, h:56, role:'Two-member gateway cluster with a sync link'},
+  {id:'hqlan', credentials:'admin / vpn123', name:'HQ LAN', kind:'seg', site:'hq', x:205, y1:235, y2:745, v4:'192.168.30.0/24', v6:'A192:168:30::/64', role:'HQ site LAN'},
+  {id:'hqclient', credentials:'student / Cpwins1!', name:'HQ-Client', kind:'host', site:'hq', cx:110, cy:270, w:150, h:50, role:'Client'},
+  {id:'hqdc', credentials:'student / Cpwins1!', name:'HQ-Win-DC', kind:'host', site:'hq', cx:110, cy:400, w:150, h:50, role:'Windows domain controller'},
+  {id:'hqlinux', credentials:'uadmin / vpn123', name:'HQ-Linux', kind:'host', site:'hq', cx:110, cy:530, w:150, h:50, role:'Linux host'},
+  {id:'hqmdm', credentials:'admin / vpn123', name:'MDM+ LSM', kind:'host', site:'hq', cx:110, cy:660, w:150, h:50, role:'Management server (MDM + LSM)'},
+  {id:'bgw', credentials:'admin / vpn123', name:'Branch-GW', kind:'gw', site:'b1', asn:64553, cx:1155, cy:310, w:190, h:56, role:'Single gateway'},
   {id:'b1lan', name:'Branch-1 LAN', kind:'seg', site:'b1', x:1290, y1:215, y2:415, v4:'172.30.1.0/24', v6:'A172:30:1::/64', role:'Branch-1 site LAN'},
-  {id:'bclient', name:'Branch-Client', kind:'host', site:'b1', cx:1395, cy:255, w:150, h:50, role:'Client'},
-  {id:'blinux', name:'Branch-Linux', kind:'host', site:'b1', cx:1395, cy:375, w:150, h:50, role:'Linux host'},
-  {id:'b2gw', name:'Branch2-SMB', kind:'gw', site:'b2', asn:64554, cx:1155, cy:670, w:190, h:56, role:'Single SMB gateway'},
+  {id:'bclient', credentials:'student / Cpwins1!', name:'Branch-Client', kind:'host', site:'b1', cx:1395, cy:255, w:150, h:50, role:'Client'},
+  {id:'blinux', credentials:'uadmin / vpn123', name:'Branch-Linux', kind:'host', site:'b1', cx:1395, cy:375, w:150, h:50, role:'Linux host'},
+  {id:'b2gw', credentials:'admin / vpn123', name:'Branch2-SMB', kind:'gw', site:'b2', asn:64554, cx:1155, cy:670, w:190, h:56, role:'Single SMB gateway'},
   {id:'b2lan', name:'Branch-2 LAN', kind:'seg', site:'b2', x:1290, y1:610, y2:730, v4:'172.40.1.0/24', v6:'A172:40:1::/64', role:'Branch-2 site LAN'},
   {id:'oob', name:'Shared network', kind:'pill', site:'oob', cx:330, cy:120, w:160, v4:'10.160.200.0/24', v6:'1000:160:200::/64',
     role:'Dashed network in the source. Connects HQ-Client, Branch-Client and Branch-Linux across sites.'}
@@ -298,8 +303,8 @@ const nodes = [
 
 const links = [
   // Transit networks: a = site gateway (.1), b = ISP (.254)
-  {id:'t11', cat:'isp1', v4:'10.160.11.0/24', v6:'1000:160:11::/64', orig:'#5DBB49', a:{n:'hqold',port:'eth2',host:1}, b:{n:'isp1',port:'eth1',host:254}, p1:[505,318], p2:[680,298]},
-  {id:'t12', cat:'isp2', v4:'10.160.12.0/24', v6:'1000:160:12::/64', orig:'#B5501C', a:{n:'hqold',port:'eth3',host:1}, b:{n:'isp2',host:254}, p1:[505,342], p2:[680,592]},
+  {id:'t11', cat:'isp1', v4:'10.160.11.0/24', v6:'1000:160:11::/64', orig:'#5DBB49', a:{n:'hqexl',port:'eth2',host:1}, b:{n:'isp1',port:'eth1',host:254}, p1:[505,318], p2:[680,298]},
+  {id:'t12', cat:'isp2', v4:'10.160.12.0/24', v6:'1000:160:12::/64', orig:'#B5501C', a:{n:'hqexl',port:'eth3',host:1}, b:{n:'isp2',host:254}, p1:[505,342], p2:[680,592]},
   {id:'t21', cat:'isp1', v4:'10.160.21.0/24', v6:'1000:160:21::/64', orig:'#C86DD7', a:{n:'hqvsn',port:'eth2',host:1}, b:{n:'isp1',port:'eth2',host:254}, p1:[505,588], p2:[680,324]},
   {id:'t22', cat:'isp2', v4:'10.160.22.0/24', v6:'1000:160:22::/64', orig:'#4A90D9', a:{n:'hqvsn',port:'eth3',host:1}, b:{n:'isp2',host:254}, p1:[505,612], p2:[680,618]},
   {id:'t31', cat:'isp1', v4:'10.160.31.0/24', v6:'1000:160:31::/64', orig:'#808080', a:{n:'bgw',port:'eth2',host:1}, b:{n:'isp1',port:'eth3',host:254}, p1:[1060,298], p2:[860,298]},
@@ -311,7 +316,7 @@ const links = [
   {id:'u2', cat:'inet', a:{n:'isp2',port:'eth0',host:65,tagAt:[828,531]}, b:{n:'inet'}, d:'M820 538 V510 H892 V62 H810'},
   {id:'u3', cat:'inet', a:{n:'hacker'}, b:{n:'inet'}, d:'M670 62 H730'},
   // Site LANs
-  {id:'l1', cat:'lan', a:{n:'hqold',port:'magg1',host:1}, b:{n:'hqlan'}, d:'M315 330 H208', aEnd:[315,330]},
+  {id:'l1', cat:'lan', a:{n:'hqexl',port:'magg1',host:1}, b:{n:'hqlan'}, d:'M315 330 H208', aEnd:[315,330]},
   {id:'l2', cat:'lan', a:{n:'hqvsn',port:'magg1',host:10}, b:{n:'hqlan'}, d:'M315 600 H208', aEnd:[315,600]},
   {id:'l3', cat:'lan', a:{n:'hqclient',host:20}, b:{n:'hqlan'}, d:'M185 270 H202'},
   {id:'l4', cat:'lan', a:{n:'hqdc',host:30}, b:{n:'hqlan'}, d:'M185 400 H202'},
@@ -381,6 +386,7 @@ links.forEach(l => {
 /* ---------- State ---------- */
 const state = {
   sites:{hq:true, b1:true, b2:true, core:true, test:true},
+  devices:{hqexl:true, hqvsn:true},
   cats:{isp1:true, isp2:true, inet:true, lan:true, oob:true, xatt:true},
   labels:{subnet:true, ports:true, v6:false},
   color:'isp', selected:null, hover:null, query:''
@@ -509,7 +515,10 @@ function linkAria(l){
 }
 
 /* ---------- Visibility and highlight ---------- */
-function baseVisible(n){ return n.site === 'oob' ? state.cats.oob : !!state.sites[n.site]; }
+function baseVisible(n){
+  if (state.devices[n.id] === false) return false;   // individually hidden device (hq-exl / hq-vsn)
+  return n.site === 'oob' ? state.cats.oob : !!state.sites[n.site];
+}
 function linkVisible(l){ return state.cats[l.cat] && baseVisible(N[l.a.n]) && baseVisible(N[l.b.n]); }
 function nodeVisible(n){
   if (n.site === 'oob') return state.cats.oob && links.some(l => l.cat === 'oob' && linkVisible(l));
@@ -583,7 +592,9 @@ function renderPanel(){
   if (s.type === 'node'){
     const n = N[s.id];
     const site = n.site === 'oob' ? 'Spans all sites' : SITES[n.site].name;
-    h += `<h3 class="d-title">${esc(n.name)}</h3><p class="d-kind">${esc(n.role)}</p><dl class="props"><dt>Site</dt><dd>${esc(site)}</dd>`;
+    h += `<h3 class="d-title">${esc(n.name)}</h3><p class="d-kind">${esc(n.role)}</p><dl class="props">`;
+    if (n.credentials != null) h += `<dt>Credentials</dt><dd>${esc(n.credentials)}</dd>`;
+    h += `<dt>Site</dt><dd>${esc(site)}</dd>`;
     if (n.asn) h += `<dt>AS number</dt><dd>${n.asn}</dd>`;
     if (n.v4) h += `<dt>IPv4</dt><dd>${esc(n.v4)}</dd><dt>IPv6</dt><dd>${esc(n.v6)}</dd>`;
     if (n.ipv4) h += `<dt>IPv4</dt><dd>${esc(n.ipv4)}</dd><dt>IPv6</dt><dd>${esc(n.ipv6)}</dd>`;
@@ -623,7 +634,7 @@ function renderPanel(){
 }
 function overview(){
   const asns = nodes.filter(n => n.asn);
-  let h = '<p class="empty">Select a device, network or link on the map to see its interfaces and addresses.</p>';
+  let h = '<p class="empty">Select a device, network or link on the map to see its interfaces, addresses and credentials where available.</p>';
   h += '<h2>AS numbers</h2><table class="ifs"><thead><tr><th>AS</th><th>Device</th><th>Site</th></tr></thead><tbody>';
   asns.forEach(n => { h += `<tr data-ref="node:${n.id}"><td>${n.asn}</td><td>${esc(n.name)}</td><td>${esc(SITES[n.site].name)}</td></tr>`; });
   h += '</tbody></table>';
@@ -738,8 +749,9 @@ const planBody = document.getElementById('plan-body');
 planBody.addEventListener('click', e => {
   const tr = e.target.closest('tr[data-ref]'); if (!tr) return;
   const r = parseRef(tr.dataset.ref);
-  if (r.type === 'node') state.sites[N[r.id].site] = true;
-  if (r.type === 'link'){ const l = L[r.id]; state.cats[l.cat] = true; state.sites[N[l.a.n].site] = true; state.sites[N[l.b.n].site] = true; }
+  const reveal = id => { state.sites[N[id].site] = true; if (id in state.devices) state.devices[id] = true; };
+  if (r.type === 'node') reveal(r.id);
+  if (r.type === 'link'){ const l = L[r.id]; state.cats[l.cat] = true; reveal(l.a.n); reveal(l.b.n); }
   if (r.id === 'oob') state.cats.oob = true;
   syncControls(); select(r);
   svg.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'center'});
@@ -753,6 +765,15 @@ layers.addEventListener('change', e => {
   const t = e.target;
   if (t.dataset.site) state.sites[t.dataset.site] = t.checked;
   if (t.dataset.cat) state.cats[t.dataset.cat] = t.checked;
+  if (t.dataset.device){
+    state.devices[t.dataset.device] = t.checked;
+    // drop the selection if it points at a device that was just hidden
+    const s = state.selected;
+    if (!t.checked && s && ((s.type === 'node' && s.id === t.dataset.device) ||
+        (s.type === 'link' && (L[s.id].a.n === t.dataset.device || L[s.id].b.n === t.dataset.device)))){
+      state.selected = null; renderPanel();
+    }
+  }
   if (t.dataset.label){ state.labels[t.dataset.label] = t.checked; render(); return; }
   applyState();
 });
@@ -774,11 +795,13 @@ layers.querySelectorAll('[data-preset]').forEach(b => b.onclick = () => {
   const p = PRESETS[b.dataset.preset];
   for (const k in state.sites) state.sites[k] = p.sites.includes(k);
   for (const k in state.cats) state.cats[k] = p.cats.includes(k);
+  for (const k in state.devices) state.devices[k] = true;   // quick views always show both HQ clusters
   syncControls(); applyState();
 });
 function syncControls(){
   layers.querySelectorAll('[data-site]').forEach(i => i.checked = state.sites[i.dataset.site]);
   layers.querySelectorAll('[data-cat]').forEach(i => i.checked = state.cats[i.dataset.cat]);
+  layers.querySelectorAll('[data-device]').forEach(i => i.checked = state.devices[i.dataset.device]);
 }
 function paintSwatches(){
   layers.querySelectorAll('[data-sw]').forEach(s => {
