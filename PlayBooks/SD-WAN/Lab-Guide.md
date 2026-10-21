@@ -21,18 +21,15 @@ b. The Client will use VPN to connect over internet to GW3 to reach the web serv
 
 ![Branch side](./images/image-branche.png)
 
-3. In SmartConsole you should see that SIC is established and communication is working to GW1. GW2 and GW3.  
-**NOTE: GW2 is just acting as a router in this environment**
+4. Review following configuration on both hq-exl and branch-gw gateways:  
 
-4. Review the configuration of GW1 and GW3,  
+- access control 
+- Threat prevention
 
-a. You should see that access control and Threat prevention is configured. 
+set following VPN domain for the gateways:
 
-b. Review the VPN domain defined for the gateways 
-
-i. For GW1 you should se net_10.160.10.0  
-
-ii. For GW1 you should se net_10.160.40.0  
+- hq-exl: net_192.168.30.0_24
+- branche-gw: net_172.30.1.0_24
 
 ***NOTE***: Best practices are to use a group object here 
 
