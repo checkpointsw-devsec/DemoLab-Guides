@@ -1,5 +1,19 @@
 ---
-- name: SD-WAN Policy Pack — package and rules
+# -----------------------------------------------------------------------------
+# SD-WAN Policy Pack - policy package + rulebase
+#
+# Run AFTER the "SD-WAN Policy Pack - objects" playbook: this playbook does not
+# create any objects, it only references them.
+#
+#   ansible-playbook -i inventories/lab.yml create_policy_package.yml
+#   ansible-playbook -i inventories/lab.yml create_policy_package.yml -e install_policy=true
+#
+# NOTE: sections/rules are appended with position "bottom", which the Check
+# Point modules do not treat as idempotent. Use this to create a NEW package;
+# to rebuild, delete the package first.
+# -----------------------------------------------------------------------------
+
+- name: SD-WAN Policy Pack - policy package
   hosts: checkpoint_mgmt
   gather_facts: false
   connection: httpapi
@@ -10,394 +24,273 @@
 
   vars:
     n: "{{ resource_name_map }}"
+
+    # --- Connection (same auth model as the objects playbook) ---------------
     ansible_network_os: check_point.mgmt.checkpoint
-
     ansible_httpapi_use_ssl: true
-    ansible_checkpoint_validate_certs: false
-    ansible_httpapi_validate_certs: false
-
+    ansible_httpapi_validate_certs: true        # must stay true (network security policy)
+    ansible_checkpoint_validate_certs: true
     ansible_user: ""
     ansible_password: ""
     ansible_checkpoint_use_api_key: true
     ansible_api_key: "{{ vault_checkpoint_api_key }}"
     ansible_checkpoint_domain: "{{ checkpoint_cloud_mgmt_id }}"
 
+    # --- Behaviour ----------------------------------------------------------
+    install_policy: false
+
+    # --- Package ------------------------------------------------------------
+    package_name: AI-Network-Firewall
+    layer_name: "{{ package_name }} Network"    # default layer created with the package
+
+    # --- Object references --------------------------------------------------
+    # Gateways / VPN community: must already exist (REPLACE the community name).
+    branch_gw: branch-gw
+    hq_gw: hq-exl-gw
+    vpn_community: Bra_DC_Community
+
+    # Created by the objects playbook. The right-hand side is an ASSUMED mapping
+    # from the screenshot to your resource_name_map keys - adjust if needed.
+    obj_gaia_webui: "{{ n.service_tcp_gaiawebui }}"
+    obj_domain_heise: "{{ n.testDomain_object }}"            # must resolve to ".heise.de"
+    obj_net_branch: "{{ n.net_branch1_v4 }}"                 # screenshot: net_172.30.1.0_24
+    obj_net_dc: "{{ n.net_datacenter_v4 }}"                  # screenshot: net_192.168.30.0_24
+    obj_branch_mgmt_host: "{{ n['host_gw_back_int-v4'] }}"   # screenshot: Branch1-gw_magg1_int-v4
+
+    # NOT created by the objects playbook - must exist (or add them there).
+    obj_isp1: ISP1
+    obj_isp2: ISP2
+
+    # --- Rulebase (order = rule number) -------------------------------------
+    access_rules:
+      # Management (1)
+      - section: Management
+        name: Allow Management
+        destination: ["{{ branch_gw }}", "{{ obj_branch_mgmt_host }}"]
+        service: ["{{ obj_gaia_webui }}", ssh]
+
+      # SD-WAN VPN Probing (2)
+      - section: SD-WAN VPN Probing
+        name: Allow SD-WAN VPN Probing
+        source: ["{{ hq_gw }}", "{{ branch_gw }}"]
+        destination: ["{{ branch_gw }}", "{{ hq_gw }}"]
+        service: [echo-request]
+        install_on: ["{{ branch_gw }}"]
+
+      # ISP-Probing (3)
+      - section: ISP-Probing
+        name: Allow ISP-Probing
+        source: ["{{ branch_gw }}", "{{ obj_isp1 }}", "{{ obj_isp2 }}"]
+        destination: ["{{ branch_gw }}", "{{ obj_isp1 }}", "{{ obj_isp2 }}"]
+        service: [echo-request]
+        install_on: ["{{ branch_gw }}"]
+
+      # Services (4-6)
+      - section: Services
+        name: icmp
+        source: ["{{ obj_net_branch }}"]
+        service: [echo-request]
+      - section: Services
+        name: DNS
+        source: ["{{ obj_net_branch }}"]
+        service: [dns]
+      - section: Services
+        name: NTP
+        source: ["{{ obj_net_branch }}"]
+        service: [ntp]
+
+      # VPN Overlay (7-9)
+      - section: VPN Overlay
+        name: VPN traffic DC to Branch
+        source: ["{{ obj_net_dc }}"]
+        destination: ["{{ obj_net_branch }}"]
+        vpn: ["{{ vpn_community }}"]
+      - section: VPN Overlay
+        name: VPN traffic Branch to DC
+        source: ["{{ obj_net_branch }}"]
+        destination: ["{{ obj_net_dc }}"]
+        vpn: ["{{ vpn_community }}"]
+        track: { type: Log, per_connection: true, per_session: true, accounting: true }
+      - section: VPN Overlay
+        name: to internet via VPN
+        source: ["{{ obj_net_branch }}"]
+        destination: ["{{ obj_domain_heise }}"]
+        vpn: ["{{ vpn_community }}"]
+        track: { type: Log, per_connection: true, per_session: true }
+
+      # Outbound (10)
+      - section: Outbound
+        name: Internet
+        source: ["{{ obj_net_branch }}"]
+        destination: [Internet]
+        track: { type: Log, accounting: true }
+
   tasks:
+    - name: Fail early if the API key was not loaded from the vault
+      ansible.builtin.assert:
+        that:
+          - vault_checkpoint_api_key is defined
+          - vault_checkpoint_api_key | length > 0
+        fail_msg: "vault_checkpoint_api_key is missing - check group_vars/vault.yml and the vault password."
+      no_log: true
+      run_once: true
 
-    # ------------------------------------------------------------------
-    # Access Layer for Branch Policy Package
-    # ------------------------------------------------------------------
+    - name: Build the policy package
+      block:
+        - name: Create policy package
+          check_point.mgmt.cp_mgmt_package:
+            name: "{{ package_name }}"
+            access: true
+            threat_prevention: true
+            installation_targets: ["{{ branch_gw }}"]
+            ignore_warnings: "{{ ignore_warnings }}"
+            state: present
 
-    #- name: Create access layer — {{ n.layer_branch_policy_network }}
-    #  check_point.mgmt.cp_mgmt_access_layer:
-    #    name: "{{ n.layer_branch_policy_network }}"
-    #    firewall: true
-    #    applications_and_url_filtering: true
-    #    content_awareness: false
-    #    mobile_access: false
-    #    shared: false
-    #    implicit_cleanup_action: "{{ n.layer_implicit_cleanup }}"
-    #    ignore_warnings: "{{ ignore_warnings }}"
-    #    ignore_errors: false
-    #    state: present
+        # Every section is appended at the bottom, followed by its rules, so
+        # the final order matches the numbering of access_rules.
+        - name: Section - Management
+          check_point.mgmt.cp_mgmt_access_section:
+            layer: "{{ layer_name }}"
+            name: Management
+            position: bottom
+            ignore_warnings: "{{ ignore_warnings }}"
+            state: present
 
-    # ------------------------------------------------------------------
-    # Policy Package
-    # ------------------------------------------------------------------
+        - name: Rules - Management
+          check_point.mgmt.cp_mgmt_access_rule: &rule_args
+            layer: "{{ layer_name }}"
+            name: "{{ rule.name }}"
+            position: bottom
+            source: "{{ rule.source | default(['Any']) }}"
+            destination: "{{ rule.destination | default(['Any']) }}"
+            vpn: "{{ rule.vpn | default(['Any']) }}"
+            service: "{{ rule.service | default(['Any']) }}"
+            action: "{{ rule.action | default('Accept') }}"
+            track: "{{ rule.track | default({'type': 'Log'}) }}"
+            install_on: "{{ rule.install_on | default(['Policy Targets']) }}"
+            ignore_warnings: "{{ ignore_warnings }}"
+            state: present
+          loop: "{{ access_rules | selectattr('section', 'equalto', 'Management') | list }}"
+          loop_control:
+            loop_var: rule
+            label: "{{ rule.name }}"
 
-    - name: Create policy package — {{ branch_policy_package_name }}
-      check_point.mgmt.cp_mgmt_package:
-        name: "{{ branch_policy_package_name }}"
-        access: true
-        threat_prevention: false
-        color: "{{ n.branch_package_color }}"
-        comments: "{{ n.package_comments }}"
-        installation_targets:
-          - "{{ n.gateway_branch }}"
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
+        - name: Section - SD-WAN VPN Probing
+          check_point.mgmt.cp_mgmt_access_section:
+            layer: "{{ layer_name }}"
+            name: SD-WAN VPN Probing
+            position: bottom
+            ignore_warnings: "{{ ignore_warnings }}"
+            state: present
 
-    - name:  only Branch access layer to policy package — {{ branch_policy_package_name }}
-      check_point.mgmt.cp_mgmt_access_layer:
-        name: "{{ n.layer_branch_policy_network }}"
-        applications_and_url_filtering: true
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
-        
-    # ------------------------------------------------------------------
-    # add sections first
-    # ------------------------------------------------------------------
-    - name: "BRANCH | Section — {{ n.section_management }}"
-      check_point.mgmt.cp_mgmt_access_section:
-        name: "{{ n.section_management }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        position: top
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
+        - name: Rules - SD-WAN VPN Probing
+          check_point.mgmt.cp_mgmt_access_rule: *rule_args
+          loop: "{{ access_rules | selectattr('section', 'equalto', 'SD-WAN VPN Probing') | list }}"
+          loop_control:
+            loop_var: rule
+            label: "{{ rule.name }}"
 
-    - name: "BRANCH | Section — {{ n.section_sdwan_vpn_probing }}"
-      check_point.mgmt.cp_mgmt_access_section:
-        name: "{{ n.section_sdwan_vpn_probing }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        position: bottom
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
+        - name: Section - ISP-Probing
+          check_point.mgmt.cp_mgmt_access_section:
+            layer: "{{ layer_name }}"
+            name: ISP-Probing
+            position: bottom
+            ignore_warnings: "{{ ignore_warnings }}"
+            state: present
 
-    - name: "BRANCH | Section — {{ n.section_isp_probing }}"
-      check_point.mgmt.cp_mgmt_access_section:
-        name: "{{ n.section_isp_probing }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        position: bottom
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
+        - name: Rules - ISP-Probing
+          check_point.mgmt.cp_mgmt_access_rule: *rule_args
+          loop: "{{ access_rules | selectattr('section', 'equalto', 'ISP-Probing') | list }}"
+          loop_control:
+            loop_var: rule
+            label: "{{ rule.name }}"
 
-    - name: "BRANCH | Section — {{ n.section_services }}"
-      check_point.mgmt.cp_mgmt_access_section:
-        name: "{{ n.section_services }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        position: bottom
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
+        - name: Section - Services
+          check_point.mgmt.cp_mgmt_access_section:
+            layer: "{{ layer_name }}"
+            name: Services
+            position: bottom
+            ignore_warnings: "{{ ignore_warnings }}"
+            state: present
 
-    - name: "BRANCH | Section — {{ n.section_vpn_overlay }}"
-      check_point.mgmt.cp_mgmt_access_section:
-        name: "{{ n.section_vpn_overlay }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        position: bottom
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
+        - name: Rules - Services
+          check_point.mgmt.cp_mgmt_access_rule: *rule_args
+          loop: "{{ access_rules | selectattr('section', 'equalto', 'Services') | list }}"
+          loop_control:
+            loop_var: rule
+            label: "{{ rule.name }}"
 
-    - name: "BRANCH | Section — {{ n.section_outbound }}"
-      check_point.mgmt.cp_mgmt_access_section:
-        name: "{{ n.section_outbound }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        position: bottom
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
+        - name: Section - VPN Overlay
+          check_point.mgmt.cp_mgmt_access_section:
+            layer: "{{ layer_name }}"
+            name: VPN Overlay
+            position: bottom
+            ignore_warnings: "{{ ignore_warnings }}"
+            state: present
 
-    - name: "BRANCH | Section — {{ n.section_cleanup }}"
-      check_point.mgmt.cp_mgmt_access_section:
-        name: "{{ n.section_cleanup }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        position: bottom
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
+        - name: Rules - VPN Overlay
+          check_point.mgmt.cp_mgmt_access_rule: *rule_args
+          loop: "{{ access_rules | selectattr('section', 'equalto', 'VPN Overlay') | list }}"
+          loop_control:
+            loop_var: rule
+            label: "{{ rule.name }}"
 
-    # ------------------------------------------------------------------
-    # Branch_new Network — Rules
-    # ------------------------------------------------------------------
+        - name: Section - Outbound
+          check_point.mgmt.cp_mgmt_access_section:
+            layer: "{{ layer_name }}"
+            name: Outbound
+            position: bottom
+            ignore_warnings: "{{ ignore_warnings }}"
+            state: present
 
-    - name: "BRANCH | Rule 1 — {{ n.rule_management }}"
-      check_point.mgmt.cp_mgmt_access_rule:
-        name: "{{ n.rule_management }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        relative_position:
-          top: "{{ n.section_management }}"
-        search_entire_rulebase: true
-        enabled: true
-        action: "{{ n.action_accept }}"
-        source:
-          - "{{ n.object_any }}"
-        destination:
-          - "{{ n.gateway_branch }}"
-          - "{{ n['host_gw_back_int-v4'] }}"
-        service:
-          - "{{ n.service_tcp_gaiawebui }}"
-          - "{{ n.service_ssh }}"
-        track:
-          type: "{{ n.track_log }}"
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
+        - name: Rules - Outbound
+          check_point.mgmt.cp_mgmt_access_rule: *rule_args
+          loop: "{{ access_rules | selectattr('section', 'equalto', 'Outbound') | list }}"
+          loop_control:
+            loop_var: rule
+            label: "{{ rule.name }}"
 
-    - name: "BRANCH | Rule 2 — {{ n.rule_sdwan_vpn_probing }}"
-      check_point.mgmt.cp_mgmt_access_rule:
-        name: "{{ n.rule_sdwan_vpn_probing }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        relative_position:
-          top: "{{ n.section_sdwan_vpn_probing }}"
-        search_entire_rulebase: true
-        enabled: true
-        action: "{{ n.action_accept }}"
-        source:
-          - "{{ n.gateway_datacenter }}"
-          - "{{ n.gateway_branch }}"
-        destination:
-          - "{{ n.gateway_branch }}"
-          - "{{ n.gateway_datacenter }}"
-        service:
-          - "{{ n.service_echo_request }}"
-        install_on:
-          - "{{ n.gateway_branch }}"
-        track:
-          type: "{{ n.track_log }}"
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
-        
-    - name: "BRANCH | Rule 3 — {{ n.rule_isp_probing }}"
-      check_point.mgmt.cp_mgmt_access_rule:
-        name: "{{ n.rule_isp_probing }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        relative_position:
-          top: "{{ n.section_isp_probing }}"
-        search_entire_rulebase: true
-        enabled: true
-        action: "{{ n.action_accept }}"
-        source:
-          - "{{ n.gateway_branch }}"
-          - "{{ n.host_isp1_gw }}"
-          - "{{ n.host_isp2_gw }}"
-        destination:
-          - "{{ n.gateway_branch }}"
-          - "{{ n.host_isp1_gw }}"
-          - "{{ n.host_isp2_gw }}"
-        service:
-          - "{{ n.service_echo_request }}"
-        install_on:
-          - "{{ n.gateway_branch }}"
-        track:
-          type: "{{ n.track_log }}"
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
+        - name: Section - Cleanup
+          check_point.mgmt.cp_mgmt_access_section:
+            layer: "{{ layer_name }}"
+            name: Cleanup
+            position: bottom
+            ignore_warnings: "{{ ignore_warnings }}"
+            state: present
 
-    - name: "BRANCH | Rule 4 — {{ n.rule_icmp }}"
-      check_point.mgmt.cp_mgmt_access_rule:
-        name: "{{ n.rule_icmp }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        relative_position:
-          top: "{{ n.section_services }}"
-        search_entire_rulebase: true
-        action: "{{ n.action_accept }}"
-        source:
-          - "{{ n.net_branch1_v4 }}"
-        destination:
-          - "{{ n.object_any }}"
-        service:
-          - "{{ n.service_echo_request }}"
-        vpn: "{{ n.object_any }}"
-        track:
-          type: "{{ n.track_log }}"
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
+        # The package ships with a default "Cleanup rule". All sections above
+        # were appended after it, so move it to the bottom (under the Cleanup
+        # section) and align it with the screenshot.
+        - name: Rule - Cleanup rule (move default rule to the bottom)
+          check_point.mgmt.cp_mgmt_access_rule:
+            layer: "{{ layer_name }}"
+            name: Cleanup rule
+            position: bottom
+            source: [Any]
+            destination: [Any]
+            vpn: [Any]
+            service: [Any]
+            action: Drop
+            track: { type: Log }
+            install_on: ["{{ branch_gw }}"]
+            ignore_warnings: "{{ ignore_warnings }}"
+            state: present
 
-    - name: "BRANCH | Rule 5 — {{ n.rule_dns }}"
-      check_point.mgmt.cp_mgmt_access_rule:
-        name: "{{ n.rule_dns }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        relative_position:
-          below: "{{ n.rule_icmp }}"
-        search_entire_rulebase: true
-        action: "{{ n.action_accept }}"
-        source:
-          - "{{ n.net_branch1_v4 }}"
-        destination:
-          - "{{ n.object_any }}"
-        service:
-          - "{{ n.service_dns }}"
-        vpn: "{{ n.object_any }}"
-        track:
-          type: "{{ n.track_log }}"
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
+        - name: Publish session
+          check_point.mgmt.cp_mgmt_publish:
 
-    - name: "BRANCH | Rule 6 — {{ n.rule_ntp }}"
-      check_point.mgmt.cp_mgmt_access_rule:
-        name: "{{ n.rule_ntp }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        relative_position:
-          below: "{{ n.rule_dns }}"
-        search_entire_rulebase: true
-        action: "{{ n.action_accept }}"
-        source:
-          - "{{ n.net_branch1_v4 }}"
-        destination:
-          - "{{ n.object_any }}"
-        service:
-          - "{{ n.service_ntp }}"
-        vpn: "{{ n.object_any }}"
-        track:
-          type: "{{ n.track_log }}"
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
+        - name: Install policy on {{ branch_gw }}
+          check_point.mgmt.cp_mgmt_install_policy:
+            policy_package: "{{ package_name }}"
+            access: true
+            threat_prevention: true
+            targets: ["{{ branch_gw }}"]
+          when: install_policy | bool
 
-    - name: "BRANCH | Rule 7 — {{ n.rule_vpn_dc_to_branch }}"
-      check_point.mgmt.cp_mgmt_access_rule:
-        name: "{{ n.rule_vpn_dc_to_branch }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        relative_position:
-          top: "{{ n.section_vpn_overlay }}"
-        search_entire_rulebase: true
-        action: "{{ n.action_accept }}"
-        source:
-          - "{{ n.net_datacenter_v4 }}"
-        destination:
-          - "{{ n.net_branch1_v4 }}"
-        service:
-          - "{{ n.object_any }}"
-        vpn_list:
-          - community:
-              - "{{ n.object_bra_dc_community }}"
-        track:
-          type: "{{ n.track_log }}"
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
+      rescue:
+        - name: Discard the unpublished session after a failure
+          check_point.mgmt.cp_mgmt_discard:
 
-    - name: "BRANCH | Rule 8 — {{ n.rule_vpn_branch_to_dc }}"
-      check_point.mgmt.cp_mgmt_access_rule:
-        name: "{{ n.rule_vpn_branch_to_dc }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        relative_position:
-          below: "{{ n.rule_vpn_dc_to_branch }}"
-        search_entire_rulebase: true
-        action: "{{ n.action_accept }}"
-        source:
-          - "{{ n.net_branch1_v4 }}"
-        destination:
-          - "{{ n.net_datacenter_v4 }}"
-        service:
-          - "{{ n.object_any }}"
-        vpn_list:
-          - community:
-              - "{{ n.object_bra_dc_community }}"
-        track:
-          type: "{{ n.track_log }}"
-          per_connection: true
-          per_session: true
-          accounting: true
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
-
-    - name: "BRANCH | Rule 9 — {{ n.rule_to_internet_via_vpn }}"
-      check_point.mgmt.cp_mgmt_access_rule:
-        name: "{{ n.rule_to_internet_via_vpn }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        relative_position:
-          below: "{{ n.rule_vpn_branch_to_dc }}"
-        search_entire_rulebase: true
-        action: "{{ n.action_accept }}"
-        source:
-          - "{{ n.net_branch1_v4 }}"
-        destination:
-          - "{{ n.testDomain_object }}"
-        service:
-          - "{{ n.object_any }}"
-        vpn_list:
-          - community:
-              - "{{ n.object_bra_dc_community }}"
-        track:
-          type: "{{ n.track_log }}"
-          per_connection: true
-          per_session: true
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
-
-    - name: "BRANCH | Rule 10 — {{ n.rule_internet }}"
-      check_point.mgmt.cp_mgmt_access_rule:
-        name: "{{ n.rule_internet }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        relative_position:
-          top: "{{ n.section_outbound }}"
-        search_entire_rulebase: true
-        action: "{{ n.action_accept }}"
-        source:
-          - "{{ n.net_branch1_v4 }}"
-        destination:
-          - "{{ n.network_internet }}"
-        service:
-          - "{{ n.object_any }}"
-        vpn: "{{ n.object_any }}"
-        track:
-          type: "{{ n.track_log }}"
-          per_connection: true
-          per_session: true
-          accounting: true
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
-
-    - name: "BRANCH | Rule 11 — {{ n.rule_cleanup }}"
-      check_point.mgmt.cp_mgmt_access_rule:
-        name: "{{ n.rule_cleanup }}"
-        layer: "{{ n.layer_branch_policy_network }}"
-        relative_position:
-          top: "{{ n.section_cleanup }}"
-        search_entire_rulebase: true
-        action: "{{ n.action_drop }}"
-        source:
-          - "{{ n.object_any }}"
-        destination:
-          - "{{ n.object_any }}"
-        service:
-          - "{{ n.object_any }}"
-        vpn: "{{ n.object_any }}"
-        install_on:
-          - "{{ n.gateway_branch }}"
-        track:
-          type: "{{ n.track_log }}"
-        ignore_warnings: "{{ ignore_warnings }}"
-        ignore_errors: false
-        state: present
-
-    # ------------------------------------------------------------------
-    # Publish
-    # ------------------------------------------------------------------
-
-    - name: Publish session
-      check_point.mgmt.cp_mgmt_publish:
+        - name: Abort
+          ansible.builtin.fail:
+            msg: "Policy package creation failed - session discarded, nothing was published."
