@@ -9,6 +9,7 @@ All objects and policy packages for the lab are provided as Ansible playbooks in
 Before you start a Lab Guide, open the **Policy-Package.md** file in that playbook’s folder and follow the instructions in it.
 
 **for example:**
+
 <img width="228" height="404" style="text-align: center" alt="Example of a Policy-Package.md file in a playbook folder" src="https://github.com/user-attachments/assets/f0643b60-7d7b-4920-8ccf-b62c86b4522b" />
 
 
