@@ -13,40 +13,40 @@ Standard security policy package shows one cleanup policy that allows any commun
 A VPN Community "Bra_DC_Community" is prepared configuration. 
 
 
-a. As you see the environment consists of GW1 where windows client will use this getaway to access internet, and by default it can even use the second internet connection. 
+on HQ side (left) lab environment has a windows client hq-client that has internet access over hq-exl gateway. By default it uses eth2 to forward traffic to ISP1. 
 
 ![HQ: ](./images/image-hq.png)
 
-b. The Client will use VPN to connect over internet to GW3 to reach the web server 
+The HQ-Client will use VPN to connect over ISP1 and ISP2 to branch-gw to reach the branch-linux that hosts a web server
 
 ![Branch side](./images/image-branche.png)
 
-4. Review following configuration on both hq-exl and branch-gw gateways:  
-
+# Review configuration 
+review following on both hq-exl and branch-gw gateways:
 - access control 
 - Threat prevention
 
-set following VPN domain for the gateways:
+# set VPN domain for the gateways:
 
 - hq-exl: net_192.168.30.0_24
 - branche-gw: net_172.30.1.0_24
 
 ***NOTE***: Best practices are to use a group object here 
 
-c. Review the setting of Link Selection.  
+# Review the setting of Link Selection.  
 NOTE: Since the gateways have multiple external interfaces, it has been configured to use the primary internet connection interfaces  
 
-i. GW1 - eth3 (10.160.20.10) 
+- hq-exl - eth3 (10.160.20.10) 
 
-ii. GW2 - eth2 (10.160.30.30) 
+- GW2 - eth2 (10.160.30.30) 
 
 for establishing VPN. 
 
-5. Review the gw1-policy-package to familiarize yourself with the rule base.  
+5. Review the hq-exl-policy-package to familiarize yourself with the rule base.  
 
 6. In the VPN Rules section, you will see that the VPN-Star community is used sending traffic over VPN. 
 
-a. Review the settings of this community and validate that the Center gateway is gw3 and the satellite gateway is gw1 
+a. Review the settings of this community and validate that the Center gateway is branch-gw and the satellite gateway is hq-exl 
 
 b. Verify that Nat is disabled within the community 
 
@@ -54,7 +54,7 @@ c. Verify that “IKEv2 Only” is used as encryption settings
 
 d. Verify that VPN routing from satellites is configured “To center and other satellites through center” 
 
-7. Make sure the policy is corrected loaded on the gateways by installing the access control and Threat Prevention policy on gw1 and gw3 
+7. Make sure the policy is corrected loaded on the gateways by installing the access control and Threat Prevention policy on hq-exl and branch-gw 
 
 8. After policy installation completed, go to the Windows Client, log in as Alice and use the Microsoft Edge browser to Test connectivity to internet and to connectivity over VPN to the web server 
 
@@ -147,7 +147,7 @@ Note: A new tenant called “sd-wan-ws-[your name]” has been created for you b
 
  <img width="1062" height="123" alt="image" src="https://github.com/user-attachments/assets/14f27593-b360-404e-b82b-93753e7986b9" />
 
-***Prepare your Infinity portal tenant and gw1 and gw3 for SD-WAN***
+***Prepare your Infinity portal tenant and hq-exl and branch-gw for SD-WAN***
 
 1. In infinity portal start by going to service Quantum > Security Management & Smart-1 Cloud to connect your on-premisses security management server to the infinity portal 
 
@@ -166,7 +166,7 @@ NOTE: If you use “Send Text” function in CloudShare make sure to have Englis
 <img width="337" height="439" alt="image" src="https://github.com/user-attachments/assets/e29a3bec-e2bd-4625-90fa-ed686d7280fc" />
 
 
-6. On GW1 go to Network Interfaces and select the interfaces used for external / WAN access which is eth3 and eth1. On these interfaces enable the SD-WAN functionality, do not forget to provide a description for the interface. 
+6. On hq-exl go to Network Interfaces and select the interfaces used for external / WAN access which is eth3 and eth1. On these interfaces enable the SD-WAN functionality, do not forget to provide a description for the interface. 
 
 a. eth3, Comment: Primary external WAN,  
 enable use as SD-WAN interface, Next Hop address 10.160.20.1, Tag ISP1 
@@ -174,7 +174,7 @@ enable use as SD-WAN interface, Next Hop address 10.160.20.1, Tag ISP1
 b. eth1, Comment: Secondary external WAN,  
 enable use as SD-WAN interface, Next Hop address 10.160.21.1, Tag ISP2 
 
-7. Do the same on GW3, use the following values for the parameters 
+7. Do the same on branch-gw, use the following values for the parameters 
 
 a. eth2, Comment: Primary external WAN,  
 Enable use as SD-WAN interface, Next hop address 10.160.30.1, Tag ISP1 
@@ -197,21 +197,21 @@ Note: You can see that this Quantum Profile is associated with the on-premises m
 
 11. Open the profile and copy the deployment command “nano-egg --install --token ******” 
 
-12. Go back to SmartConsole and open the Gateways & Servers view, select gw1 and run a one time script by pasting the deployment command into the script body window and click Run. 
+12. Go back to SmartConsole and open the Gateways & Servers view, select hq-exl and run a one time script by pasting the deployment command into the script body window and click Run. 
 
-13. Do the same for gw3 
+13. Do the same for branch-gw 
 
 14. When the command execution is completed go back to the SD-WAN service in the Infinity Portal and check that the gateways are connected via the agent. This can be seen under Network > Agents. As you see the SD-WAN functionality is not yet enabled 
  
 <img width="337" height="439" alt="image" src="https://github.com/user-attachments/assets/de7a7029-0bfb-485e-a40e-7f59420b74c1" />
 
-***Configure SD-WAN for GW1 and GW3***
+***Configure SD-WAN for hq-exl and branch-gw***
 
 To enable the SD-WAN functionality, go to the “getting started” section in the SD-WAN service in the Infinity Portal and open the wizard  
 
 Leave “environment” settings and “use cases” settings as default 
 
-Select gw1 and gw3 to be used 
+Select hq-exl and branch-gw to be used 
 
 For WAN link mapping use the tags you previously defined on the gateway 
 
@@ -276,7 +276,7 @@ In there you can see that the Overlay Tunnels are down.
 <img width="441" height="363" alt="image" src="https://github.com/user-attachments/assets/f6220726-46b8-4d44-9b30-3c057d7a318a" />
 
 
-Open Putty and connect to gw1 and start cpview, in cpview go to Advanced and SDWAN 
+Open Putty and connect to hq-exl and start cpview, in cpview go to Advanced and SDWAN 
 
 In there you can see information about Local Breakout probing Results, Next Hop Probing Results and Overlay Probing Results. 
 
@@ -287,12 +287,12 @@ Looking at Overlay Probing Results we can see that the probing method is ICMP, S
 
 <img width="1066" height="165" alt="image" src="https://github.com/user-attachments/assets/82b2a9b0-fd40-4778-974d-ad4f87a9bd3d" />
 
-Go to logs view in SmartConsole and filter on service icmp-requets we can see that echo request packages are dropped between gw1 and gw3 indicating that we are missing a rule to allow VPN overlay probing between gw1 and gw3. 
+Go to logs view in SmartConsole and filter on service icmp-requets we can see that echo request packages are dropped between hq-exl and branch-gw indicating that we are missing a rule to allow VPN overlay probing between hq-exl and branch-gw. 
 
 <img width="1071" height="200" alt="image" src="https://github.com/user-attachments/assets/d3ce316d-f239-47af-9bf9-5952b0822485" />
 
 
-On SmartConsole, in the two policy packages for gw1 and gw2 create a VPN probing rule. 
+On SmartConsole, in the two policy packages for hq-exl and gw2 create a VPN probing rule. 
 Put the rule in its own Section just below the Management rules in top of the two policy packages 
 The rule should look like this: 
 
@@ -303,16 +303,16 @@ TIP: You can copy the entire section with rules to the other policy package by c
 <img width="826" height="320" alt="image" src="https://github.com/user-attachments/assets/8d9ed3c7-8445-4f35-a2ab-ff6c415ce9bf" />
 
 
-Do not forget to install the policies to gw1 and gw3 
+Do not forget to install the policies to hq-exl and branch-gw 
 
-Once policy installation completed, click on the rule and check that you have echo-request encrypt and decrypt logs on gw1 and gw3 in the log tab of the rule. 
+Once policy installation completed, click on the rule and check that you have echo-request encrypt and decrypt logs on hq-exl and branch-gw in the log tab of the rule. 
 
 go to the SD-WAN service in the infinity portal click on monitoring. There should now be 8 tunnels that are up. 
-Under Overlay Tunnels Monitoring pick GW1 from the dropdown list, you should now be able to see information like Latency, Jitter, Packet Loss and SLA for the different VPN tunnels. 
+Under Overlay Tunnels Monitoring pick hq-exl from the dropdown list, you should now be able to see information like Latency, Jitter, Packet Loss and SLA for the different VPN tunnels. 
 <img width="1070" height="191" alt="image" src="https://github.com/user-attachments/assets/d7eba17a-aad8-4d01-bed5-40313e2796ee" />
 
 
-Open Putty and connect to gw1 and start cpview. In cpview go to Advanced and SDWAN 
+Open Putty and connect to hq-exl and start cpview. In cpview go to Advanced and SDWAN 
 
 In there you should be able to see similar information about Latency, Jitter, Packet Loss for the VPN tunnels 
 
@@ -331,9 +331,9 @@ AI-generated content may be incorrect.
 
 Prepare your gateways to simulate a MPLS connection 
 
-We will change the configuration of eth1 on gw1 and gw3 to use gw2 as a router simulating a MPLS connection. 
+We will change the configuration of eth1 on hq-exl and branch-gw to use gw2 as a router simulating a MPLS connection. 
 
-On the Management Client open Microsoft Edge and connect to the Gaia portal of gw1, as youi can see the Circuit ID of the SD-WAN interfaces are the same for both interfaces 
+On the Management Client open Microsoft Edge and connect to the Gaia portal of hq-exl, as youi can see the Circuit ID of the SD-WAN interfaces are the same for both interfaces 
 
 
 A screenshot of a computer
@@ -401,7 +401,7 @@ In “Overlay Tunnel Monitoring” in infinity portal you can after a while se t
 
  
 
-In addition to the Gaia web portal and the clish show interface command, you can also see the two different circuit IDs for your interfaces by executing the command “sdwan_conf show eth1; sdwan_conf show eth3” in expert mode on gw1 
+In addition to the Gaia web portal and the clish show interface command, you can also see the two different circuit IDs for your interfaces by executing the command “sdwan_conf show eth1; sdwan_conf show eth3” in expert mode on hq-exl 
 
  
 
@@ -422,7 +422,7 @@ Looking in the connection log of the session log you will see that SD-WAN is bei
 If you search for the web server (10.160.40.100) you will find a encrypt connection log. In there you can see that SD-WAN is being used for this connection with the default overlay steering object and which interface was being used. 
  
 
-Go to clish on GW1 and execute command “show configuration sdwan” find the interface tagged with ISP1 and shut it off with the command “set interface xxx state off” 
+Go to clish on hq-exl and execute command “show configuration sdwan” find the interface tagged with ISP1 and shut it off with the command “set interface xxx state off” 
 
 Refresh the web page to the demo server to generate a new log connection and log entry 
 
@@ -432,6 +432,6 @@ A screenshot of a computer
 
 AI-generated content may be incorrect. 
 
-In “Overlay Tunnel Monitoring” in infinity portal you can for GW3 see that the tunnel over the public WAN link is down, this is also reflected in cpview 
+In “Overlay Tunnel Monitoring” in infinity portal you can for branch-gw see that the tunnel over the public WAN link is down, this is also reflected in cpview 
 
 NOTE: Using playblocks you can be automatically be notified or a ticket can automatically be created in for example Jira or ServiceNow when there is a link swap with ISP down event. You can find that automation by searching for SD-WAN in Automations under Playblooks. 
