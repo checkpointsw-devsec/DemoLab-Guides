@@ -1,5 +1,7 @@
-## start with the Environment document
+## Getting familiar with the environment
 <a href="https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/TechPoint_Environment.md" target="_blank" rel="noopener noreferrer">Environment-description (open in a new Tab)</a>
+
+From the HQ-Win10 Client you have prepared SSH sessions to connect gateways with ssh.
 
 ## sync codebase from github to gitlab
 start powershell 
