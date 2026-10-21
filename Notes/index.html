@@ -286,7 +286,7 @@ const nodes = [
   {id:'isp2', credentials:'vyos / vpn123', name:'ISP2', kind:'isp', site:'core', asn:64539, cx:770, cy:590, w:180, h:104, role:'Provider router. Uses .254 on every transit network.'},
   {id:'hqexl', credentials:'admin / vpn123', name:'hq-exl', kind:'gw', cluster:true, site:'hq', asn:64551, cx:410, cy:330, w:190, h:56, role:'Two-member gateway cluster with a sync link'},
   {id:'hqvsn', credentials:'admin / vpn123', name:'hq-vsn', kind:'gw', cluster:true, site:'hq', asn:64552, cx:410, cy:600, w:190, h:56, role:'Two-member gateway cluster with a sync link'},
-  {id:'hqlan', credentials:'admin / vpn123', name:'HQ LAN', kind:'seg', site:'hq', x:205, y1:235, y2:745, v4:'192.168.30.0/24', v6:'A192:168:30::/64', role:'HQ site LAN'},
+  {id:'hqlan', name:'HQ LAN', kind:'seg', site:'hq', x:205, y1:235, y2:745, v4:'192.168.30.0/24', v6:'A192:168:30::/64', role:'HQ site LAN'},
   {id:'hqclient', credentials:'student / Cpwins1!', name:'HQ-Client', kind:'host', site:'hq', cx:110, cy:270, w:150, h:50, role:'Client'},
   {id:'hqdc', credentials:'student / Cpwins1!', name:'HQ-Win-DC', kind:'host', site:'hq', cx:110, cy:400, w:150, h:50, role:'Windows domain controller'},
   {id:'hqlinux', credentials:'uadmin / vpn123', name:'HQ-Linux', kind:'host', site:'hq', cx:110, cy:530, w:150, h:50, role:'Linux host'},
