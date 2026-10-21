@@ -11,8 +11,9 @@ Please Open SmartConsole from the HQ-Win10 desktop.
 
 Please Check Gateways and make sure Gateways are shown with healty status.
 
-Standard security policy package shows one cleanup polica that allows any communication.
-A VPN Community is prepared configuration. 
+Standard security policy package shows one cleanup policy that allows any communication.
+A VPN Community "Bra_DC_Community" is prepared configuration. 
+
 
 a. As you see the environment consists of GW1 where windows client will use this getaway to access internet, and by default it can even use the second internet connection. 
 
