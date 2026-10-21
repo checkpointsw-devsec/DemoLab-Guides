@@ -17,6 +17,7 @@ a. As you see the environment consists of GW1 where windows client will use this
 
 <img width="967" height="320" alt="image" src="https://github.com/user-attachments/assets/f3c5d323-27b0-4870-bebb-973ffa4a06ee" />
 
+![HQ: ](./images/image.png)
 
 b. The Client will use VPN to connect over internet to GW3 to reach the web server 
 
