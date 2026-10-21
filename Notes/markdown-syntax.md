@@ -581,7 +581,10 @@ You can add invisible comments and use some simple HTML when Markdown alone is i
 ```html
 <!-- TODO: Add a screenshot later. -->
 
-<p align="center">Centered text</p>
+<div align="center">
+  <img width="228" height="404" alt="Example of a Policy-Package.md file in a playbook folder" src="https://github.com/user-attachments/assets/f0643b60-7d7b-4920-8ccf-b62c86b4522b" />
+</div>
+
 
 Line one<br>
 Line two
