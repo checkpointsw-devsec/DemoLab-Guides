@@ -6,6 +6,9 @@ Please Open Web SmartConsole from the HQ-Win10 desktop.
 
 Please Check Gateways and make sure Gateways are shown with healty status.
 
+<img width="1185" height="322" alt="image" src="https://github.com/user-attachments/assets/b12703da-40cf-4474-bb53-8b3979ad7872" />
+
+
 Standard security policy package shows one cleanup policy that allows any communication.
 A VPN Community "Bra_DC_Community" is prepared configuration. 
 
