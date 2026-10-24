@@ -60,7 +60,7 @@ Check these two points before you begin. They explain most first-time failures:
 
 ### Lab values
 
-These values come from the original SD-WAN lab. Confirm them against the [lab network topology page](https://checkpointsw-devsec.github.io/DemoLab-Guides/Notes/index.html) before you start. If the two differ, the topology page wins.
+during the lab you will need additional information which is based on topology of this Lab. [lab network topology page](https://checkpointsw-devsec.github.io/DemoLab-Guides/Notes/index.html)
 
 | Item | Value |
 |---|---|
@@ -76,7 +76,7 @@ These values come from the original SD-WAN lab. Confirm them against the [lab ne
 
 ---
 
-## Lab topology
+## Lab topology in short
 
 Each site connects to ISP1 and ISP2. The topology page also shows a second branch, a second HQ cluster, and a test host (Hacker and JMeter). This guide uses the HQ-to-branch path.
 
@@ -91,8 +91,8 @@ flowchart LR
     W[branch-linux<br/>web server<br/>10.160.40.100]
   end
   C --- H
-  H -- "eth3 (ISP1)" --- I1((ISP1))
-  H -- "eth1 (ISP2)" --- I2((ISP2))
+  H -- "eth3 (ISP1)" --- I1((ISP1)) --- "eth2 (ISP1)"
+  H -- "eth1 (ISP2)" --- I2((ISP2)) --- "et4 (ISP2)"
   I1 --- B
   I2 --- B
   B --- W
