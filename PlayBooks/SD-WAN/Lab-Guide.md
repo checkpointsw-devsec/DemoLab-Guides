@@ -1,12 +1,9 @@
 # Getting familiar with the environment
 please instruictions here to connect and use the Demo-Lab.
 
-<a href="https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/TechPoint_Environment.md" target="_blank" rel="noopener noreferrer">topology (open in a new Tab)</a>
+[topology. (open in a new Tab)](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/TechPoint_Environment.md)
 
-[mal anders](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/TechPoint_Environment.md)
-
-
-Please Open Web SmartConsole from the HQ-Win10 desktop. 
+Open Web SmartConsole from the HQ-Win10 desktop. 
 
 <img width="890" height="204" alt="image" src="https://github.com/user-attachments/assets/b658e9ab-c4e1-424e-8961-2d8c5c0edc31" />
 
