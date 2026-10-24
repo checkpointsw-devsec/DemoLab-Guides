@@ -10,7 +10,7 @@ In this lab, you steer traffic across several WAN links with Check Point softwar
 | **Release** | R82.20 (Early Availability) |
 | **Suggested time** | Three hours, including one break. Adjust after your first pilot run |
 | **Level** | Familiar with SmartConsole, Gaia, and Site-to-Site VPN |
-| **Admin guide** | [Check Point SD-WAN - Smart-1 Unified Management R82.20 Administration Guide](https://sc1.checkpoint.com/documents/SD-WAN-with-Smart1/Content/Topics-SD-WAN-Smart-1/1_Introduction.htm) |
+| **Admin guide (EA)** | [Check Point SD-WAN - Smart-1 Unified Management R82.20 Administration Guide](https://sc1.checkpoint.com/documents/SD-WAN-with-Smart1/Content/Topics-SD-WAN-Smart-1/1_Introduction.htm) |
 
 ## What you will learn
 
@@ -47,7 +47,7 @@ Your trainer gives you the login details for every lab machine through the lab p
 
 ### Requirements
 
-| Component | Minimum version |
+| Component | Gaia version used in this LAB|
 |---|---|
 | Management Server | R82.20 |
 | Security Gateway or ClusterXL | R82.20 |
@@ -55,8 +55,8 @@ Your trainer gives you the login details for every lab machine through the lab p
 
 Check these two points before you begin. They explain most first-time failures:
 
-- **One management method per gateway.** A gateway takes its SD-WAN settings either from the SD-WAN application in Check Point Portal or from Smart-1 Unified Management. Never both. Overlay tunnels form only between peers that use the same method. Confirm that hq-exl and branch-gw are not attached to a Portal SD-WAN service
-- **One installation run.** The SD-WAN Policy installs as part of the Access Control policy installation. If the Access Control install fails on any gateway in the run, the SD-WAN install fails on all of them. Always install on hq-exl and branch-gw together
+- **One management method per gateway.** A gateway takes its SD-WAN settings either from the SD-WAN application in Check Point Portal or from Smart-1 Unified Management. Never both. Overlay tunnels form only between peers that use the same method. In this Lab Confirm hq-exl and branch-gw are not attached to a Portal SD-WAN service.
+- **Policy Packages.** The SD-WAN Policy installs as part of the Access Control policy installation. If the Access Control install fails on any gateway in the run, the SD-WAN install fails on all of them. 
 
 ### Lab values
 
