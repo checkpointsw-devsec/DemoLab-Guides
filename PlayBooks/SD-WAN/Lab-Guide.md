@@ -1,4 +1,8 @@
 # Getting familiar with the environment
+please instruictions here to connect and use the Demo-Lab.
+
+<a href="https://checkpointsw-devsec.github.io/DemoLab-Guides/Shared-Books/TechPoint_Environment.md" target="_blank" rel="noopener noreferrer">topology (open in a new Tab)</a>
+
 
 Please Open Web SmartConsole from the HQ-Win10 desktop. 
 
