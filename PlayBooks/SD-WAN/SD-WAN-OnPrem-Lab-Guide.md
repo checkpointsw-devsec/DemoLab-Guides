@@ -85,9 +85,10 @@ Time: 15 minutes
 1. Open SmartConsole from the management client
 2. Open **Gateways & Servers** and confirm that hq-exl and branch-gw show a healthy status
 3. Open **Security Policies** and review the Access Control rule base on both gateways' policy packages
-4. Open **VPN Communities** and open the prepared Star community
 
 > The lab cleanup rule accepts all traffic. The data center and branch office policy packages become available after you run the prepared AWX workflow.
+
+4. Open **VPN Communities** and open the prepared Star community
 
 Check these settings in the Star community:
 
@@ -107,7 +108,7 @@ Check the VPN domains and Link Selection:
 Test the baseline from hq-client:
 
 1. Browse to an Internet site
-2. Browse to `http://10.160.40.100` (the web server at the branch)
+2. Browse to `http://10.160.40.100/daloradius/login.php` (the web server at the branch)
 3. In **Logs & Events**, search for `dst:10.160.40.100` and confirm you see an Encrypt log
 
 > **Expected result:** both sites load, and the Encrypt log shows the VPN path. You have a working VPN but no SD-WAN yet.
