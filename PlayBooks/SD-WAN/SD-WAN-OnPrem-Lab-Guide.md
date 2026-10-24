@@ -62,6 +62,8 @@ Check these two points before you begin. They explain most first-time failures:
 
 during the lab you will need additional information which is based on topology of this Lab. [lab network topology page](https://checkpointsw-devsec.github.io/DemoLab-Guides/Notes/index.html)
 
+Hover to trace a connection, and click a device for its addresses.
+
 | Item | Value |
 |---|---|
 | hq-exl, ISP1 interface | `eth3`, 10.160.20.10, next hop 10.160.20.254 |
@@ -73,34 +75,6 @@ during the lab you will need additional information which is based on topology o
 | HQ VPN domain | `net_192.168.30.0_24` |
 | Branch VPN domain | `net_172.30.1.0_24` |
 | Web server (branch-linux) | 10.160.40.100 |
-
----
-
-## Lab topology in short
-
-Each site connects to ISP1 and ISP2. The topology page also shows a second branch, a second HQ cluster, and a test host (Hacker and JMeter). This guide uses the HQ-to-branch path.
-
-```mermaid
-flowchart LR
-  subgraph HQ
-    C[hq-client]
-    H[hq-exl]
-  end
-  subgraph Branch
-    B[branch-gw]
-    W[branch-linux<br/>web server<br/>10.160.40.100]
-  end
-  C --- H
-  H -- "eth3 (ISP1)" --- I1((ISP1)) 
-  H -- "eth1 (ISP2)" --- I2((ISP2)) 
-  B -- "eth2 (ISP1)" --- I2((ISP1)) 
-  B -- "eth4 (ISP1)" --- I4((ISP2)) 
-  I1 --- B
-  I2 --- B
-  B --- W
-```
-
-Open the [full interactive diagram](https://checkpointsw-devsec.github.io/DemoLab-Guides/Notes/index.html). Hover to trace a connection, and click a device for its addresses.
 
 ---
 
