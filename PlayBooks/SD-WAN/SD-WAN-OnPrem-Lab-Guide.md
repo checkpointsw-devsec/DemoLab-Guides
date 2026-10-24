@@ -113,7 +113,7 @@ Time: 15 minutes
 3. Open **Security Policies** and review the Access Control rule base on both gateways' policy packages
 4. Open **VPN Communities** and open the prepared Star community
 
-> The lab cleanup rule accepts all traffic. We do this only to keep the focus on SD-WAN. In production, use a default deny rule and explicit allow rules.
+> The lab cleanup rule accepts all traffic. The data center and branch office policy packages become available after you run the prepared AWX workflow.
 
 Check these settings in the Star community:
 
