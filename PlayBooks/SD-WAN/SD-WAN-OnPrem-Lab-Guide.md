@@ -64,17 +64,15 @@ These values come from the original SD-WAN lab. Confirm them against the [lab ne
 
 | Item | Value |
 |---|---|
-| hq-exl, ISP1 interface | `eth3`, 10.160.20.10, next hop 10.160.20.1 |
-| hq-exl, ISP2 interface | `eth1`, next hop 10.160.21.1 |
-| hq-exl, MPLS next hop (Part 7) | 10.160.21.20 |
-| branch-gw, ISP1 interface | `eth2`, 10.160.30.30, next hop 10.160.30.1 |
-| branch-gw, ISP2 interface | `eth1`, 10.160.31.30, next hop 10.160.31.1 |
-| branch-gw, MPLS next hop (Part 7) | 10.160.31.20 |
+| hq-exl, ISP1 interface | `eth3`, 10.160.20.10, next hop 10.160.20.254 |
+| hq-exl, ISP2 interface | `eth1`, next hop 10.160.21.254 |
+| hq-exl, MPLS next hop (Part 7) | 10.160.21.254 |
+| branch-gw, ISP1 interface | `eth2`, 10.160.30.30, next hop 10.160.30.254 |
+| branch-gw, ISP2 interface | `eth1`, 10.160.31.30, next hop 10.160.31.254 |
+| branch-gw, MPLS next hop (Part 7) | 10.160.31.254 |
 | HQ VPN domain | `net_192.168.30.0_24` |
 | Branch VPN domain | `net_172.30.1.0_24` |
 | Web server (branch-linux) | 10.160.40.100 |
-
-> **Heads up:** the topology page notes that site gateways use `.1` and ISP routers use `.254` on each transit network. The original lab used `.1` as the ISP next hop. Check the page and use what it shows.
 
 ---
 
