@@ -91,8 +91,10 @@ flowchart LR
     W[branch-linux<br/>web server<br/>10.160.40.100]
   end
   C --- H
-  H -- "eth3 (ISP1)" --- I1((ISP1)) --- "eth2 (ISP1)"
-  H -- "eth1 (ISP2)" --- I2((ISP2)) --- "et4 (ISP2)"
+  H -- "eth3 (ISP1)" --- I1((ISP1)) 
+  H -- "eth1 (ISP2)" --- I2((ISP2)) 
+  B -- "eth2 (ISP1)" --- I2((ISP1)) 
+  B -- "eth4 (ISP1)" --- I4((ISP2)) 
   I1 --- B
   I2 --- B
   B --- W
