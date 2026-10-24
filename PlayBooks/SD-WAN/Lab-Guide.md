@@ -1,4 +1,4 @@
-#Getting familiar with the environment
+# Getting familiar with the environment
 
 Please Open Web SmartConsole from the HQ-Win10 desktop. 
 
