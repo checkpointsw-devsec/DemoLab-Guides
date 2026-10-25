@@ -93,6 +93,8 @@ Time: 15 minutes
 
 1. Open SmartConsole from the management client
 2. Open **Gateways & Servers** and confirm that hq-exl and branch-gw show a healthy status
+![health view](./images/Gateway-health.png)
+
 3. Open **Security Policies** and review the Access Control rule base on both gateways' policy packages
 
 > The lab cleanup rule accepts all traffic. The data center and branch office policy packages become available after you run the prepared AWX workflow.
