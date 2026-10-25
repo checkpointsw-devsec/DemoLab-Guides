@@ -1,5 +1,7 @@
 [What you lern here](#what-you-will-learn)
 [How SD-WAN works in 60 sec](#how-sd-wan-works-in-60-seconds)
+[Lab Access](#lab-access)
+
 # Check Point SD-WAN with Smart-1 Unified Management: Hands-On Lab Guide
 
 Two Internet lines. One simulated MPLS line. One place to manage it all: SmartConsole.
