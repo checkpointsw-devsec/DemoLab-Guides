@@ -147,7 +147,7 @@ Check the VPN domains and Link Selection:
 Install **Standard** Policy Package and check Traffic from hq-client:
 
 1. Browse to an Internet site (https://bbc.com)
-2. Browse to `http://172.30.1.60/daloradius/login.php` (the web server at the branch)
+2. Browse to `http://172.30.1.60` (the web server at the branch)
 
 ![web-page opens](./images/Web-Server-check.png)
 
@@ -163,7 +163,7 @@ You have a working VPN but no SD-WAN yet.
 
 Time: 15 minutes
 
-SD-WAN objects stay hidden in SmartConsole until you switch them on at the Management Server. Do this before anything else.
+> SD-WAN configuration capabilities in EA Phase stay hidden in SmartConsole until you switch them on at the Management Server. Do this before anything else.
 
 1. Open an SSH session to the Management Server and log in to Expert mode
 2. Check the Web SmartConsole package version:
@@ -197,14 +197,14 @@ echo CF_SD_WAN=1 >> $FWDIR/conf/mwc.env
 wsc restart
 ```
 
-> Restarting can disconnect active Web SmartConsole sessions. Warn your neighbors first.
+> Restarting can disconnect active Web SmartConsole sessions. 
 
 7. Reconnect with SmartConsole
 8. Go to **Security Policies** and look in the **Shared Policies** section
 
 > **Expected result:** the **SD-WAN Policy** entry appears under Shared Policies.
 
-**Licensing.** Each SD-WAN gateway needs an SD-WAN subscription associated in the User Center and attached to the gateway. Your trainer attaches the lab licenses. After Part 3, SD-WAN should appear in the list of enabled Software Blades on each gateway.
+**Licensing.** Each SD-WAN gateway needs an SD-WAN subscription associated in the User Center and attached to the gateway. Your trainer has already attached the lab licenses. After Part 3, SD-WAN should appear in the list of enabled Software Blades on each gateway.
 
 ---
 
@@ -229,9 +229,9 @@ show route
 
 3. Add only what is missing:
 
-```
-set static-route default nexthop gateway address 10.160.20.1 on
-set static-route default nexthop gateway address 10.160.21.1 priority 1 on
+```clish
+set static-route default nexthop gateway address 10.160.11.254 on
+set static-route default nexthop gateway address 10.160.12.254 priority 1 on
 set static-route default ping on
 save config
 ```
@@ -243,9 +243,9 @@ save config
 1. Connect to branch-gw and open Gaia Clish
 2. Add only what is missing:
 
-```
-set static-route default nexthop gateway address 10.160.30.1 on
-set static-route default nexthop gateway address 10.160.31.1 priority 1 on
+```clish
+set static-route default nexthop gateway address 10.160.30.254 on
+set static-route default nexthop gateway address 10.160.31.254 priority 1 on
 set static-route default ping on
 save config
 ```
@@ -255,13 +255,13 @@ save config
 
 `ping on` only watches the next hop. A better design watches a target beyond the ISP. Pick one target per ISP, route each target through its own ISP, and attach it to that ISP's default route. Don't attach a target to the last-resort route.
 
-```
+```clish
 set ip-reachability-detection ping address <target-1> enable-ping on
 set ip-reachability-detection ping address <target-2> enable-ping on
 set static-route <target-1>/32 nexthop gateway address 10.160.20.1 on
 set static-route <target-2>/32 nexthop gateway address 10.160.21.1 on
-set static-route default nexthop gateway address 10.160.20.1 monitored-ip <target-1> on
-set static-route default nexthop gateway address 10.160.21.1 priority 1 on
+set static-route default nexthop gateway address 10.160.11.254 monitored-ip <target-1> on
+set static-route default nexthop gateway address 10.160.12.254 priority 1 on
 save config
 ```
 
@@ -304,10 +304,10 @@ You need two kinds of objects:
 
 5. Edit `eth3`, then open its **SD-WAN** tab
 6. Enable SD-WAN on the interface and map it to WAN Link `ISP1`
-7. Set the next hop mode to **Custom** and enter 10.160.20.1
+7. Set the next hop mode to **Custom** and enter 10.160.11.254
 8. Edit `eth1`, then open its **SD-WAN** tab
 9. Enable SD-WAN and map it to WAN Link `ISP2`
-10. Set the next hop mode to **Custom** and enter 10.160.21.1
+10. Set the next hop mode to **Custom** and enter 10.160.12.254
 11. Leave **Symmetric Return** at its default
 12. Click **OK**
 
