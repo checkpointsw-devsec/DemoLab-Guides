@@ -1,3 +1,5 @@
+[What you lern here](#what-you-will-learn)
+[How SD-WAN works in 60 sec](#how-sd-wan-works-in-60-seconds)
 # Check Point SD-WAN with Smart-1 Unified Management: Hands-On Lab Guide
 
 Two Internet lines. One simulated MPLS line. One place to manage it all: SmartConsole.
@@ -115,30 +117,31 @@ after all has been done successfully you can see:
 for more information about GitLab components here please open ([link](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/GitLab.md)) <br>
 for more information about AWX components here please open ([link](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/AWX.md))
 
+after a successful run of "Flow-SD-WAN", objects that are used in this lab are available.
 
+4. Open **VPN Communities** named Bra_DC_Community 
 
-4. Open **VPN Communities** and open the prepared Star community
+Check and set these settings in the Star community:
 
-Check these settings in the Star community:
-
-1. On the **Gateways** page, confirm the center and satellite gateways
-2. Confirm the routing mode (the lab uses "To center and to other satellites through center")
+1. On the **Gateways** page, center has to be **hq-exl-gw**
+2. satellite gateway:  **branch-gw**
+2. routing mode: Domain Based! the lab uses "To center and to other satellites through center"
 3. On **Access Control Policy > Properties**, note whether NAT is disabled inside the community
 4. On **Encryption**, note the IKE version
 
 Check the VPN domains and Link Selection:
 
-1. Open hq-exl: set VPN domain to `net_192.168.30.0_24`
+1. Open hq-exl-gw: set VPN domain to `net_192.168.30.0_24`
 2. Open branch-gw: set VPN domain is `net_172.30.1.0_24`
 3. In each gateway, open **IPSec VPN > Link Selection** and note the primary interface
 
 > **Why Link Selection still matters.** Between two SD-WAN gateways, SD-WAN builds tunnels between SD-WAN interfaces on its own. Link Selection applies only to peers where at least one side doesn't run the SD-WAN Software Blade. Configure it anyway. It is the fallback if you remove the blade.
 
-Test the baseline from hq-client:
+Install Policy Standard Policy and check Traffic from hq-client:
 
-1. Browse to an Internet site
-2. Browse to `http://10.160.40.100/daloradius/login.php` (the web server at the branch)
-3. In **Logs & Events**, search for `dst:10.160.40.100` and confirm you see an Encrypt log
+1. Browse to an Internet site (https://bbc.com)
+2. Browse to `http://172.30.1.60/daloradius/login.php` (the web server at the branch)
+3. In **Logs & Events**, search for `dst:172.30.1.60` and confirm you see an Encrypt log
 
 > **Expected result:** both sites load, and the Encrypt log shows the VPN path. You have a working VPN but no SD-WAN yet.
 
