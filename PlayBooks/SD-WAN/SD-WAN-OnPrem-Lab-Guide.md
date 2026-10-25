@@ -147,7 +147,7 @@ Install **Standard** Policy Package and check Traffic from hq-client:
 1. Browse to an Internet site (https://bbc.com)
 2. Browse to `http://172.30.1.60/daloradius/login.php` (the web server at the branch)
 
-[web-page opens](<https://../images/Web-Server-check.png)
+![web-page opens](./images/Web-Server-check.png)
 
 3. In **Logs & Events**, search for `dst:172.30.1.60` and confirm you see an Encrypt log
 
