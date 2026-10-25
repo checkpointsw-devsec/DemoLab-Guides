@@ -5,6 +5,7 @@
 - [What you lern here](#what-you-will-learn)
 - [How SD-WAN works in 60 sec](#how-sd-wan-works-in-60-seconds)
 - [Lab Access](#lab-access)
+- [Lab setup](#lab-setup)
 
 # Check Point SD-WAN with Smart-1 Unified Management: Hands-On Lab Guide
 
@@ -53,7 +54,7 @@ The management path is simple: the Management Server installs the SD-WAN Policy 
 
 Your trainer gives you the login details for every lab machine through the lab portal. Keep them there. Don't type them into notes, scripts, or browser password stores, and don't paste them into this guide.
 
-### Requirements
+### Lab setup 
 
 | Component | Gaia version used in this LAB|
 |---|---|
@@ -120,14 +121,12 @@ flow output shows the different playbooks that are used in this flow. tmp is use
 after all has been done successfully you can see:
 <img width="1935" height="662" alt="image" src="https://github.com/user-attachments/assets/ea0b93b5-aba7-4806-9339-a1212f175cad" />
 
-for more information about GitLab components here please open ([link](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/GitLab.md)) <br>
-for more information about AWX components here please open ([link](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/AWX.md))
+[for more information about GitLab components here please open](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/GitLab.md) <br>
+[for more information about AWX components here please open ](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/AWX.md)
 
-after a successful run of "Flow-SD-WAN", objects that are used in this lab are available.
+after a successful run of "Flow-SD-WAN", objects that are used in this lab get available in Smart Console.
 
-4. Open **VPN Communities** named Bra_DC_Community 
-
-Check and set these settings in the Star community:
+4. Open **VPN Communities** named Bra_DC_Community and Check / set these settings in the Star community:
 
 1. On the **Gateways** page, center has to be **hq-exl-gw**
 2. satellite gateway:  **branch-gw**
@@ -143,23 +142,23 @@ Check the VPN domains and Link Selection:
 
 > **Why Link Selection still matters.** Between two SD-WAN gateways, SD-WAN builds tunnels between SD-WAN interfaces on its own. Link Selection applies only to peers where at least one side doesn't run the SD-WAN Software Blade. Configure it anyway. It is the fallback if you remove the blade.
 
-Install Policy Standard Policy and check Traffic from hq-client:
+Install **Standard** Policy Package and check Traffic from hq-client:
 
 1. Browse to an Internet site (https://bbc.com)
 2. Browse to `http://172.30.1.60/daloradius/login.php` (the web server at the branch)
 3. In **Logs & Events**, search for `dst:172.30.1.60` and confirm you see an Encrypt log
 
-> **Expected result:** both sites load, and the Encrypt log shows the VPN path. You have a working VPN but no SD-WAN yet.
+> **Expected result:** both sites load, and the Encrypt log shows the VPN path. 
+> you should observe at least two log entries to 172.30.1.60
+You have a working VPN but no SD-WAN yet.
 
 ---
 
-## Part 1: Enable SD-WAN objects on the Management Server
+## Part 1: Enable SD-WAN Blade on the Gateway Objects
 
 Time: 15 minutes
 
 SD-WAN objects stay hidden in SmartConsole until you switch them on at the Management Server. Do this before anything else.
-
-> Your trainer may have done this step already. Run step 1 anyway. If SD-WAN Policy already appears in Shared Policies, skip to Part 2.
 
 1. Open an SSH session to the Management Server and log in to Expert mode
 2. Check the Web SmartConsole package version:
