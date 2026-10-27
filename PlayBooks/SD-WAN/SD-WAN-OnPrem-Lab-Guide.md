@@ -93,7 +93,7 @@ Hover to trace a connection, and click a device for its addresses.
 
 | Item | Value |
 |---|---|
-| hq-exl, ISP1 interface | `eth3`, 10.160.20.10, <br>next hop 10.160.20.254 |
+| hq-exl, ISP1 interface | <span style="background-color:#c8e6c9">`eth3`, 10.160.20.10, <br>next hop 10.160.20.254 </span>|
 | hq-exl, ISP2 interface | `eth1`, <br>next hop 10.160.21.254 |
 | hq-exl, MPLS next hop (Part 7) | 10.160.21.254 |
 | branch-gw, ISP1 interface | `eth2`, 10.160.30.30, <br>next hop 10.160.30.254 |
