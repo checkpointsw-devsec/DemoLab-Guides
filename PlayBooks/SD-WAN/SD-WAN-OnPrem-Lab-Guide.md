@@ -118,9 +118,12 @@ in this Part you get more friendly to the lab environment and deploy the Policy 
 > The lab cleanup rule accepts all traffic. The data center and branch office policy packages become available after you run the prepared AWX workflow.
 
 - **Policy Package**
+
 to get the policy packages for this lab please:
 
 open firefox browser and click on prepared AWX (ansible Works) bookmark
+
+for credentials plese see [Lab network topology](https://checkpointsw-devsec.github.io/DemoLab-Guides/Notes/index.html)
 
 <img width="852" height="326" alt="Open-link" src="https://github.com/user-attachments/assets/4bda181e-52d5-4eeb-b3a6-77737f2f892e" />
 
