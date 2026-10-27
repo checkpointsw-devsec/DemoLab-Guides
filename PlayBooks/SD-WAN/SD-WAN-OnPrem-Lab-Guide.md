@@ -8,15 +8,16 @@
 - [Lab Access](#lab-access)
 - [Lab setup](#lab-setup)
 - [Part 0: Get familiar with the environment](#part-0-get-familiar-with-the-environment)
-- [Part 1: Enable SD-WAN Blade on the Gateway Objects](#part-1-enable-sd-wan-blade-on-the-gateway-objects)
-- [Part 2: Prepare gateway networking](#part-2-prepare-gateway-networking)
-- [Part 3: Enable SD-WAN on hq-exl and branch-gw](#part-3-enable-sd-wan-on-hq-exl-and-branch-gw)
-- [Part 4: Create the SD-WAN Policy](#part-4-create-the-sd-wan-policy)
-- [Part 5: Configure VPN and Access Control for the overlay](#part-5-configure-vpn-and-access-control-for-the-overlay)
-- [Part 6: Install and validate](#part-6-install-and-validate)
-- [Part 7: Add an MPLS line](#part-7-add-an-mpls-line)
-- [Part 8: Fail over](#part-8-fail-over)
-- [Part 9: Troubleshoot](#part-9-troubleshoot)
+- [EA Part 0: Enable SD-WAN Blade on the Gateway Objects](#ea-part-0-enable-sd-wan-blade-on-the-gateway-objects)
+
+- [Part 1: Prepare gateway networking](#part-1-prepare-gateway-networking)
+- [Part 2: Enable SD-WAN on hq-exl and branch-gw](#part-2-enable-sd-wan-on-hq-exl-and-branch-gw)
+- [Part 3: Create the SD-WAN Policy](#part-3-create-the-sd-wan-policy)
+- [Part 4: Configure VPN and Access Control for the overlay](#part-4-configure-vpn-and-access-control-for-the-overlay)
+- [Part 5: Install and validate](#part-5-install-and-validate)
+- [Part 6: Add an MPLS line](#part-6-add-an-mpls-line)
+- [Part 7: Fail over](#part-7-fail-over)
+- [Part 8: Troubleshoot](#part-8-troubleshoot)
 - [Optional challenges](#optional-challenges)
 
 
@@ -173,7 +174,7 @@ You have a working VPN but no SD-WAN yet.
 
 ---
 
-## Part 1: Enable SD-WAN Blade on the Gateway Objects
+## EA Part 0: Enable SD-WAN Blade on the Gateway Objects
 
 Time: 15 minutes
 
@@ -222,7 +223,7 @@ wsc restart
 
 ---
 
-## Part 2: Prepare gateway networking
+## Part 1: Prepare gateway networking
 
 Time: 20 minutes
 
@@ -287,7 +288,7 @@ Use targets that your lab ISPs actually route.
 
 ---
 
-## Part 3: Enable SD-WAN on hq-exl and branch-gw
+## Part 2: Enable SD-WAN on hq-exl and branch-gw
 
 Time: 30 minutes
 
@@ -343,7 +344,7 @@ You need two kinds of objects:
 
 ---
 
-## Part 4: Create the SD-WAN Policy
+## Part 3: Create the SD-WAN Policy
 
 Time: 15 minutes
 
@@ -387,7 +388,7 @@ Rule order matters: put specific rules above general ones.
 
 ---
 
-## Part 5: Configure VPN and Access Control for the overlay
+## Part 4: Configure VPN and Access Control for the overlay
 
 Time: 25 minutes
 
@@ -430,7 +431,7 @@ You don't need a manual SD-WAN Policy rule for probing when the default Overlay 
 
 ---
 
-## Part 6: Install and validate
+## Part 5: Install and validate
 
 Time: 30 minutes
 
@@ -513,7 +514,7 @@ Take 10 to 15 minutes. Your trainer tells you when Part 7 starts.
 
 ---
 
-## Part 7: Add an MPLS line
+## Part 6: Add an MPLS line
 
 Time: 30 minutes
 
@@ -576,7 +577,7 @@ On branch-gw:
 
 ---
 
-## Part 8: Fail over
+## Part 7: Fail over
 
 Time: 15 minutes
 
@@ -619,7 +620,7 @@ set interface eth3 state on
 
 ---
 
-## Part 9: Troubleshoot
+## Part 8: Troubleshoot
 
 Time: 30 minutes
 
