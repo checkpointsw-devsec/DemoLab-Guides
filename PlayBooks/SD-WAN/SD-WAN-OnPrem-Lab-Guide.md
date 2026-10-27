@@ -238,7 +238,7 @@ wsc restart
 
 > **Expected result:** the **SD-WAN Policy** entry appears under Shared Policies.
 
-<details>
+</details>
 
 **Licensing.** Each SD-WAN gateway needs an SD-WAN subscription associated in the User Center and attached to the gateway. Your trainer has already attached the lab licenses. After Part 3, SD-WAN should appear in the list of enabled Software Blades on each gateway.
 
