@@ -125,10 +125,12 @@ open firefox browser and click on prepared AWX (ansible Works) bookmark
 
 for credentials plese see [Lab network topology](https://checkpointsw-devsec.github.io/DemoLab-Guides/Notes/index.html)
 
-<img width="852" height="326" alt="Open-link" src="https://github.com/user-attachments/assets/4bda181e-52d5-4eeb-b3a6-77737f2f892e" />
+![awx Bookmark](./images/awx-bookmark)
 
 go to the Templates and launch "Flow-SD-WAN"
-<br>ansible scripts are synced with [Link](https://github.com/checkpointsw-devsec/DemoLab-Guides/tree/main/PlayBooks/SD-WAN/Ansible-Code) 
+<br>ansible scripts are synced with 
+
+![Link](https://github.com/checkpointsw-devsec/DemoLab-Guides/tree/main/Lab-Code/SD-WAN/Ansible) 
 
 <img width="2302" height="505" alt="image" src="https://github.com/user-attachments/assets/36a641f9-f6f5-4a6c-a485-326d9a0f3864" />
 
@@ -142,13 +144,13 @@ flow output shows the different playbooks that are used in this flow. tmp is use
   
 <img width="1979" height="727" alt="image" src="https://github.com/user-attachments/assets/a02c4272-bc2e-420c-9d1d-4844a5f49269" />
 
-after all has been done successfully you can see:
-<img width="1935" height="662" alt="image" src="https://github.com/user-attachments/assets/ea0b93b5-aba7-4806-9339-a1212f175cad" />
+after a successful run of "Flow-SD-WAN", objects that are used in this lab get available in Smart Console.
+
+Please ccheck Policy packages:
+![policy packages](./images/policy-packages.png)
 
 [for more information about GitLab components here please open](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/GitLab.md) <br>
 [for more information about AWX components here please open ](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/AWX.md)
-
-after a successful run of "Flow-SD-WAN", objects that are used in this lab get available in Smart Console.
 
 4. Open **VPN Communities** named Bra_DC_Community and Check / set these settings in the Star community:
 
