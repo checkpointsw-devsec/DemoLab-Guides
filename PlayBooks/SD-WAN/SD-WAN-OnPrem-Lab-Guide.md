@@ -240,8 +240,6 @@ wsc restart
 
 </details>
 
-**Licensing.** Each SD-WAN gateway needs an SD-WAN subscription associated in the User Center and attached to the gateway. Your trainer has already attached the lab licenses. After Part 3, SD-WAN should appear in the list of enabled Software Blades on each gateway.
-
 ---
 
 ## Part 1: Prepare gateway networking
@@ -253,6 +251,8 @@ SD-WAN builds on the gateway's own routing table. Set that foundation first.
 Gateway-originated traffic follows the Gaia routing table, not SD-WAN rules. SD-WAN never changes that table. If ISP1 fails and your default route still points at ISP1, the gateway itself loses its connection even while user traffic fails over.
 
 So each ISP gets its own default route with its own priority. A lower number wins. No priority means priority 0, the highest preference.
+
+**Licensing.** Each SD-WAN gateway needs an SD-WAN subscription associated in the User Center and attached to the gateway. Your trainer has already attached the lab licenses. After Part 3, SD-WAN should appear in the list of enabled Software Blades on each gateway.
 
 ### hq-exl
 
