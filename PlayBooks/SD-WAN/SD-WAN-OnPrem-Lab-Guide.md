@@ -76,7 +76,7 @@ Your trainer gives you the login details for every lab machine through the lab p
 | Security Gateway or ClusterXL | R82.20 |
 | Spark Firewall (if your topology includes one) | R82.00.11 |
 
-> Important Note: **Policy Packages.** The SD-WAN Policy is a shared Policy and gets installed on Gateways as part of the Access Control policy installation. If a new or modified Access Control install fails on any gateway in the run, the SD-WAN Policy is also not enforced. 
+> **Important Note for Policy Packages Installation**: The SD-WAN Policy is a shared Policy and gets installed on Gateways as part of the Access Control policy installation. If a new or modified Access Control install fails on any gateway in the run, the SD-WAN Policy is also not enforced. 
 
 ### Lab values
 
@@ -107,6 +107,8 @@ Hover to trace a connection, and click a device for its addresses.
 
 Time: 15 minutes
 
+in this Part you get more friendly to the lab environment and deploy the Policy Packages for the lab.
+
 1. Open SmartConsole from the management client
 2. Open **Gateways & Servers** and confirm that hq-exl and branch-gw show a healthy status
 ![health view](./images/Gateway-health.png)
@@ -115,6 +117,7 @@ Time: 15 minutes
 
 > The lab cleanup rule accepts all traffic. The data center and branch office policy packages become available after you run the prepared AWX workflow.
 
+- **Policy Package**
 to get the policy packages for this lab please:
 
 open firefox browser and click on prepared AWX (ansible Works) bookmark
