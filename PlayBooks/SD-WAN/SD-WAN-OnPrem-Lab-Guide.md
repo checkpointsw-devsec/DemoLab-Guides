@@ -186,6 +186,7 @@ Install **Standard** Policy Package and check Traffic from hq-client:
 
 > **Expected result:** both sites load, and the Encrypt log shows the VPN path. 
 > you should observe at least two log entries to 172.30.1.60
+
 You have a working VPN but no SD-WAN yet.
 
 ---
