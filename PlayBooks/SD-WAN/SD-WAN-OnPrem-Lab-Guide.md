@@ -8,7 +8,6 @@
 - [Lab Access](#lab-access)
 - [Lab setup](#lab-setup)
 - [Part 0: Get familiar with the environment](#part-0-get-familiar-with-the-environment)
-- [EA Part 0: Enable SD-WAN Blade on the Gateway Objects](#ea-part-0-enable-sd-wan-blade-on-the-gateway-objects)
 - [Part 1: Prepare gateway networking](#part-1-prepare-gateway-networking)
 - [Part 2: Enable SD-WAN on hq-exl and branch-gw](#part-2-enable-sd-wan-on-hq-exl-and-branch-gw)
 - [Part 3: Create the SD-WAN Policy](#part-3-create-the-sd-wan-policy)
