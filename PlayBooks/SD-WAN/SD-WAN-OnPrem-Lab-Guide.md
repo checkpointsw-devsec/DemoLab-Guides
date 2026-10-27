@@ -30,7 +30,7 @@ In this lab, you steer traffic across several WAN links with Check Point softwar
 | | |
 |---|---|
 | **Management model** | Smart-1 Unified Management (SD-WAN objects, gateway settings, and SD-WAN Policy live in SmartConsole) |
-| **Release** | R82.20 (Early Availability) |
+| **Release** | R82.20 |
 | **Suggested time** | Three hours, including one break. Adjust after your first pilot run |
 | **Level** | Familiar with SmartConsole, Gaia, and Site-to-Site VPN |
 | **Admin guide (EA)** | [Check Point SD-WAN - Smart-1 Unified Management R82.20 Administration Guide](https://sc1.checkpoint.com/documents/SD-WAN-with-Smart1/Content/Topics-SD-WAN-Smart-1/1_Introduction.htm) |
@@ -90,11 +90,11 @@ Hover to trace a connection, and click a device for its addresses.
 
 | Item | Value |
 |---|---|
-| hq-exl, ISP1 interface | `eth3`, 10.160.20.10, next hop 10.160.20.254 |
-| hq-exl, ISP2 interface | `eth1`, next hop 10.160.21.254 |
+| hq-exl, ISP1 interface | `eth3`, 10.160.20.10, <br>next hop 10.160.20.254 |
+| hq-exl, ISP2 interface | `eth1`, <br>next hop 10.160.21.254 |
 | hq-exl, MPLS next hop (Part 7) | 10.160.21.254 |
-| branch-gw, ISP1 interface | `eth2`, 10.160.30.30, next hop 10.160.30.254 |
-| branch-gw, ISP2 interface | `eth1`, 10.160.31.30, next hop 10.160.31.254 |
+| branch-gw, ISP1 interface | `eth2`, 10.160.30.30, <br>next hop 10.160.30.254 |
+| branch-gw, ISP2 interface | `eth1`, 10.160.31.30, <br>next hop 10.160.31.254 |
 | branch-gw, MPLS next hop (Part 7) | 10.160.31.254 |
 | HQ VPN domain | `net_192.168.30.0_24` |
 | Branch VPN domain | `net_172.30.1.0_24` |
