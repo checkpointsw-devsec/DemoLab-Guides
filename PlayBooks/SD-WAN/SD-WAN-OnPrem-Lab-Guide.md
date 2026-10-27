@@ -191,6 +191,9 @@ You have a working VPN but no SD-WAN yet.
 
 ---
 
+<details>
+<summary><strong>During EA Phase</strong></summary>
+
 ## EA Part 0: Enable SD-WAN Blade on the Gateway Objects
 
 Time: 15 minutes
@@ -235,6 +238,8 @@ wsc restart
 - Go to **Security Policies** and look in the **Shared Policies** section
 
 > **Expected result:** the **SD-WAN Policy** entry appears under Shared Policies.
+
+<details>
 
 **Licensing.** Each SD-WAN gateway needs an SD-WAN subscription associated in the User Center and attached to the gateway. Your trainer has already attached the lab licenses. After Part 3, SD-WAN should appear in the list of enabled Software Blades on each gateway.
 
