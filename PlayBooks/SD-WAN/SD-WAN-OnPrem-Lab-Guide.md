@@ -89,10 +89,6 @@ during the lab you will need additional information which is based on topology o
 Hover to trace a connection, and click a device for its addresses.
 <div align="center">
 
-<p style="color: pink; background-color: #1f1f1f;font-size: large; padding: 15px; border-radius: 20px; border: 1px solid pink;">
-lkjhfg
-</p>
-
 | Item | Value |
 |---|---|
 | hq-exl, ISP1 interface | `eth3`, 10.160.20.10, <br>next hop 10.160.20.254 |
