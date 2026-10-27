@@ -130,13 +130,11 @@ for credentials plese see [Lab network topology](https://checkpointsw-devsec.git
 
 go to the Templates and launch "Flow-SD-WAN"
 
-![awx Bookmark](./images/start-flow-sd-wan.png)
+![Start-Flow](./images/start-flow-sd-wan.png)
 
 ansible scripts are synced from following public github repository
 
 <a href="https://github.com/checkpointsw-devsec/DemoLab-Guides/tree/main/Lab-Code" target="_blank" rel="noopener noreferrer">Open github-URL</a>
-
-<img width="2302" height="505" alt="image" src="https://github.com/user-attachments/assets/36a641f9-f6f5-4a6c-a485-326d9a0f3864" />
 
 This flow uses ansible scripts that are stored on GitLab in this Lab. 
 
@@ -145,16 +143,18 @@ flow output shows the different playbooks that are used in this flow. tmp is use
 - tmp_VPN-Community (definition of the VPN Community Object)
 - tmp_branch-rules (definition of the rules for branch-Office Policy Package)
 - tmp_DC-Rules(definition of the rules for Data Center Policy Package)
-  
-<img width="1979" height="727" alt="image" src="https://github.com/user-attachments/assets/a02c4272-bc2e-420c-9d1d-4844a5f49269" />
+
+![flow-monitoring](./images/flow-monitoring.png)  
 
 after a successful run of "Flow-SD-WAN", objects that are used in this lab get available in Smart Console.
 
-Please ccheck Policy packages:
+Please check Policy packages:
 ![policy packages](./images/policy-packages.png)
 
-[for more information about GitLab components here please open](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/GitLab.md) <br>
-[for more information about AWX components here please open ](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/AWX.md)
+for more Information about AWX or GitLab you can see;
+[GitLab](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/GitLab.md)
+
+[AWX](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/AWX.md)
 
 4. Open **VPN Communities** named Bra_DC_Community and Check / set these settings in the Star community:
 
