@@ -125,7 +125,7 @@ open firefox browser and click on prepared AWX (ansible Works) bookmark
 
 for credentials plese see [Lab network topology](https://checkpointsw-devsec.github.io/DemoLab-Guides/Notes/index.html)
 
-![awx Bookmark](./images/awx-bookmark)
+![awx Bookmark](./images/awx-bookmark,png)
 
 go to the Templates and launch "Flow-SD-WAN"
 <br>ansible scripts are synced with 
