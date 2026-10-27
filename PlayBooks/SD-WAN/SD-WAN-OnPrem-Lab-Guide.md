@@ -74,12 +74,9 @@ Your trainer gives you the login details for every lab machine through the lab p
 |---|---|
 | Management Server | R82.20 |
 | Security Gateway or ClusterXL | R82.20 |
-| Spark Firewall (if your topology includes one) | R82.00.15 |
+| Spark Firewall (if your topology includes one) | R82.00.11 |
 
-Check these two points before you begin. They explain most first-time failures:
-
-- **One management method per gateway.** A gateway takes its SD-WAN settings either from the SD-WAN application in Check Point Portal or from Smart-1 Unified Management. Never both. Overlay tunnels form only between peers that use the same method. In this Lab Confirm hq-exl and branch-gw are not attached to a Portal SD-WAN service.
-- **Policy Packages.** The SD-WAN Policy installs as part of the Access Control policy installation. If the Access Control install fails on any gateway in the run, the SD-WAN install fails on all of them. 
+> Important Note: **Policy Packages.** The SD-WAN Policy is a shared Policy and gets installed on Gateways as part of the Access Control policy installation. If a new or modified Access Control install fails on any gateway in the run, the SD-WAN Policy is also not enforced. 
 
 ### Lab values
 
