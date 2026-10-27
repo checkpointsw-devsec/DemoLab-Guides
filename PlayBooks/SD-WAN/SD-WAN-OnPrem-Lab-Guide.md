@@ -4,8 +4,23 @@
 
 - [What you lern here](#what-you-will-learn)
 - [How SD-WAN works in 60 sec](#how-sd-wan-works-in-60-seconds)
+- [Before you start](#before-you-start)
 - [Lab Access](#lab-access)
 - [Lab setup](#lab-setup)
+- [Part 0: Get familiar with the environment](#part-0-get-familiar-with-the-environment)
+- [Part 1: Enable SD-WAN Blade on the Gateway Objects](#part-1-enable-sd-wan-blade-on-the-gateway-objects)
+- [Part 2: Prepare gateway networking](#part-2-prepare-gateway-networking)
+- [Part 3: Enable SD-WAN on hq-exl and branch-gw](#part-3-enable-sd-wan-on-hq-exl-and-branch-gw)
+- [Part 4: Create the SD-WAN Policy](#part-4-create-the-sd-wan-policy)
+- [Part 5: Configure VPN and Access Control for the overlay](#part-5-configure-vpn-and-access-control-for-the-overlay)
+- [Part 6: Install and validate](#part-6-install-and-validate)
+- [Part 7: Add an MPLS line](#part-7-add-an-mpls-line)
+- [Part 8: Fail over](#part-8-fail-over)
+- [Part 9: Troubleshoot](#part-9-troubleshoot)
+- [Optional challenges](#optional-challenges)
+
+
+
 
 # Check Point SD-WAN with Smart-1 Unified Management: Hands-On Lab Guide
 
