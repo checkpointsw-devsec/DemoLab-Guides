@@ -22,7 +22,8 @@
 
 # Check Point SD-WAN with Smart-1 Unified Management: Hands-On Lab Guide
 
-Two Internet lines. One simulated MPLS line. One place to manage it all: SmartConsole.
+In this Virtual Lab environment you get access to two WAN interfacing lines. One can be used to simulated MPLS line. 
+**Spoiler Alarm**: One place to manage it all: SmartConsole.
 
 In this lab, you steer traffic across several WAN links with Check Point software-defined wide area network (SD-WAN). You run the whole deployment from SmartConsole on an on-premises Management Server. No Portal is involved.
 
