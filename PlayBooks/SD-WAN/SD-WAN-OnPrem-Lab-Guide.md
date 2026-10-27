@@ -123,14 +123,18 @@ to get the policy packages for this lab please:
 
 open firefox browser and click on prepared AWX (ansible Works) bookmark
 
-for credentials plese see [Lab network topology](https://checkpointsw-devsec.github.io/DemoLab-Guides/Notes/index.html)
-
 ![awx Bookmark](./images/awx-bookmark.png)
 
-go to the Templates and launch "Flow-SD-WAN"
-<br>ansible scripts are synced with 
+for credentials plese see [Lab network topology](https://checkpointsw-devsec.github.io/DemoLab-Guides/Notes/index.html)
 
-[github-URL]<https://github.com/checkpointsw-devsec/DemoLab-Guides/tree/main/Lab-Code>
+
+go to the Templates and launch "Flow-SD-WAN"
+
+![awx Bookmark](./images/start-flow-sd-wan.png)
+
+ansible scripts are synced from following public github repository
+
+<a href="https://github.com/checkpointsw-devsec/DemoLab-Guides/tree/main/Lab-Code" target="_blank" rel="noopener noreferrer">Open github-URL</a>
 
 <img width="2302" height="505" alt="image" src="https://github.com/user-attachments/assets/36a641f9-f6f5-4a6c-a485-326d9a0f3864" />
 
