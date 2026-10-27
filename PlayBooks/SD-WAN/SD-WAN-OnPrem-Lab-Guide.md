@@ -87,6 +87,7 @@ during the lab you will need additional information which is based on topology o
 - [Lab network topology](https://checkpointsw-devsec.github.io/DemoLab-Guides/Notes/index.html)
 
 Hover to trace a connection, and click a device for its addresses.
+ <div style="width:800px; margin:0 auto; background-color:yellow;margin-bottom: 50px;">
 
 | Item | Value |
 |---|---|
@@ -99,7 +100,7 @@ Hover to trace a connection, and click a device for its addresses.
 | HQ VPN domain | `net_192.168.30.0_24` |
 | Branch VPN domain | `net_172.30.1.0_24` |
 | Web server (branch-linux) | 10.160.40.100 |
-
+</div>
 ---
 
 ## Part 0: Get familiar with the environment
