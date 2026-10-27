@@ -130,7 +130,7 @@ for credentials plese see [Lab network topology](https://checkpointsw-devsec.git
 go to the Templates and launch "Flow-SD-WAN"
 <br>ansible scripts are synced with 
 
-![Link](https://github.com/checkpointsw-devsec/DemoLab-Guides/tree/main/Lab-Code/SD-WAN/Ansible) 
+![Link](https://checkpointsw-devsec.github.io/DemoLab-Guides/Lab-Code/SD-WAN/Ansible) 
 
 <img width="2302" height="505" alt="image" src="https://github.com/user-attachments/assets/36a641f9-f6f5-4a6c-a485-326d9a0f3864" />
 
