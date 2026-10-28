@@ -488,6 +488,7 @@ The overlay needs four things in the Access Control policy and the VPN community
 
 > **Don't do this:** on a gateway object, don't select **Exclude gateway external IP addresses from the VPN Domain**. It interrupts overlay probing.
 
+
 ### 5.2 Add the overlay probing rule
 
 Overlay probing sends Internet Control Message Protocol (ICMP) echo requests between the peers. The probes must be allowed and encrypted.
@@ -532,8 +533,9 @@ show sdwan status
 show sdwan isps
 show sdwan peers
 ```
+<details>
+<summary><strong>Or in Expert mode:</strong></summary>
 
-Or in Expert mode:
 
 ```bash
 sdwan show --status
@@ -541,6 +543,7 @@ sdwan show --isps
 sdwan show --peers
 fw sdwan stat
 ```
+</details>
 
 > **Expected result:** the status shows the SD-WAN Policy installed. `isps` lists your SD-WAN interfaces with their circuit. `peers` lists branch-gw with its interfaces and circuit. If the peer doesn't appear, check the community membership, the interface names, and the install on both sides.
 
