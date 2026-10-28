@@ -448,8 +448,8 @@ Look at the columns: **Name**, **Source**, **Destination**, **Services & Applica
 
 Answer these questions:
 
-- Which Steering object does the Web Conferencing rule use, and which WAN links does it list as candidates?
-- Which Steering object does the default Overlay rule use?
+- Which Steering object does the **Web Conferencing rule** use, and which WAN links does it list as candidates?
+- Which Steering object does the **default Overlay** rule use?
 - In the Overlay rules, which objects fill **Source** and **Destination**?
 
 > **What you should see.** Internet rules use the **SD-WAN Internet** object as the destination. Overlay rules use **My VPN Domain** and **Peer VPN Domain**. These topology-derived objects follow your VPN domains and routing, so you don't maintain IP ranges by hand. They work only inside the SD-WAN Policy.
