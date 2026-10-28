@@ -195,7 +195,7 @@ You have a working VPN but no SD-WAN yet.
 
 ## EA Part 0: Enable SD-WAN Blade on the Gateway Objects
 
-Time: 15 minutes
+**This section has been prepaded since it will be fulfilled in the GA!**
 
 > SD-WAN configuration capabilities in EA Phase stay hidden in SmartConsole until you switch them on at the Management Server. Do this before anything else.
 
@@ -255,19 +255,30 @@ So each ISP gets its own default route with its own priority. A lower number win
 **Licensing.** Each SD-WAN gateway needs an SD-WAN subscription associated in the User Center and attached to the gateway. Your trainer has already attached the lab licenses. After Part 3, SD-WAN should appear in the list of enabled Software Blades on each gateway.
 
 ### hq-exl
+in this step you will check bgp peers and existing routes.
 
-1. Open the Gaia Web portal for hq-exl, or connect over SSH and open Gaia Clish
-2. Review the current routes:
+- Open the Gaia Web portal for hq-exl, or connect over SSH and open Gaia Clish (gclish)
+- Review the current routes:
 
 ```
-show route
+show configuration bgp 
+show configuration routemaps
+show route all
 ```
+
+![show-bgp-config](./images/BGP-Configuration.png)
+
+![show-route](./images/show-route-pre-sd-wan.png)
+
+![show-route-maps](./images/route-maps.png)
+
+in current setup routemap define the preference.
+all routes are advertised by the "ISP" routers. here named as VYOS1 and VYOS2
+
 
 3. Add only what is missing:
 
 ```clish
-set static-route default nexthop gateway address 10.160.11.254 on
-set static-route default nexthop gateway address 10.160.12.254 priority 1 on
 set static-route default ping on
 save config
 ```
@@ -280,8 +291,6 @@ save config
 2. Add only what is missing:
 
 ```clish
-set static-route default nexthop gateway address 10.160.30.254 on
-set static-route default nexthop gateway address 10.160.31.254 priority 1 on
 set static-route default ping on
 save config
 ```
