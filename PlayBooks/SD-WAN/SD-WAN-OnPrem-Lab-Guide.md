@@ -18,7 +18,6 @@
 - [Part 8: Troubleshoot](#part-8-troubleshoot)
 - [Optional challenges](#optional-challenges)
 
-
 # Check Point SD-WAN with Smart-1 Unified Management: Hands-On Lab Guide
 
 In this Virtual Lab environment you get access to two WAN interfacing lines. One can be used to simulated MPLS line. 
@@ -501,6 +500,48 @@ you can see on both packages the same Probing Rules
 > If **Global Properties > Firewall > Accept ICMP requests** is enabled, the implied rule can match your probes and send them in clear text. Probes must be encrypted. Set the implied rule to **Last** or **Before Last** and keep the explicit rule.
 
 ---
+
+<details>
+<summary><strong>observibility over Skyline</strong></summary>
+
+on hq-linux host skyline with a check Point prepaired Grafana dash board is up and wainting Gateway Data!
+to allow communication to prometheus please 
+
+- add a rule to the SD-WAN-DC policy package
+ skyline dest 192.168.30.40 port 8080 rule (2)
+| source | destination | port |
+|---|---|---|
+| `any` | `192.168.30.40` | http_and_https_proxy |
+
+> **NOTE:** default destination port is 9090 but has been remaped in this lab to 8080
+modify (or create if not existing) a file 
+
+```bash
+vi /var/tmp/payload.json
+```
+- add this conntent 
+
+```json
+ {
+    "enabled": true,
+    "export-targets": {"add": [
+        {
+            "enabled": true,
+            "type": "prometheus-remote-write",
+            "url": "http://192.168.30.40:8080/api/v1/write"
+        }
+    ]}
+} 
+
+```
+- run this command to share the configuration with necessary componenets
+
+```
+sklnctl export --set "$(cat /var/tmp/payload.json)"
+```
+
+open http://192.168.30.40:3000 and open "SD-WAN Observibility Dashboard"
+</details>
 
 ## Part 5: Install and validate
 
