@@ -584,25 +584,21 @@ Answer these questions:
 - why don't we see SD-WAN log information here?
 
 
-### 6.2 Check the gateways
+<details>
+<summary><strong>Check the sd-wan information in Expert mode:</strong></summary>
 
 On hq-exl, open Gaia Clish and run:
 
-```
-show sdwan status
-show sdwan isps
-show sdwan peers
-```
-<details>
-<summary><strong>Or in Expert mode:</strong></summary>
-
-
-```bash
+```expert-mode
 sdwan show --status
 sdwan show --isps
 sdwan show --peers
 fw sdwan stat
 ```
+
+in cpview you can see live telemetry Data. for SD-WAN please got to Advanced > SDWAN > 
+
+
 </details>
 
 > **Expected result:** the status shows the SD-WAN Policy installed. `isps` lists your SD-WAN interfaces with their circuit. `peers` lists branch-gw with its interfaces and circuit. If the peer doesn't appear, check the community membership, the interface names, and the install on both sides.
