@@ -264,14 +264,19 @@ Next step is to check bgp peers and existing routes.
 
 ```
 show configuration bgp 
-show configuration routemaps
-show route all
 ```
 
 ![show-bgp-config](./images/BGP-Configuration.png)
 
+```
+show configuration routemaps
+```
+
 ![show-route](./images/show-route-pre-sd-wan.png)
 
+```
+show route all
+```
 ![show-route-maps](./images/route-maps.png)
 
 in current setup routemap define the preference.
@@ -286,6 +291,8 @@ save config
 ```
 
 > If hq-exl runs as a cluster in your topology, repeat this on every cluster member.
+
+> **Expected result:** `show route` lists two default routes with different priorities, and both next hops answer.
 
 > for static routs you have to define priority to each ISP and **set static-route default ping on** to check reachability additionally
 
@@ -319,31 +326,17 @@ target address are the branch 2 WAN connections of spark gateway. they are used 
 
 </details>
 
-> **Expected result:** `show route` lists two default routes with different priorities, and both next hops answer.
-
 ---
 
 ## Part 2: Enable SD-WAN on hq-exl and branch-gw
 
 Time: 30 minutes
 
-### 3.1 Create the SD-WAN objects
-
-You need two kinds of objects:
-
-| Object | What it is |
-|---|---|
-| **Circuit** | A WAN domain. Overlay tunnels form only between interfaces that share a circuit |
-| **WAN Link** | An SD-WAN object mapped to a gateway interface. Public (Internet) or private (MPLS) |
-
-- In SmartConsole, open the SD-WAN Gateway objects. enable SD-WAN blade and 
-- Create a WAN Link named `ISP1` (public)
-- Create a WAN Link named `ISP2` (public)
-- Use the default public circuit for both for now
-
-> Both Internet links share one circuit. That is why every interface pair forms a tunnel. You change this in Part 7.
-
-### 3.2 Enable the blade and the interfaces on hq-exl
+### 3.1 Enable the blade and the interfaces on hq-exl
+| Interface | WAN Link | Next hop |
+|---|---|---|
+| `eth2` | `ISP1` | 10.160.11.254 |
+| `eth1` | `ISP2` | 10.160.12.254 |
 
 - Go to **Gateways & Servers** and open hq-exl
 - Select the **SD-WAN** Software Blade
@@ -361,12 +354,12 @@ You need two kinds of objects:
 - Leave **Symmetric Return** at its default
 - Click **OK**
 
-### 3.3 Repeat on branch-gw
+### 3.2 Repeat on branch-gw
 
 | Interface | WAN Link | Next hop |
 |---|---|---|
-| `eth2` | `ISP1` | 10.160.30.1 |
-| `eth1` | `ISP2` | 10.160.31.1 |
+| `eth2` | `ISP1` | 10.160.30.254 |
+| `eth1` | `ISP2` | 10.160.31.254 |
 
 - Open branch-gw and select the **SD-WAN** Software Blade
 - Enable SD-WAN on `eth2` and `eth1` with the values above
@@ -376,6 +369,21 @@ You need two kinds of objects:
 > **Try it later:** Automatic Next Hop reads the next hop from the Gaia routing table, which is another reason Part 2 matters. If it can't find a valid route, set the next hop to Custom. If Auto fails and a WAN Link is the only source in a steering object, policy installation can fail.
 
 > **Expected result:** both gateways show SD-WAN enabled, and the session is published.
+
+> Both Internet links share one circuit. That is why every interface pair forms a tunnel. You change this in Part 7.
+
+### 3.3 SD-WAN objects
+
+If you need custom objects like
+
+| Object | What it is |
+|---|---|
+| **Circuit** | A WAN domain. Overlay tunnels form only between interfaces that share a circuit |
+| **WAN Link** | An SD-WAN object mapped to a gateway interface. Public (Internet) or private (MPLS) |
+
+you can find them here
+
+
 
 ---
 
