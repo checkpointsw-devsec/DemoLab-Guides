@@ -507,6 +507,7 @@ you can see on both packages the same Probing Rules
 <summary><strong>observibility over Skyline</strong></summary>
 
 > :memo: on `hq-linux` host skyline with a check Point prepaired Grafana dashboard is waiting for Gateway Data :+1:
+
 to allow communication to prometheus please 
 
 - add a rule to the SD-WAN-DC policy package
@@ -516,6 +517,7 @@ to allow communication to prometheus please
 | `any` | `192.168.30.40` | http_and_https_proxy |
 
 > **:memo:** default destination port is 9090 but has been remaped in this lab to 8080
+
 modify (or create if not existing) a file 
 
 ```bash
@@ -562,12 +564,25 @@ Time: 30 minutes
 - Browse to an Internet site (https://bbc.com)
 - Browse to `http://172.30.1.60` (the web server at the branch)
 
-![web-page opens](./images/Web-Server-check.png)
-
 - In **Logs & Events**, search for `dst:172.30.1.60` and confirm you see an Encrypt log
 
-> **Expected result:** both sites load, and the Encrypt log shows the VPN path. 
-> you should observe at least two log entries to 172.30.1.60
+![policy-log-sd-wan](./images/policy-match-172-30-1-60.png)
+
+you see couple of new records that give you more insights about matching objects that are used in the lab policy.
+
+Answer these questions:
+
+- which Traffic Stearing object got use during your try to access 172.30.1.60?
+- which Traffic Stearing object got use during your try to access bbc.com?
+- can you name the Policy Layer Name?
+- over which interface was the traffic forwarded from `hw-exl-gw`
+
+now open the log entry from branch-gw
+
+Answer these questions:
+
+- why don't we see SD-WAN log information here?
+
 
 ### 6.2 Check the gateways
 
