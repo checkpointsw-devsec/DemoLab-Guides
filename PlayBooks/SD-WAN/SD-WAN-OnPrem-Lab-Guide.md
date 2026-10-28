@@ -362,10 +362,6 @@ Time: 30 minutes
 
 - Click **OK**
 
-- goto `eth2` **SD-WAN** menue
-here you can see an over view of WAN mappings to interfaces, Netxthop and circuits
-![eth2-mapping-overview](./images/eth2-mapping-overview.png)
-
 - Edit `eth3`, then open its **SD-WAN** tab
 - Enable SD-WAN and map it to WAN Link `WAN2`
 
@@ -381,6 +377,11 @@ here you can see an over view of WAN mappings to interfaces, Netxthop and circui
 - Leave **Symmetric Return** at its default
 - Click **OK**
 
+- goto Gateways **SD-WAN** menue
+here you can see an overview of WAN mappings to interfaces, Netxthop and circuits
+![Gateway-mapping-overview](./images/eth2-mapping-overview.png)
+
+- Click **OK**
 
 ### 3.2 Repeat on branch-gw
 
@@ -420,13 +421,17 @@ you can find them here
 
 Time: 15 minutes
 
-The SD-WAN Policy is a shared policy. It isn't tied to one policy package.
+The SD-WAN Policy is a shared policy. It **isn't** tied to one policy package.
 
 - Go to **Security Policies**
 - Under **Shared Policies**, click **SD-WAN Policy**
 - Click **Create Policy**
 - Keep all use cases selected, including **Enable SD-WAN Overlay Traffic**
 - Click **Create Policy**
+
+![create-sd-wan-policy](./images/create-sd-wan-policy.png)
+
+![usecase-sdwan-policy](./images/usecase-sd-wan-policy.png)
 
 ### Read the default rules
 
@@ -438,6 +443,8 @@ With all use cases selected, you get:
 - A default Breakout catch-all rule
 
 Look at the columns: **Name**, **Source**, **Destination**, **Services & Applications**, **Steering**, **Translated Source**, **Install On**. Right-click the column header to reveal **QoS** and **Comment**.
+
+![sdwan-policy](./images/sd-wan-policy.png)
 
 Answer these questions:
 
