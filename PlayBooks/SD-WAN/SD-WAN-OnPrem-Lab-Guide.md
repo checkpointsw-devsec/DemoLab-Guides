@@ -254,8 +254,10 @@ So each ISP gets its own default route with its own priority. A lower number win
 
 **Licensing.** Each SD-WAN gateway needs an SD-WAN subscription associated in the User Center and attached to the gateway. Your trainer has already attached the lab licenses. After Part 3, SD-WAN should appear in the list of enabled Software Blades on each gateway.
 
+
+Next step is to check bgp peers and existing routes.
+
 ### hq-exl
-in this step you will check bgp peers and existing routes.
 
 - Open the Gaia Web portal for hq-exl, or connect over SSH and open Gaia Clish (gclish)
 - Review the current routes:
@@ -275,23 +277,26 @@ show route all
 in current setup routemap define the preference.
 all routes are advertised by the "ISP" routers. here named as VYOS1 and VYOS2
 
-
-3. Add only what is missing:
+- Add only what is missing:
 
 ```clish
-set static-route default ping on
+set bgp external remote-as 64529 peer 10.160.11.254 ip-reachability-detection on
+set bgp external remote-as 64539 peer 10.160.12.254 ip-reachability-detection on
 save config
 ```
 
 > If hq-exl runs as a cluster in your topology, repeat this on every cluster member.
 
+> for static routs you have to define priority to each ISP and **set static-route default ping on** to check reachability additionally
+
 ### branch-gw
 
-1. Connect to branch-gw and open Gaia Clish
-2. Add only what is missing:
+- Connect to branch-gw and open Gaia Clish
+- Add only what is missing:
 
 ```clish
-set static-route default ping on
+set bgp external remote-as 64529 peer 10.160.31.254 ip-reachability-detection on
+set bgp external remote-as 64539 peer 10.160.32.254 ip-reachability-detection on
 save config
 ```
 
