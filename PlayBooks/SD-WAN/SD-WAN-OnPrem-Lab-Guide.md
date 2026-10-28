@@ -90,8 +90,8 @@ Hover to trace a connection, and click a device for its addresses.
 | hq-exl, ISP1 interface | `eth3`, 10.160.20.10, <br>next hop 10.160.20.254 |
 | hq-exl, ISP2 interface | `eth1`, <br>next hop 10.160.21.254 |
 | hq-exl, MPLS next hop (Part 7) | 10.160.21.254 |
-| branch-gw, ISP1 interface | `eth2`, 10.160.30.30, <br>next hop 10.160.30.254 |
-| branch-gw, ISP2 interface | `eth1`, 10.160.31.30, <br>next hop 10.160.31.254 |
+| branch-gw, ISP1 interface | `eth2`, 10.160.31.30, <br>next hop 10.160.31.254 |
+| branch-gw, ISP2 interface | `eth1`, 10.160.32.30, <br>next hop 10.160.32.254 |
 | branch-gw, MPLS next hop (Part 7) | 10.160.31.254 |
 | HQ VPN domain | `net_192.168.30.0_24` |
 | Branch VPN domain | `net_172.30.1.0_24` |
@@ -335,35 +335,64 @@ Time: 30 minutes
 ### 3.1 Enable the blade and the interfaces on hq-exl
 | Interface | WAN Link | Next hop |
 |---|---|---|
-| `eth2` | `ISP1` | 10.160.11.254 |
-| `eth1` | `ISP2` | 10.160.12.254 |
+| `eth2` | `WAN1` | 10.160.11.254 |
+| `eth3` | `WAN2` | 10.160.12.254 |
 
 - Go to **Gateways & Servers** and open hq-exl
 - Select the **SD-WAN** Software Blade
-- Open **Network Management** and confirm that `eth3` and `eth1` use the topology **External**
+
+![enable-sd-wan-blade](./images/enable-sdwan.png)
+
+- Open **Network Management** and confirm that `eth2` and `eth3` use the topology **External**
 - Compare the interface names with the names in Gaia
+
+![interfaces](./images/interface-zone-settings.png)
 
 > Interface names must match in three places: the Gaia OS, the gateway object's Network Management page, and the installed SD-WAN policy. A mismatch is the most common reason an expected tunnel is missing. In a cluster, the Cluster Virtual Interface names must match the member interface names too.
 
-- Edit `eth3`, then open its **SD-WAN** tab
-- Enable SD-WAN on the interface and map it to WAN Link `ISP1`
+- Edit `eth2`, then open its **SD-WAN** menue
+- Enable SD-WAN on the interface and map it to WAN Link `WAN1`
+
+![eth2-WAN1](./images/eth2-sd-wan-mapping.png)
+
+- goto `eth2` **Network Access** menue
 - Set the next hop mode to **Custom** and enter 10.160.11.254
-- Edit `eth1`, then open its **SD-WAN** tab
-- Enable SD-WAN and map it to WAN Link `ISP2`
+
+![eth2-next-hop](./images/eth2-nexthop.png)
+
+- Click **OK**
+
+- goto `eth2` **SD-WAN** menue
+here you can see an over view of WAN mappings to interfaces, Netxthop and circuits
+![eth2-mapping-overview](./images/eth2-mapping-overview.png)
+
+- Edit `eth3`, then open its **SD-WAN** tab
+- Enable SD-WAN and map it to WAN Link `WAN2`
+
+![eth3-WAN1](./images/eth3-sd-wan-setting.png)
+
 - Set the next hop mode to **Custom** and enter 10.160.12.254
+
+- goto `eth3` **Network Access** menue
+- Set the next hop mode to **Custom** and enter 10.160.12.254
+
+![eth2-next-hop](./images/eth3-nexthop.png)
+
 - Leave **Symmetric Return** at its default
 - Click **OK**
+
 
 ### 3.2 Repeat on branch-gw
 
 | Interface | WAN Link | Next hop |
 |---|---|---|
-| `eth2` | `ISP1` | 10.160.30.254 |
-| `eth1` | `ISP2` | 10.160.31.254 |
+| `eth2` | `WAN1` | 10.160.31.254 |
+| `eth3` | `WAN2` | 10.160.32.254 |
 
-- Open branch-gw and select the **SD-WAN** Software Blade
-- Enable SD-WAN on `eth2` and `eth1` with the values above
-- Click **OK**
+- Open branch-gw and enable the **SD-WAN** Software Blade
+- Enable SD-WAN on `eth2` and `eth3` with the values above
+- use custom Next hop IPv4 address
+
 - **Publish** the session
 
 > **Try it later:** Automatic Next Hop reads the next hop from the Gaia routing table, which is another reason Part 2 matters. If it can't find a valid route, set the next hop to Custom. If Auto fails and a WAN Link is the only source in a steering object, policy installation can fail.
@@ -579,7 +608,7 @@ On branch-gw:
 
 ```
 set static-route default nexthop gateway address 10.160.31.1 off
-set static-route default nexthop gateway address 10.160.31.20 priority 1 on
+set static-route default nexthop gateway address 10.160.32.20 priority 1 on
 save config
 ```
 
