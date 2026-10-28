@@ -493,21 +493,12 @@ The overlay needs four things in the Access Control policy and the VPN community
 
 Overlay probing sends Internet Control Message Protocol (ICMP) echo requests between the peers. The probes must be allowed and encrypted.
 
-- Open the Access Control policy package for the gateways
-- Create a new section named `SD-WAN` below the management rules, above any stealth, cleanup, or drop rule
-- Add this rule:
+- Open both Access Control policy packages  `SD-WAN-DC` and `SD-WAN-Banch`
+you can see on both packages the same Probing Rules
 
-| Name | Source | Destination | VPN | Services | Action | Track | Install On |
-|---|---|---|---|---|---|---|---|
-| SD-WAN Overlay Probing | hq-exl, branch-gw | hq-exl, branch-gw | Any, or the Star community | `echo-request` | Accept | Log | hq-exl, branch-gw |
+![allow-probing-rule](./images/Probing-rules.png)
 
-- Repeat in the second policy package, if the gateways use separate packages
-
-> **Tip:** collapse the section, right-click its title, and select **Copy**. Then right-click in the other package and select **Paste**.
-
-> **Why an explicit rule when the cleanup rule accepts everything?** If **Global Properties > Firewall > Accept ICMP requests** is enabled, the implied rule can match your probes and send them in clear text. Probes must be encrypted. Set the implied rule to **Last** or **Before Last** and keep the explicit rule.
-
-You don't need a manual SD-WAN Policy rule for probing when the default Overlay rule already matches this traffic.
+> If **Global Properties > Firewall > Accept ICMP requests** is enabled, the implied rule can match your probes and send them in clear text. Probes must be encrypted. Set the implied rule to **Last** or **Before Last** and keep the explicit rule.
 
 ---
 
@@ -523,6 +514,16 @@ Time: 30 minutes
 - Click **Install**
 
 > The SD-WAN Policy installs with the Access Control policy. Watch the task. If it fails, fix the Access Control error first.
+
+- Browse to an Internet site (https://bbc.com)
+- Browse to `http://172.30.1.60` (the web server at the branch)
+
+![web-page opens](./images/Web-Server-check.png)
+
+- In **Logs & Events**, search for `dst:172.30.1.60` and confirm you see an Encrypt log
+
+> **Expected result:** both sites load, and the Encrypt log shows the VPN path. 
+> you should observe at least two log entries to 172.30.1.60
 
 ### 6.2 Check the gateways
 
