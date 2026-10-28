@@ -74,7 +74,7 @@ Your trainer gives you the login details for every lab machine through the lab p
 | Security Gateway or ClusterXL | R82.20 |
 | Spark Firewall (if your topology includes one) | R82.00.11 |
 
-> **Important Note for Policy Packages Installation**: The SD-WAN Policy is a shared Policy and gets installed on Gateways as part of the Access Control policy installation. If a new or modified Access Control install fails on any gateway in the run, the SD-WAN Policy is also not enforced. 
+> **:pushpin: Note for Policy Packages Installation**: The SD-WAN Policy is a shared Policy and gets installed on Gateways as part of the Access Control policy installation. If a new or modified Access Control install fails on any gateway in the run, the SD-WAN Policy is also not enforced. 
 
 ### Lab values
 
@@ -288,6 +288,8 @@ set bgp external remote-as 64529 peer 10.160.11.254 ip-reachability-detection on
 set bgp external remote-as 64539 peer 10.160.12.254 ip-reachability-detection on
 save config
 ```
+
+> in case of static routing the equivalent command is: `set static-route default ping on`
 
 > If hq-exl runs as a cluster in your topology, repeat this on every cluster member.
 
@@ -504,7 +506,7 @@ you can see on both packages the same Probing Rules
 <details>
 <summary><strong>observibility over Skyline</strong></summary>
 
-on hq-linux host skyline with a check Point prepaired Grafana dash board is up and wainting Gateway Data!
+> :memo: on `hq-linux` host skyline with a check Point prepaired Grafana dashboard is waiting for Gateway Data :+1:
 to allow communication to prometheus please 
 
 - add a rule to the SD-WAN-DC policy package
@@ -513,7 +515,7 @@ to allow communication to prometheus please
 |---|---|---|
 | `any` | `192.168.30.40` | http_and_https_proxy |
 
-> **NOTE:** default destination port is 9090 but has been remaped in this lab to 8080
+> **:memo:** default destination port is 9090 but has been remaped in this lab to 8080
 modify (or create if not existing) a file 
 
 ```bash
@@ -541,6 +543,7 @@ sklnctl export --set "$(cat /var/tmp/payload.json)"
 ```
 
 open http://192.168.30.40:3000 and open "SD-WAN Observibility Dashboard"
+
 </details>
 
 ## Part 5: Install and validate
@@ -628,7 +631,7 @@ In SmartConsole, open **Logs & Events**:
 
 > **Expected result:** the SD-WAN section shows the Local Breakout rule and the ISP used.
 
-> **Note on the evaluation build.** SmartConsole monitoring dashboards for SD-WAN aren't available in the R82.20 EA release. Use logs, CPView, and the command line for validation.
+> **:memo: on the evaluation build.** SmartConsole monitoring dashboards for SD-WAN aren't available in the R82.20 EA release. Use logs, CPView, and the command line for validation.
 
 ---
 
