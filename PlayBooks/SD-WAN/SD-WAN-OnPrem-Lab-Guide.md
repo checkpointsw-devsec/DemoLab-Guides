@@ -654,46 +654,46 @@ In SmartConsole, open **Logs & Events**:
 
 Time: 30 minutes
 
-Now you turn the second link into a private line. In the lab, a router between the gateways simulates MPLS (Multiprotocol Label Switching). The gateways now see a private next hop on `eth1`.
+Now you turn the second link into a private line. In the lab, a router between the gateways simulates MPLS (Multiprotocol Label Switching). The gateways now see a private next hop on `eth3`.
 
 SD-WAN builds tunnels only between interfaces on the same circuit. Giving the private line its own circuit changes the tunnel count. That's the lesson.
 
 ### 7.1 Point the second route at the MPLS router
 
-On hq-exl, in Gaia Clish:
+On VYOs2:
 
-```
-set static-route default nexthop gateway address 10.160.21.1 off
-set static-route default nexthop gateway address 10.160.21.20 priority 1 on
-save config
-```
-
-On branch-gw:
-
-```
-set static-route default nexthop gateway address 10.160.31.1 off
-set static-route default nexthop gateway address 10.160.32.20 priority 1 on
-save config
+```bash
+configure
+change congig ?????????????????????????
+commit
 ```
 
 ### 7.2 Create the private WAN Link and circuit
 
-- In SmartConsole, create a new **Circuit** for the private line
-- Create a WAN Link named `MPLS` and set its type to **Private**
-- Associate `MPLS` with the new circuit
+- In SmartConsole, create a new **Circuit** for the private line. 
 
-### 7.3 Move `eth1` to the MPLS WAN Link
+![new-circuit](./images/new-circuit.png)
+
+![new-circuit-obj](./images/new-circuit-obj.png)
+
+- Create a WAN Link named `MPLS` and set its type to **Private**
+
+![new-private-WAN](./images/new-wan-link-private.png)
+
+![new-private-WAN](./images/new-wan-link-object.png)
+
+
+### 7.3 Move `eth3` to the MPLS WAN Link
 
 On hq-exl:
 
 - Open the gateway object and go to **Network Management**
-- Edit `eth1` and open its **SD-WAN** tab
+- Edit `eth3` and open its **SD-WAN** tab
 - Map the interface to WAN Link `MPLS`
-- Change the custom next hop to 10.160.21.20
 
 On branch-gw:
 
-- Edit `eth1` and open its **SD-WAN** tab
+- Edit `eth3` and open its **SD-WAN** tab
 - Map the interface to WAN Link `MPLS`
 - Change the custom next hop to 10.160.31.20
 - **Publish** and **Install Policy** on both gateways
