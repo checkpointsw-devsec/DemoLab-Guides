@@ -295,6 +295,12 @@ save config
 
 > for static routs you have to define priority to each ISP and **set static-route default ping on** to check reachability additionally
 
+Note - These routes will also be used by the Automatic Next Hop feature that you configure in Security Gateway object at the interface level.
+
+
+
+> **Best Practice** - Enable next-hop monitoring, such as ping on, and consider IP Reachability Detection so that a route remains active only when the path is reachable. - Choose one or more dedicated monitoring targets as the number of your ISPs. - Set static route for each monitoring target to get routed through the monitored ISP only. - Attach the monitoring targets to the ISP routes. - Do not attach monitoring targets to the last-resort ISP route (the route with the lowest preference).
+
 ### branch-gw
 
 - Connect to branch-gw and open Gaia Clish
@@ -305,25 +311,6 @@ set bgp external remote-as 64529 peer 10.160.31.254 ip-reachability-detection on
 set bgp external remote-as 64539 peer 10.160.32.254 ip-reachability-detection on
 save config
 ```
-
-<details>
-<summary><strong>Advanced: monitor a real target with IP Reachability Detection</strong></summary>
-
-`ping on` only watches the next hop. A better design watches a target beyond the ISP. Pick one target per ISP, route each target through its own ISP, and attach it to that ISP's default route. Don't attach a target to the last-resort route.
-
-```clish
-set ip-reachability-detection ping address 10.160.41.1 enable-ping on
-set ip-reachability-detection ping address 10.160.42.1 enable-ping on
-set static-route 10.160.41.1/32 nexthop gateway address 10.160.11.254 on
-set static-route 10.160.42.1/32 nexthop gateway address 10.160.12.254 on
-set static-route default nexthop gateway address 10.160.11.254 monitored-ip 10.160.41.1 on
-set static-route default nexthop gateway address 10.160.12.254 priority 1 on
-save config
-```
-
-target address are the branch 2 WAN connections of spark gateway. they are used here as an example for targets that your lab ISPs actually route.
-
-</details>
 
 ---
 
