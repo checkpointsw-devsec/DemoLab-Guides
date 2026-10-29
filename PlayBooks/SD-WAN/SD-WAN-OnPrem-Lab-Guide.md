@@ -737,7 +737,7 @@ following rule is prepared in the lab to give you an example how to make sure Cl
 
 <div align="center">
 
-![heise-test](./images/heise-test.png)
+![heise-test](./images/heise-de-rule.png)
 
 </div>
 
