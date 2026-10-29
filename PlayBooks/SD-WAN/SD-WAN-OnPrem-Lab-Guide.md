@@ -288,18 +288,16 @@ save config
 ```
 
 > in case of static routing the equivalent command is: `set static-route default ping on`
-
 > If hq-exl runs as a cluster in your topology, repeat this on every cluster member.
-
-> **Expected result:** `show route` lists two default routes with different priorities, and both next hops answer.
-
+> **Expected result:** `show route` lists two default routes with different priorities, and both next hops answer
 > for static routs you have to define priority to each ISP and **set static-route default ping on** to check reachability additionally
 
-Note - These routes will also be used by the Automatic Next Hop feature that you configure in Security Gateway object at the interface level.
+:memo: - These routes will also be used by the Automatic Next Hop feature that you configure in Security Gateway object at the interface level.
 
 
 
-**Best Practice** - Enable next-hop monitoring, such as ping on, and consider IP Reachability Detection so that a route remains active only when the path is reachable. 
+**Best Practice** : Enable next-hop monitoring, such as ping on, and consider IP Reachability Detection so that a route remains active only when the path is reachable. 
+
 - Choose one or more dedicated monitoring targets as the number of your ISPs. 
 - Set static route for each monitoring target to get routed through the monitored ISP only. 
 - Attach the monitoring targets to the ISP routes. 
