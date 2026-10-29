@@ -259,27 +259,28 @@ Next step is to check bgp peers and existing routes.
 - Open the Gaia Web portal for hq-exl, or connect over SSH and open Gaia Clish (gclish)
 - Review the current routes:
 
-```
+```clish
 show configuration bgp 
 ```
 
 ![show-bgp-config](./images/BGP-Configuration.png)
 
-```
+```clish
 show configuration routemaps
 ```
 
-![show-route](./images/show-route-pre-sd-wan.png)
+![show-route-maps](./images/route-maps.png)
 
 ```
 show route all
 ```
-![show-route-maps](./images/route-maps.png)
+![show-route](./images/show-route-pre-sd-wan.png)
 
-in current setup routemap define the preference.
-all routes are advertised by the "ISP" routers. here named as VYOS1 and VYOS2
+We've defined the preferences to each ISP in the route maps. 
+All routes are advertised by the "ISP" routers, here named as VYOS1 and VYOS2.
 
-- Add only what is missing:
+
+Add only what is missing:
 
 ```clish
 set bgp external remote-as 64529 peer 10.160.11.254 ip-reachability-detection on
