@@ -107,9 +107,14 @@ in this Part you get more friendly to the lab environment and deploy the Policy 
 
 1. Open SmartConsole from the management client
 2. Open **Gateways & Servers** and confirm that hq-exl and branch-gw show a healthy status
+
+<div align="center">
+
 ![health view](./images/Gateway-health.png)
 
-3. Open **Security Policies** and review the Access Control rule base on both gateways' policy packages
+</div>
+
+1. Open **Security Policies** and review the Access Control rule base on both gateways' policy packages
 
 > The lab cleanup rule accepts all traffic. The data center and branch office policy packages become available after you run the prepared AWX workflow.
 
@@ -119,14 +124,23 @@ to get the policy packages for this lab please:
 
 open firefox browser and click on prepared AWX (ansible Works) bookmark
 
+<div align="center">
+
 ![awx Bookmark](./images/awx-bookmark.png)
+
+</div>
 
 for credentials plese see [Lab network topology](https://checkpointsw-devsec.github.io/DemoLab-Guides/Notes/index.html)
 
 
 go to the Templates and launch "Flow-SD-WAN"
 
+<div align="center">
+
 ![Start-Flow](./images/start-flow-sd-wan.png)
+
+</div>
+
 
 ansible scripts are synced from following public github repository
 
@@ -619,6 +633,9 @@ On hq-client, open a private browser window:
 - Browse to `http://bbc.com` (Overlay)
 - Press `Ctrl+F5` a few times to create new connections
 
+On Branch-client, open a private browser window:
+- Browse to `http://heise.de` (Backhaul)
+
 In SmartConsole, open **Logs & Events**:
 
 - Search for `dst:bbc.com` and open the latest **Encrypt** log
@@ -633,30 +650,58 @@ In SmartConsole, open **Logs & Events**:
 
 ![bbs-com-from-hq](./images/bbc-com-from-hq.png)
 
+## Part 7: Backhaul Verification
+
+Send the branch's Internet traffic through headquarters over the overlay.
+
+> **Prerequisites.** Backhaul needs the headquarters gateway to act as the center of the Star community, and the VPN routing option "To center, or through the center to other satellites, to Internet and other VPN targets". The lab community may use the opposite roles. Ask your trainer, and confirm in the admin guide's limitations chapter that Backhaul is supported in your build.
+
+following rule is prepared in the lab to give you an example how to make sure Client traffic to spesific site if passin branch gateway goes through the backhaul.
+
+![heise-test](./images/heise-test.png)
+
+- Open the branch network object, go to **NAT**, select **Add automatic address translation rules**, then **Hide behind gateway**, and set **Install On** to **All**  
+
+![branch-nat](./images/nat-for-backhaule.png)
+
+- Keep **Disable NAT** selected in the community, so the traffic translates only when it leaves the center
+
+- Publish and install on both gateways
+- Add a rule above the Backhaul rule, with the branch gateway object as source and Local Breakout Only steering, if you want the gateway's own Internet traffic to leave locally
+
+on Branch-client, open a private browser window:
+- Browse to `http://heise.de` (Backhaul)
+- Wait for the page to load completely
+- Verify that the traffic is being backhauled through the headquarters gateway.
+- Search for the logs that are related to `dst:heise.de` and open the latest **Encrypt** log
+- Find the **SD-WAN** section in the log card
+
+> **Expected result:** the log shows the SD-WAN rule that matched, the Steering object, and which interface carried the encrypted traffic.
+
+- which rule matched the traffic and which interface carried it.
+- Open the steering object that matched the rule.
+
+create a new steering object that matches the traffic pattern and specifies the preferred interface for the backhaul traffic.
+
+Apply the changes and verify that the new steering object is used for subsequent traffic.   
+
 ---
 
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ## Part 7: Fail over
 
 Time: 15 minutes
 
-Now you break a link on purpose.
-
-- On hq-exl, in Gaia Clish, find the interface mapped to the public ISP link (`eth3`)
+open VYOS1 vm and shut down the interface 
 
 ```
-show interface eth3
+configure 
+set interface ethernet eth1 disable
+commit
+
 ```
 
-- Shut it down:
-
-```
-set interface eth3 state off
-```
+what can you observe in cpview monitor on hq-exl?
+check the current status in cpview of branch-gw and note the status of the tunnels.
 
 - On hq-client, reload `http://bbc.cm` a few times
 - In SmartConsole, open the latest Encrypt log for bbc.com
@@ -671,15 +716,16 @@ set interface eth3 state off
 
 > **Think about it:** user traffic failed over because of the SD-WAN Policy. The gateway's own traffic failed over because of the Gaia route with `ping on`. You need both.
 
-- Restore the link:
+
+go back to VYOS 1 and enable the interface again
 
 ```
-set interface eth3 state on
+delete interface ethernet eth1 disable
+commit
 ```
-
 - Confirm the public tunnel returns to UP in CPView
 
-> Don't skip step 7. The next part assumes both links are healthy.
+> Don't skip last step. The next part assumes both links are healthy.
 
 ---
 
@@ -751,34 +797,7 @@ On branch-gw:
 
 ---
 
-### Exercise A: read an SD-WAN rule match
-
-- On hq-exl, in Expert mode, start the minimum debug:
-
-```bash
-fw ctl zdebug -m SDWANRB all | grep PROB
-```
-
-- On hq-client, open a new connection to the web server
-- Read the output and find the matched rule
-- Press `Ctrl+C` to stop
-
-### Exercise B: see what SD-WAN calls "Internet"
-
-- On hq-exl, in Expert mode, show the ranges that the topology-derived objects resolve to:
-
-```bash
-fw tab -t sdwan_internet_ranges1 -u
-fw tab -t sdwan_internet_ranges2 -u
-fw tab -t sdwan_my_domain_ranges1 -u
-fw tab -t sdwan_peer_domain_ranges1 -u
-```
-
-> Only one table in each pair holds data at any moment. The other is empty. The SD-WAN Internet object excludes private ranges, directly connected networks, and your VPN domains.
-
-- Explain why 10.160.40.100 matches the Overlay rule and not a Local Breakout rule
-
-### Exercise C: check the Overlay probing path
+### Exercise: check vpn peer status
 
 - On hq-exl, in Expert mode, list all tunnels:
 
@@ -798,36 +817,11 @@ vpn tu conn <local-interface-ip> - <peer-interface-ip> - 1
 
 - Policy install problems: `sdwan install -d $FWDIR/state/__tmp/SDWAN/`, then read `$FWDIR/log/sdwan.elg` and `$FWDIR/log/sdwan_steering.elg`
 - Missing peer in CPView: check interface names in all three places, community membership, and that both gateways run the same management method
-- Never run `fw sdwan uninstall` or `fw sdwan unload` as a shortcut. Unloading locally doesn't tell the peer
 
 ---
 
 ## Optional challenges
-
-### Challenge 1: Backhaul
-
-Send the branch's Internet traffic through headquarters over the overlay.
-
-> **Prerequisites.** Backhaul needs the headquarters gateway to act as the center of the Star community, and the VPN routing option "To center, or through the center to other satellites, to Internet and other VPN targets". The lab community may use the opposite roles. Ask your trainer, and confirm in the admin guide's limitations chapter that Backhaul is supported in your build.
-
-- Create an SD-WAN rule:
-
-| Source | Destination | Steering | Install On |
-|---|---|---|---|
-| `net_172.30.1.0_24` | SD-WAN Internet | An Internet Steering object set to **Backhaul Only** | The branch and the center |
-
-- Add an Access Control rule on the center gateway:
-
-| Source | Destination | Action | Track | Install On |
-|---|---|---|---|---|
-| `net_172.30.1.0_24` | Internet | Accept | Log | The center gateway |
-
-- Open the branch network object, go to **NAT**, select **Add automatic address translation rules**, then **Hide behind gateway**, and set **Install On** to **All**
-- Keep **Disable NAT** selected in the community, so the traffic translates only when it leaves the center
-- Publish and install on both gateways
-- Add a rule above the Backhaul rule, with the branch gateway object as source and Local Breakout Only steering, if you want the gateway's own Internet traffic to leave locally
-
-### Challenge 2: Check that Threat Prevention still sees overlay traffic
+### Check that Threat Prevention still sees overlay traffic
 
 - Open the console of the test host (Hacker and JMeter in the topology diagram)
 - Start an automated web scan against `http://10.160.40.100`
@@ -848,7 +842,6 @@ Send the branch's Internet traffic through headquarters over the overlay.
 | Probing results | `cpview` > **Advanced** > **SDWAN** > **Probing-IPv4** |
 | VPN tunnels | `vpn tu tlist` |
 | One connection's tunnel | `vpn tu conn <src> <sport> <dst> <dport> <proto>` |
-| SD-WAN rule match | `fw ctl zdebug -m SDWANRB all \| grep PROB` |
 | Packet path | `fw monitor -F "<src>,0,<dst>,0,0" -F "<dst>,0,<src>,0,0"` |
 | Drops | `fw ctl zdebug + drop` |
 | Steering log | `$FWDIR/log/sdwan_steering.elg` |

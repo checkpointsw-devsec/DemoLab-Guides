@@ -203,6 +203,7 @@
           - "{{ n.host_isp2_gw }}"
         service:
           - "{{ n.service_echo_request }}"
+          - BGP
         install_on:
           - "{{ n.gateway_branch }}"
         track:

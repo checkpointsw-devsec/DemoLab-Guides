@@ -212,6 +212,7 @@
           - "{{ n.gateway_datacenter }}"
         service:
           - "{{ n.service_echo_request }}"
+          - BGP
         track:
           type: "{{ n.track_log }}"
         ignore_warnings: "{{ ignore_warnings }}"
