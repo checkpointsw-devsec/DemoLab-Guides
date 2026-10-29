@@ -1,4 +1,20 @@
-# Check Point SD-WAN On Prem Lab Guide
+# Check Point SD-WAN with Smart-1 Unified Management: Hands-On Lab Guide
+
+In this Virtual Lab environment you get access to two WAN interfacing lines. One can be used to simulated MPLS line. 
+**Spoiler Alarm**: One place to manage it all: SmartConsole.
+
+In this lab, you steer traffic across several WAN links with Check Point software-defined wide area network (SD-WAN). You run the whole deployment from SmartConsole on an on-premises Management Server. No Portal is involved.
+
+## What you will learn
+
+- Enable SD-WAN objects on an on-premises Management Server
+- Prepare gateway routing so local and overlay traffic fail over cleanly
+- Enable the SD-WAN Software Blade and map interfaces to WAN links
+- Create the SD-WAN Policy and read its default rules
+- Build the VPN and Access Control rules that the overlay needs
+- Prove steering works with logs, CPView, and the SD-WAN command line
+- Turn one public link into a private MPLS line and watch the tunnel count change
+- Break the overlay on purpose, then fix it
 
 ## Contents
 
@@ -18,12 +34,8 @@
 - [Part 8: Troubleshoot](#part-8-troubleshoot)
 - [Optional challenges](#optional-challenges)
 
-# Check Point SD-WAN with Smart-1 Unified Management: Hands-On Lab Guide
 
-In this Virtual Lab environment you get access to two WAN interfacing lines. One can be used to simulated MPLS line. 
-**Spoiler Alarm**: One place to manage it all: SmartConsole.
 
-In this lab, you steer traffic across several WAN links with Check Point software-defined wide area network (SD-WAN). You run the whole deployment from SmartConsole on an on-premises Management Server. No Portal is involved.
 
 | | |
 |---|---|
@@ -33,16 +45,6 @@ In this lab, you steer traffic across several WAN links with Check Point softwar
 | **Level** | Familiar with SmartConsole, Gaia, and Site-to-Site VPN |
 | **Admin guide (EA)** | [Check Point SD-WAN - Smart-1 Unified Management R82.20 Administration Guide](https://sc1.checkpoint.com/documents/SD-WAN-with-Smart1/Content/Topics-SD-WAN-Smart-1/1_Introduction.htm) |
 
-## What you will learn
-
-- Enable SD-WAN objects on an on-premises Management Server
-- Prepare gateway routing so local and overlay traffic fail over cleanly
-- Enable the SD-WAN Software Blade and map interfaces to WAN links
-- Create the SD-WAN Policy and read its default rules
-- Build the VPN and Access Control rules that the overlay needs
-- Prove steering works with logs, CPView, and the SD-WAN command line
-- Turn one public link into a private MPLS line and watch the tunnel count change
-- Break the overlay on purpose, then fix it
 
 ## How SD-WAN works in 60 seconds
 
@@ -650,7 +652,7 @@ In SmartConsole, open **Logs & Events**:
 
 ---
 
-## Part 6: Add an MPLS line
+## Part 7: Use an MPLS line
 
 Time: 30 minutes
 
@@ -664,7 +666,7 @@ On VYOs2:
 
 ```bash
 configure
-change congig ?????????????????????????
+change config ????
 commit
 ```
 
@@ -864,16 +866,6 @@ Send the branch's Internet traffic through headquarters over the overlay.
 - In SmartConsole, search for `dst:10.160.40.100 AND blade:IPS`
 
 > **Expected result:** IPS logs appear. SD-WAN steers the traffic. It doesn't skip inspection.
-
----
-
-## Reset the lab
-
-- Make sure `eth3` on hq-exl is back to **state on**
-- Remove any test rules you added, then publish
-- Install the policy on both gateways
-- Confirm in CPView that all tunnels are UP
-- Log out of SmartConsole and of the lab machines
 
 ---
 
