@@ -299,7 +299,11 @@ Note - These routes will also be used by the Automatic Next Hop feature that you
 
 
 
-> **Best Practice** - Enable next-hop monitoring, such as ping on, and consider IP Reachability Detection so that a route remains active only when the path is reachable. - Choose one or more dedicated monitoring targets as the number of your ISPs. - Set static route for each monitoring target to get routed through the monitored ISP only. - Attach the monitoring targets to the ISP routes. - Do not attach monitoring targets to the last-resort ISP route (the route with the lowest preference).
+**Best Practice** - Enable next-hop monitoring, such as ping on, and consider IP Reachability Detection so that a route remains active only when the path is reachable. 
+- Choose one or more dedicated monitoring targets as the number of your ISPs. 
+- Set static route for each monitoring target to get routed through the monitored ISP only. 
+- Attach the monitoring targets to the ISP routes. 
+- Do not attach monitoring targets to the last-resort ISP route (the route with the lowest preference).
 
 ### branch-gw
 
