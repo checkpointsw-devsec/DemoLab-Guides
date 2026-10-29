@@ -18,11 +18,8 @@ In this lab, you steer traffic across several WAN links with Check Point softwar
 
 ## Contents
 
-- [What you lern here](#what-you-will-learn)
-- [How SD-WAN works in 60 sec](#how-sd-wan-works-in-60-seconds)
-- [Before you start](#before-you-start)
-- [Lab Access](#lab-access)
-- [Lab setup](#lab-setup)
+- [Lab values](#lab-values)
+- [Lab network topology](#lab-network-topology)
 - [Part 0: Get familiar with the environment](#part-0-get-familiar-with-the-environment)
 - [Part 1: Prepare gateway networking](#part-1-prepare-gateway-networking)
 - [Part 2: Enable SD-WAN on hq-exl and branch-gw](#part-2-enable-sd-wan-on-hq-exl-and-branch-gw)
@@ -33,8 +30,7 @@ In this lab, you steer traffic across several WAN links with Check Point softwar
 - [Part 7: Fail over](#part-7-fail-over)
 - [Part 8: Troubleshoot](#part-8-troubleshoot)
 - [Optional challenges](#optional-challenges)
-
-
+- [Lab objectives](#lab-objectives)
 
 
 | | |
@@ -652,80 +648,12 @@ In SmartConsole, open **Logs & Events**:
 
 ---
 
-## Part 7: Use an MPLS line
-
-Time: 30 minutes
-
-Now you turn the second link into a private line. In the lab, a router between the gateways simulates MPLS (Multiprotocol Label Switching). The gateways now see a private next hop on `eth3`.
-
-SD-WAN builds tunnels only between interfaces on the same circuit. Giving the private line its own circuit changes the tunnel count. That's the lesson.
-
-### 7.1 Point the second route at the MPLS router
-
-<details>
-<summary><strong>### Create the custom WAN Link and circuit</strong></summary>
-
-- In SmartConsole, create a new **Circuit** for the private line. 
-
-![new-circuit](./images/new-circuit.png)
-
-![new-circuit-obj](./images/new-circuit-obj.png)
-
-- Create a WAN Link named `MPLS` and set its type to **Private**
-
-![new-private-WAN](./images/new-wan-link-private.png)
-
-![new-private-WAN](./images/new-wan-link-object.png)
-
-</details>
-
-
-### 7.2 Move `eth3` to the MPLS WAN Link
-
-On hq-exl:
-
-- Open the gateway object and go to **Network Management**
-- Edit `eth3` and open its **SD-WAN** tab
-- Map the interface to WAN Link `MPLS`
-- goto **Network Access** and assign the interface to `private circuit`
-
-On branch-gw:
-
-- Open the gateway object and go to **Network Management**
-- Edit `eth3` and open its **SD-WAN** tab
-- Map the interface to WAN Link `MPLS`
-- goto **Network Access** and assign the interface to `private circuit`
-  
-**Publish** and **Install Policy** on both gateways
-
-
-### 7.3 Observe
-
-- In CPView on either gateway, open **Advanced > SDWAN > Probing-IPv4 > Overlay Probing Results**
-
-![new-private-WAN](./images/MPLS-circuit.png)
-
-> **Expected result:** Source ISP `MPLS` and `WAN 1` are listed and have peer ISP with the same Label
- 
-- Run `sdwan show --isps` and compare the circuits of `eth3` and `eth2`
-
-- On hq-client, test the Internet site and `http://bbc.com` again
-- On hq-client, test the Internet site and `http://172.30.1.60` again
-- On Branch1-Windows-Client, test the Internet site and `http://bbc.com` 
-- On Branch1-Windows-Client, test the Internet site and `http://192.168.30.40` 
-
-> **Expected result:** both work and generate logs.
-
-- In SmartConsole, open the Encrypt log for the web server and note which interface carried it
-
----
-
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-## Part 8: Fail over
+## Part 7: Fail over
 
 Time: 15 minutes
 
@@ -768,32 +696,75 @@ set interface eth3 state on
 
 ---
 
-## Part 9: Troubleshoot
+## Part 8: Change Tunnel Peering by using circuits
 
 Time: 30 minutes
 
-### Where to start
+Now you turn the second link into a private line. In the lab, a router between the gateways simulates MPLS (Multiprotocol Label Switching). The gateways now see a private next hop on `eth3`.
 
-| Symptom | Start with |
-|---|---|
-| Policy installation fails | The Access Control install task result and the SmartConsole error |
-| Internet traffic uses the wrong path | Route reachability, next-hop state, SD-WAN rule match |
-| Overlay tunnel or probe is down | VPN community, circuit compatibility, peer visibility, probing state |
-| Traffic doesn't match the expected rule | Rule order, the SD-WAN Internet object, rule-match debug |
+SD-WAN builds tunnels only between interfaces on the same circuit. Giving the private line its own circuit changes the tunnel count. That's the lesson.
 
-### Exercise A: break the probing rule
+### 8.1 Point the second route at the MPLS router
 
-- In the Access Control policy, disable the **SD-WAN Overlay Probing** rule
-- Install on both gateways
-- In CPView, open **Overlay Probing Results** and wait for the change
-- In **Logs & Events**, search for the service `echo-request`
+<details>
+<summary><strong>### Creating custom WAN Link and circuit</strong></summary>
 
-> **What happened in the original lab:** the probes were dropped, the overlay probe state went DOWN, and the consecutive-drop counter climbed. If your rule base accepts ICMP elsewhere, the probes may pass in clear text instead. In either case, the log shows they no longer match the explicit rule.
+- In SmartConsole, create a new **Circuit** for the private line. 
 
-- Enable the rule again and install on both gateways
-- Confirm Encrypt and Decrypt logs for `echo-request` on both gateways in the rule's **Logs** tab
+![new-circuit](./images/new-circuit.png)
 
-### Exercise B: read an SD-WAN rule match
+![new-circuit-obj](./images/new-circuit-obj.png)
+
+- Create a WAN Link named `MPLS` and set its type to **Private**
+
+![new-private-WAN](./images/new-wan-link-private.png)
+
+![new-private-WAN](./images/new-wan-link-object.png)
+
+</details>
+
+
+### 8.2 Move `eth3` to the MPLS WAN Link
+
+On hq-exl:
+
+- Open the gateway object and go to **Network Management**
+- Edit `eth3` and open its **SD-WAN** tab
+- Map the interface to WAN Link `MPLS`
+- goto **Network Access** and assign the interface to `private circuit`
+
+On branch-gw:
+
+- Open the gateway object and go to **Network Management**
+- Edit `eth3` and open its **SD-WAN** tab
+- Map the interface to WAN Link `MPLS`
+- goto **Network Access** and assign the interface to `private circuit`
+  
+**Publish** and **Install Policy** on both gateways
+
+
+### 8.3 Observe
+
+- In CPView on either gateway, open **Advanced > SDWAN > Probing-IPv4 > Overlay Probing Results**
+
+![new-private-WAN](./images/MPLS-circuit.png)
+
+> **Expected result:** Source ISP `MPLS` and `WAN 1` are listed and have peer ISP with the same Label
+ 
+- Run `sdwan show --isps` and compare the circuits of `eth3` and `eth2`
+
+- On hq-client, test the Internet site and `http://bbc.com` again
+- On hq-client, test the Internet site and `http://172.30.1.60` again
+- On Branch1-Windows-Client, test the Internet site and `http://bbc.com` 
+- On Branch1-Windows-Client, test the Internet site and `http://192.168.30.40` 
+
+> **Expected result:** both work and generate logs.
+
+- In SmartConsole, open the Encrypt log for the web server and note which interface carried it
+
+---
+
+### Exercise A: read an SD-WAN rule match
 
 - On hq-exl, in Expert mode, start the minimum debug:
 
@@ -805,7 +776,7 @@ fw ctl zdebug -m SDWANRB all | grep PROB
 - Read the output and find the matched rule
 - Press `Ctrl+C` to stop
 
-### Exercise C: see what SD-WAN calls "Internet"
+### Exercise B: see what SD-WAN calls "Internet"
 
 - On hq-exl, in Expert mode, show the ranges that the topology-derived objects resolve to:
 
@@ -820,7 +791,7 @@ fw tab -t sdwan_peer_domain_ranges1 -u
 
 - Explain why 10.160.40.100 matches the Overlay rule and not a Local Breakout rule
 
-### Exercise D: check the Overlay probing path
+### Exercise C: check the Overlay probing path
 
 - On hq-exl, in Expert mode, list all tunnels:
 
