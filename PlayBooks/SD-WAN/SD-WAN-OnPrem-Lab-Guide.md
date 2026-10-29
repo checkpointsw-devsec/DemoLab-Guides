@@ -286,14 +286,13 @@ set bgp external remote-as 64529 peer 10.160.11.254 ip-reachability-detection on
 set bgp external remote-as 64539 peer 10.160.12.254 ip-reachability-detection on
 save config
 ```
-
-> in case of static routing the equivalent command is: `set static-route default ping on`
-> If hq-exl runs as a cluster in your topology, repeat this on every cluster member.
-> **Expected result:** `show route` lists two default routes with different priorities, and both next hops answer
-> for static routs you have to define priority to each ISP and **set static-route default ping on** to check reachability additionally
+:memo: in case of static routing the equivalent command is: `set static-route default ping on`
+> If hq-exl runs as a clusterXL in your topology, repeat this on every cluster member. 
+ 
+**Expected result:** `show route` lists two default routes with different priorities, and both next hops answer
+for static routs you have to define priority to each ISP and **set static-route default ping on** to check reachability additionally
 
 :memo: - These routes will also be used by the Automatic Next Hop feature that you configure in Security Gateway object at the interface level.
-
 
 
 **Best Practice** : Enable next-hop monitoring, such as ping on, and consider IP Reachability Detection so that a route remains active only when the path is reachable. 
