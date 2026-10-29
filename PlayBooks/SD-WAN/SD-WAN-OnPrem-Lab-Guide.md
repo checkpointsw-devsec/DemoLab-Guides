@@ -662,15 +662,8 @@ SD-WAN builds tunnels only between interfaces on the same circuit. Giving the pr
 
 ### 7.1 Point the second route at the MPLS router
 
-On VYOs2:
-
-```bash
-configure
-change config ????
-commit
-```
-
-### 7.2 Create the private WAN Link and circuit
+<details>
+<summary><strong>### Create the custom WAN Link and circuit</strong></summary>
 
 - In SmartConsole, create a new **Circuit** for the private line. 
 
@@ -684,38 +677,55 @@ commit
 
 ![new-private-WAN](./images/new-wan-link-object.png)
 
+</details>
 
-### 7.3 Move `eth3` to the MPLS WAN Link
+
+### 7.2 Move `eth3` to the MPLS WAN Link
 
 On hq-exl:
 
 - Open the gateway object and go to **Network Management**
 - Edit `eth3` and open its **SD-WAN** tab
 - Map the interface to WAN Link `MPLS`
+- goto **Network Access** and assign the interface to `private circuit`
 
 On branch-gw:
 
+- Open the gateway object and go to **Network Management**
 - Edit `eth3` and open its **SD-WAN** tab
 - Map the interface to WAN Link `MPLS`
-- Change the custom next hop to 10.160.31.20
-- **Publish** and **Install Policy** on both gateways
+- goto **Network Access** and assign the interface to `private circuit`
+  
+**Publish** and **Install Policy** on both gateways
 
-### 7.4 Observe
+
+### 7.3 Observe
 
 - In CPView on either gateway, open **Advanced > SDWAN > Probing-IPv4 > Overlay Probing Results**
-- Run `sdwan show --isps` and compare the circuits of `eth3` and `eth1`
 
-> **Expected result:** each gateway now lists two tunnels instead of four: one over the public link and one over the private link. Before, both Internet links shared one circuit, so all four interface pairs formed tunnels. Now only interfaces on the same circuit pair up. Allow a minute for CPView to catch up.
+![new-private-WAN](./images/MPLS-circuit.png)
 
-- On hq-client, test the Internet site and `http://10.160.40.100` again
+> **Expected result:** Source ISP `MPLS` and `WAN 1` are listed and have peer ISP with the same Label
+ 
+- Run `sdwan show --isps` and compare the circuits of `eth3` and `eth2`
 
-> **Expected result:** both still work.
+- On hq-client, test the Internet site and `http://bbc.com` again
+- On hq-client, test the Internet site and `http://172.30.1.60` again
+- On Branch1-Windows-Client, test the Internet site and `http://bbc.com` 
+- On Branch1-Windows-Client, test the Internet site and `http://192.168.30.40` 
+
+> **Expected result:** both work and generate logs.
 
 - In SmartConsole, open the Encrypt log for the web server and note which interface carried it
 
 ---
 
-## Part 7: Fail over
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+## Part 8: Fail over
 
 Time: 15 minutes
 
@@ -733,10 +743,10 @@ show interface eth3
 set interface eth3 state off
 ```
 
-- On hq-client, reload `http://10.160.40.100` a few times
-- In SmartConsole, open the latest Encrypt log for 10.160.40.100
+- On hq-client, reload `http://bbc.cm` a few times
+- In SmartConsole, open the latest Encrypt log for bbc.com
 
-> **Expected result:** the traffic now uses the private MPLS connection. The VPN peer is the branch-gw `eth1` address (10.160.31.30 in the original lab).
+> **Expected result:** the traffic now uses the private MPLS connection. The VPN peer is the branch-gw `eth2` address (10.160.31.30 in the original lab).
 
 - On branch-gw, open CPView and look at **Overlay Probing Results**
 
@@ -758,7 +768,7 @@ set interface eth3 state on
 
 ---
 
-## Part 8: Troubleshoot
+## Part 9: Troubleshoot
 
 Time: 30 minutes
 
