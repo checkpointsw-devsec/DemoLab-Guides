@@ -596,7 +596,7 @@ sdwan show --peers
 fw sdwan stat
 ```
 
-in cpview you can see live telemetry Data. for SD-WAN please got to Advanced > SDWAN > 
+in cpview you can see live telemetry Data. for SD-WAN please got to Advanced > SDWAN  please see  [Read probing results in CPView](#63-read-probing-results-in-cpview)
 
 
 </details>
@@ -610,6 +610,8 @@ in cpview you can see live telemetry Data. for SD-WAN please got to Advanced > S
 - Read **Local Breakout Probing Results**
 - Read **Overlay Probing Results**
 
+![cpview1](./images/cpview1-overlay-probing.png)
+
 > **Expected result:** each Internet link shows a Local Breakout probe in state UP. Overlay Probing Results lists a state per tunnel, with latency, jitter, and packet loss. With two public interfaces on each side and one shared circuit, each gateway shows four tunnels.
 
 ### 6.4 Check the tunnels
@@ -622,17 +624,19 @@ vpn tu tlist
 
 Each tunnel shows `From:` and `To:` fields with the SD-WAN interface addresses on both sides. That's how you know SD-WAN built a tunnel per interface pair, and not a classic Link Selection tunnel.
 
+![cpview1](./images/vpn-tunnels.png)
+
 ### 6.5 Test the traffic
 
 On hq-client, open a private browser window:
 
 - Browse to an Internet site (Local Breakout)
-- Browse to `http://10.160.40.100` (Overlay)
+- Browse to `http://bbc.com` (Overlay)
 - Press `Ctrl+F5` a few times to create new connections
 
 In SmartConsole, open **Logs & Events**:
 
-- Search for `dst:10.160.40.100` and open the latest **Encrypt** log
+- Search for `dst:bbc.com` and open the latest **Encrypt** log
 - Find the **SD-WAN** section in the log card
 
 > **Expected result:** the log shows the SD-WAN rule that matched, the Steering object, and which interface carried the encrypted traffic.
@@ -642,13 +646,7 @@ In SmartConsole, open **Logs & Events**:
 
 > **Expected result:** the SD-WAN section shows the Local Breakout rule and the ISP used.
 
-> **:memo: on the evaluation build.** SmartConsole monitoring dashboards for SD-WAN aren't available in the R82.20 EA release. Use logs, CPView, and the command line for validation.
-
----
-
-## Break
-
-Take 10 to 15 minutes. Your trainer tells you when Part 7 starts.
+![bbs-com-from-hq](./images/bbc-com-from-hq.png)
 
 ---
 
@@ -895,32 +893,6 @@ Send the branch's Internet traffic through headquarters over the overlay.
 | Drops | `fw ctl zdebug + drop` |
 | Steering log | `$FWDIR/log/sdwan_steering.elg` |
 
----
-
-## Trainer notes
-
-Remove this section before you publish the guide.
-
-**Verify before the first delivery**
-
-- Chapters on SD-WAN objects, gateway interface settings, and monitoring weren't available when this guide was drafted. The click paths for Circuits, WAN Links, Steering objects, and the interface **SD-WAN** tab follow what other chapters confirm. Check each label against your build and the admin guide, and update the steps
-- The topology page says ISP routers use `.254`, while the original lab used `.1` as the next hop. Confirm which is correct and fix the lab values table
-- The topology page's address plan table didn't render when this guide was drafted. Check the interface addresses for hq-exl `eth1` and for the MPLS router
-- R82.20 is Early Availability. Some documented features aren't supported in EA. Confirm the Limitations chapter before you add Backhaul, QoS, or other features to the agenda
-- SmartConsole SD-WAN monitoring isn't available in EA, so the Portal dashboard steps from the original lab have no equivalent here
-- Tunnel counts depend on the number of SD-WAN interfaces per gateway. Re-check the "four to two" statement if your topology differs
-- Add screenshots under `images/` and reference them in each part
-
-**Differences from the original Portal-based lab**
-
-| Original lab | This lab |
-|---|---|
-| Connect the Management Server to a Portal tenant with a token | No Portal. Enable SD-WAN objects on the Management Server |
-| Install an agent on each gateway with a one-time script | Enable the SD-WAN Software Blade in the gateway object |
-| SD-WAN wizard in the Portal | SD-WAN Policy created in SmartConsole |
-| Evaluation contract in the User Center | License attached to each gateway |
-| Portal monitoring dashboard | Logs, CPView, and the command line |
-| Shared evaluation login written into the guide | Login details come from the lab portal. None appear here |
 
 ---
 
