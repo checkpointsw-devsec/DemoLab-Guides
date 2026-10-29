@@ -109,9 +109,7 @@ in this Part you get more friendly to the lab environment and deploy the Policy 
 2. Open **Gateways & Servers** and confirm that hq-exl and branch-gw show a healthy status
 
 <div align="center">
-
 ![health view](./images/Gateway-health.png)
-
 </div>
 
 1. Open **Security Policies** and review the Access Control rule base on both gateways' policy packages
@@ -125,9 +123,7 @@ to get the policy packages for this lab please:
 open firefox browser and click on prepared AWX (ansible Works) bookmark
 
 <div align="center">
-
 ![awx Bookmark](./images/awx-bookmark.png)
-
 </div>
 
 for credentials plese see [Lab network topology](https://checkpointsw-devsec.github.io/DemoLab-Guides/Notes/index.html)
@@ -136,9 +132,7 @@ for credentials plese see [Lab network topology](https://checkpointsw-devsec.git
 go to the Templates and launch "Flow-SD-WAN"
 
 <div align="center">
-
 ![Start-Flow](./images/start-flow-sd-wan.png)
-
 </div>
 
 
@@ -154,16 +148,21 @@ flow output shows the different playbooks that are used in this flow. tmp is use
 - tmp_branch-rules (definition of the rules for branch-Office Policy Package)
 - tmp_DC-Rules(definition of the rules for Data Center Policy Package)
 
+<div align="center">
 ![flow-monitoring](./images/flow-monitoring.png)  
+</div>
 
 after a successful run of "Flow-SD-WAN", objects that are used in this lab get available in Smart Console.
 
 Please check Policy packages:
+
+<div align="center">
 ![policy packages](./images/policy-packages.png)
+</div>
 
 for more Information about AWX or GitLab you can see: [GitLab](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/GitLab.md) [AWX](https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/AWX.md)
 
-4. Open **VPN Communities** named Bra_DC_Community and Check / set these settings in the Star community:
+1. Open **VPN Communities** named Bra_DC_Community and Check / set these settings in the Star community:
 
 - On the **Gateways** page, center has to be **hq-exl-gw**
 - satellite gateway:  **branch-gw**
@@ -190,7 +189,9 @@ Install **Standard** Policy Package and check Traffic from hq-client:
 - Browse to an Internet site (https://bbc.com)
 - Browse to `http://172.30.1.60` (the web server at the branch)
 
+<div align="center">
 ![web-page opens](./images/Web-Server-check.png)
+</div>
 
 - In **Logs & Events**, search for `dst:172.30.1.60` and confirm you see an Encrypt log
 
@@ -277,18 +278,25 @@ Next step is to check bgp peers and existing routes.
 show configuration bgp 
 ```
 
+<div align="center">
 ![show-bgp-config](./images/BGP-Configuration.png)
+<div align="center">
+
 
 ```clish
 show configuration routemaps
 ```
-
+<div align="center">
 ![show-route-maps](./images/route-maps.png)
+</div>
 
 ```
 show route all
 ```
+
+<div align="center">
 ![show-route](./images/show-route-pre-sd-wan.png)
+</div>
 
 We've defined the preferences to each ISP in the route maps. 
 All routes are advertised by the "ISP" routers, here named as VYOS1 and VYOS2.
@@ -341,45 +349,59 @@ Time: 30 minutes
 - Go to **Gateways & Servers** and open hq-exl
 - Select the **SD-WAN** Software Blade
 
+<div align="center">
 ![enable-sd-wan-blade](./images/enable-sdwan.png)
+</div>
 
 - Open **Network Management** and confirm that `eth2` and `eth3` use the topology **External**
 - Compare the interface names with the names in Gaia
 
+<div align="center">
 ![interfaces](./images/interface-zone-settings.png)
+</div>
 
 > Interface names must match in three places: the Gaia OS, the gateway object's Network Management page, and the installed SD-WAN policy. A mismatch is the most common reason an expected tunnel is missing. In a cluster, the Cluster Virtual Interface names must match the member interface names too.
 
 - Edit `eth2`, then open its **SD-WAN** menue
 - Enable SD-WAN on the interface and map it to WAN Link `WAN1`
 
+<div align="center">
 ![eth2-WAN1](./images/eth2-sd-wan-mapping.png)
+</div>
 
 - goto `eth2` **Network Access** menue
 - Set the next hop mode to **Custom** and enter 10.160.11.254
 
+<div align="center">
 ![eth2-next-hop](./images/eth2-nexthop.png)
+</div>
 
 - Click **OK**
 
 - Edit `eth3`, then open its **SD-WAN** tab
 - Enable SD-WAN and map it to WAN Link `WAN2`
 
+<div align="center">
 ![eth3-WAN1](./images/eth3-sd-wan-setting.png)
+</div>
 
 - Set the next hop mode to **Custom** and enter 10.160.12.254
 
 - goto `eth3` **Network Access** menue
 - Set the next hop mode to **Custom** and enter 10.160.12.254
 
+<div align="center">
 ![eth2-next-hop](./images/eth3-nexthop.png)
+</div>
 
 - Leave **Symmetric Return** at its default
 - Click **OK**
 
 - goto Gateways **SD-WAN** menue
 here you can see an overview of WAN mappings to interfaces, Netxthop and circuits
+<div align="center">
 ![Gateway-mapping-overview](./images/eth2-mapping-overview.png)
+</div>
 
 - Click **OK**
 
@@ -428,10 +450,11 @@ The SD-WAN Policy is a shared policy. It **isn't** tied to one policy package.
 - Click **Create Policy**
 - Keep all use cases selected, including **Enable SD-WAN Overlay Traffic**
 - Click **Create Policy**
-
+<div align="center">
 ![create-sd-wan-policy](./images/create-sd-wan-policy.png)
 
 ![usecase-sdwan-policy](./images/usecase-sd-wan-policy.png)
+</div>
 
 ### Read the default rules
 
@@ -444,7 +467,9 @@ With all use cases selected, you get:
 
 Look at the columns: **Name**, **Source**, **Destination**, **Services & Applications**, **Steering**, **Translated Source**, **Install On**. Right-click the column header to reveal **QoS** and **Comment**.
 
+<div align="center">
 ![sdwan-policy](./images/sd-wan-policy.png)
+</div>
 
 Answer these questions:
 
@@ -495,8 +520,9 @@ Overlay probing sends Internet Control Message Protocol (ICMP) echo requests bet
 
 - Open both Access Control policy packages  `SD-WAN-DC` and `SD-WAN-Banch`
 you can see on both packages the same Probing Rules
-
+<div align="center">
 ![allow-probing-rule](./images/Probing-rules.png)
+</div>
 
 > If **Global Properties > Firewall > Accept ICMP requests** is enabled, the implied rule can match your probes and send them in clear text. Probes must be encrypted. Set the implied rule to **Last** or **Before Last** and keep the explicit rule.
 
@@ -564,8 +590,9 @@ Time: 30 minutes
 - Browse to `http://172.30.1.60` (the web server at the branch)
 
 - In **Logs & Events**, search for `dst:172.30.1.60` and confirm you see an Encrypt log
-
+<div align="center">
 ![policy-log-sd-wan](./images/policy-match-172-30-1-60.png)
+</div>
 
 you see couple of new records that give you more insights about matching objects that are used in the lab policy.
 
@@ -608,8 +635,9 @@ in cpview you can see live telemetry Data. for SD-WAN please got to Advanced > S
 - Go to **Advanced > SDWAN > Probing-IPv4**
 - Read **Local Breakout Probing Results**
 - Read **Overlay Probing Results**
-
+<div align="center">
 ![cpview1](./images/cpview1-overlay-probing.png)
+</div>
 
 > **Expected result:** each Internet link shows a Local Breakout probe in state UP. Overlay Probing Results lists a state per tunnel, with latency, jitter, and packet loss. With two public interfaces on each side and one shared circuit, each gateway shows four tunnels.
 
@@ -623,7 +651,9 @@ vpn tu tlist
 
 Each tunnel shows `From:` and `To:` fields with the SD-WAN interface addresses on both sides. That's how you know SD-WAN built a tunnel per interface pair, and not a classic Link Selection tunnel.
 
+<div align="center">
 ![cpview1](./images/vpn-tunnels.png)
+</div>
 
 ### 6.5 Test the traffic
 
@@ -647,8 +677,9 @@ In SmartConsole, open **Logs & Events**:
 - Open the **Connections** tab and open a connection log from the firewall blade
 
 > **Expected result:** the SD-WAN section shows the Local Breakout rule and the ISP used.
-
+<div align="center">
 ![bbs-com-from-hq](./images/bbc-com-from-hq.png)
+</div>
 
 ## Part 7: Backhaul Verification
 
@@ -658,11 +689,15 @@ Send the branch's Internet traffic through headquarters over the overlay.
 
 following rule is prepared in the lab to give you an example how to make sure Client traffic to spesific site if passin branch gateway goes through the backhaul.
 
+<div align="center">
 ![heise-test](./images/heise-test.png)
+</div>
 
 - Open the branch network object, go to **NAT**, select **Add automatic address translation rules**, then **Hide behind gateway**, and set **Install On** to **All**  
-
+<div align="center">
 ![branch-nat](./images/nat-for-backhaule.png)
+</div>
+
 
 - Keep **Disable NAT** selected in the community, so the traffic translates only when it leaves the center
 
@@ -743,17 +778,18 @@ SD-WAN builds tunnels only between interfaces on the same circuit. Giving the pr
 <summary><strong>### Creating custom WAN Link and circuit</strong></summary>
 
 - In SmartConsole, create a new **Circuit** for the private line. 
-
+<div align="center">
 ![new-circuit](./images/new-circuit.png)
-
+</div>
+<div align="center">
 ![new-circuit-obj](./images/new-circuit-obj.png)
-
+</div>
 - Create a WAN Link named `MPLS` and set its type to **Private**
-
+<div align="center">
 ![new-private-WAN](./images/new-wan-link-private.png)
 
 ![new-private-WAN](./images/new-wan-link-object.png)
-
+</div>
 </details>
 
 
@@ -779,9 +815,9 @@ On branch-gw:
 ### 8.3 Observe
 
 - In CPView on either gateway, open **Advanced > SDWAN > Probing-IPv4 > Overlay Probing Results**
-
+<div align="center">
 ![new-private-WAN](./images/MPLS-circuit.png)
-
+</div>
 > **Expected result:** Source ISP `MPLS` and `WAN 1` are listed and have peer ISP with the same Label
  
 - Run `sdwan show --isps` and compare the circuits of `eth3` and `eth2`
