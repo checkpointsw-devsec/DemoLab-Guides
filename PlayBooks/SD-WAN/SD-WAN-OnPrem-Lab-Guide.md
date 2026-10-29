@@ -295,7 +295,6 @@ for static routs you have to define priority to each ISP and **set static-route 
 
 :memo: - These routes will also be used by the Automatic Next Hop feature that you configure in Security Gateway object at the interface level.
 
-
 **Best Practice** : Enable next-hop monitoring, such as ping on, and consider IP Reachability Detection so that a route remains active only when the path is reachable. 
 
 - Choose one or more dedicated monitoring targets as the number of your ISPs. 
