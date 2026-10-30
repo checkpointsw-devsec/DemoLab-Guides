@@ -8,8 +8,8 @@
     - [Preparing the Lab](#preparing-the-lab)
     - [Sync the Code from GitHub to GitLab](#sync-the-code-from-github-to-gitlab)
   - [PlayBooks](#playbooks)
-    - [SD-WAN](#sd-wan)
     - [AI-Workshop](#ai-workshop)
+    - [SD-WAN](#sd-wan)
   - [More Information: AWX and GitLab](#more-information-awx-and-gitlab)
 
 ## Getting Familiar with the Environment
@@ -32,7 +32,9 @@ Before you start a Lab Guide, open the **Policy-Package.md** file in that playbo
 
 The scripts and Ansible code needed for the lab must also be copied (mirrored) to the lab’s GitLab server. The next section shows how.
 </details>
+
 ### Sync the Code from GitHub to GitLab
+
 <details>
 <summary><b>Sync the Code from GitHub to GitLab</b> (click to expand)</summary>
 
@@ -58,6 +60,35 @@ If you want to delete the matching projects and recreate them from scratch, run 
 </details>
 
 ## PlayBooks
+
+### AI-Workshop
+
+<details>
+<summary><b>AI-Workshop – Workforce AI Security and AI Agent Security</b> (click to expand)</summary>
+
+**Preparation:** [Policy-Package.md](PlayBooks/AI-Workshop/Policy-Package.md)
+
+**Lab 1 – Workforce AI Security:** [Lab1-Guide.md](PlayBooks/AI-Workshop/Lab1-Guide.md)
+
+- [Create a test Tenant in Check Point Portal](PlayBooks/AI-Workshop/Lab1-Guide.md#create-a-test-tenant-in-check-point-portal)
+- [Create trust between your Lab Management server and the tenant](PlayBooks/AI-Workshop/Lab1-Guide.md#create-trust-between-your-lab-management-server-and-the-tenant)
+- [Lab exercise 2: Enabling the Software Blades and features](PlayBooks/AI-Workshop/Lab1-Guide.md#lab-exercise-2-enabling-the-software-blades-and-features)
+- [Lab exercise 3: Setting Up the Policies](PlayBooks/AI-Workshop/Lab1-Guide.md#lab-exercise-3-setting-up-the-policies)
+- [Lab exercise 4: Testing the effectiveness of Workforce AI](PlayBooks/AI-Workshop/Lab1-Guide.md#lab-exercise-4-testing-the-effectiveness-of-workforce-ai)
+
+**Lab 2 – AI Agent Security with MCP Detection and Visibility:** [Lab2-Guide.md](PlayBooks/AI-Workshop/Lab2-Guide.md)
+
+- [Introduction](PlayBooks/AI-Workshop/Lab2-Guide.md#introduction)
+- [Accessing the Lab](PlayBooks/AI-Workshop/Lab2-Guide.md#accessing-the-lab)
+- [Initial Setup](PlayBooks/AI-Workshop/Lab2-Guide.md#initial-setup)
+- [Lab exercise 1: Configure MCP Detection and Visibility](PlayBooks/AI-Workshop/Lab2-Guide.md#lab-exercise-1-configure-mcp-detection-and-visibility)
+- [Lab exercise 2: Configure AI Agent Security and detect Prompt Injection](PlayBooks/AI-Workshop/Lab2-Guide.md#lab-exercise-2-configure-ai-agent-security-and-detect-prompt-injection)
+- [Summary](PlayBooks/AI-Workshop/Lab2-Guide.md#summary)
+- [Reference Material](PlayBooks/AI-Workshop/Lab2-Guide.md#reference-material)
+
+**Lab code:** [Lab-Code/AI-Workshop](Lab-Code/AI-Workshop)
+
+</details>
 
 ### SD-WAN
 
@@ -86,35 +117,6 @@ If you want to delete the matching projects and recreate them from scratch, run 
 - [Reference](PlayBooks/SD-WAN/SD-WAN-OnPrem-Lab-Guide.md#reference)
 
 **Lab code:** [Lab-Code/SD-WAN](Lab-Code/SD-WAN)
-
-</details>
-
-### AI-Workshop
-
-<details>
-<summary><b>AI-Workshop – Workforce AI Security and AI Agent Security</b> (click to expand)</summary>
-
-**Preparation:** [Policy-Package.md](PlayBooks/AI-Workshop/Policy-Package.md)
-
-**Lab 1 – Workforce AI Security:** [Lab1-Guide.md](PlayBooks/AI-Workshop/Lab1-Guide.md)
-
-- [Create a test Tenant in Check Point Portal](PlayBooks/AI-Workshop/Lab1-Guide.md#create-a-test-tenant-in-check-point-portal)
-- [Create trust between your Lab Management server and the tenant](PlayBooks/AI-Workshop/Lab1-Guide.md#create-trust-between-your-lab-management-server-and-the-tenant)
-- [Lab exercise 2: Enabling the Software Blades and features](PlayBooks/AI-Workshop/Lab1-Guide.md#lab-exercise-2-enabling-the-software-blades-and-features)
-- [Lab exercise 3: Setting Up the Policies](PlayBooks/AI-Workshop/Lab1-Guide.md#lab-exercise-3-setting-up-the-policies)
-- [Lab exercise 4: Testing the effectiveness of Workforce AI](PlayBooks/AI-Workshop/Lab1-Guide.md#lab-exercise-4-testing-the-effectiveness-of-workforce-ai)
-
-**Lab 2 – AI Agent Security with MCP Detection and Visibility:** [Lab2-Guide.md](PlayBooks/AI-Workshop/Lab2-Guide.md)
-
-- [Introduction](PlayBooks/AI-Workshop/Lab2-Guide.md#introduction)
-- [Accessing the Lab](PlayBooks/AI-Workshop/Lab2-Guide.md#accessing-the-lab)
-- [Initial Setup](PlayBooks/AI-Workshop/Lab2-Guide.md#initial-setup)
-- [Lab exercise 1: Configure MCP Detection and Visibility](PlayBooks/AI-Workshop/Lab2-Guide.md#lab-exercise-1-configure-mcp-detection-and-visibility)
-- [Lab exercise 2: Configure AI Agent Security and detect Prompt Injection](PlayBooks/AI-Workshop/Lab2-Guide.md#lab-exercise-2-configure-ai-agent-security-and-detect-prompt-injection)
-- [Summary](PlayBooks/AI-Workshop/Lab2-Guide.md#summary)
-- [Reference Material](PlayBooks/AI-Workshop/Lab2-Guide.md#reference-material)
-
-**Lab code:** [Lab-Code/AI-Workshop](Lab-Code/AI-Workshop)
 
 </details>
 
