@@ -1,5 +1,7 @@
 # Check Point SD-WAN with Smart-1 Unified Management: Hands-On Lab Guide
 
+<a href="https://checkpointsw-devsec.github.io/DemoLab-Guides/PlayBooks/SD-WAN/" target="_blank" rel="noopener noreferrer">Open HTML Version (open in a new Tab)</a>
+
 In this virtual lab environment, you get access to two WAN lines. One of them can be used to simulate an MPLS line.
 **Spoiler Alert**: One place to manage it all: SmartConsole.
 
