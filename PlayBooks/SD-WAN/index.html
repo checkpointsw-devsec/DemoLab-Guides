@@ -278,6 +278,7 @@ hr{border:0;border-top:1px solid var(--rule);margin:24px 0}
           <li><a href="#p2-1">2.1 Enable blade and interfaces on hq-exl</a></li>
           <li><a href="#p2-2">2.2 Repeat on branch-gw</a></li>
           <li><a href="#p2-3">2.3 SD-WAN objects</a></li>
+          <li><a href="#p2-4">2.4 SD-WAN Steering objects</a></li>
         </ol>
       </details></li>
       <li><details>
@@ -506,7 +507,9 @@ hr{border:0;border-top:1px solid var(--rule);margin:24px 0}
           </ul>
         </li>
       </ol>
-      <!-- TODO (from the Markdown source): "Why Link Selection matters." – text still to be written -->
+      <div class="callout"><span class="label">Why Link Selection matters</span>
+        <p>Link Selection decides which interface and IP address a gateway uses for each VPN tunnel. This matters most when a gateway has several ISP links, cloud VPN peers, or third-party IPsec peers. With <strong>Enhanced Link Selection</strong>, each link becomes its own VPN path: the gateways can build separate IPsec tunnels between those interfaces and spread connections across them. Confirm that <strong>Enhanced Link Selection</strong> is selected on both gateways.</p>
+      </div>
 
       <h4>Install and test</h4>
       <p>Install the <code>SD-WAN-DC</code> and <code>SD-WAN-Branch</code> policy packages and check the traffic from hq-client:</p>
@@ -624,7 +627,7 @@ save config</code></pre>
 <!-- ========== PART 2 ========== -->
 <section class="part" id="part-2">
   <details open>
-    <summary><span class="chev"></span><h2><span class="num">Part 2</span>Enable SD-WAN on hq-exl and branch-gw</h2><span class="time">30 min</span></summary>
+    <summary><span class="chev"></span><h2><span class="num">Part 2</span>Enable SD-WAN on hq-exl and branch-gw</h2><span class="time">40 min</span></summary>
     <div class="body">
 
       <details class="sub" id="p2-1" open>
@@ -715,15 +718,39 @@ save config</code></pre>
         <summary><span class="chev"></span><h3>2.3 SD-WAN objects</h3></summary>
         <div class="inner">
           <p>For custom objects, please refer to the SD-WAN documentation.</p>
-          <p>The two main object types are:</p>
+          <p>The three main object types are:</p>
           <div class="table-wrap"><table>
             <thead><tr><th>Object</th><th>What it is</th></tr></thead>
             <tbody>
               <tr><td><strong>Circuit</strong></td><td>A WAN domain. Overlay tunnels form only between interfaces that share a circuit</td></tr>
               <tr><td><strong>WAN Link</strong></td><td>An SD-WAN object mapped to a gateway interface. Public (Internet) or private (MPLS)</td></tr>
+              <tr><td><strong>Steering Object</strong></td><td>Defines how traffic is routed over the available WAN Links based on policies and conditions</td></tr>
             </tbody>
           </table></div>
           <p><a href="https://sc1.checkpoint.com/documents/SD-WAN-with-Smart1/Content/Topics-SD-WAN-Smart-1/5_Plan_SDWAN_Objects_and_Topology.htm" target="_blank" rel="noopener noreferrer">SD-WAN Objects and Topology</a></p>
+        </div>
+      </details>
+
+      <details class="sub" id="p2-4" open>
+        <summary><span class="chev"></span><h3>2.4 SD-WAN Steering objects</h3></summary>
+        <div class="inner">
+          <p>A Steering object controls which WAN Links a rule may use and when to move traffic to another link. There are two types: <strong>Internet Steering</strong> and <strong>Overlay Steering</strong>.</p>
+          <p>To create one, in the <strong>Objects</strong> pane click <strong>New &gt; More &gt; SD-WAN Object &gt; Steering</strong>, then select <strong>Internet Steering…</strong> or <strong>Overlay Steering…</strong>.</p>
+          <figure><a href="./images/steering-object-types.png" target="_blank"><img src="./images/steering-object-types.png" alt="New SD-WAN Steering object menu" loading="lazy"></a></figure>
+          <p>Create an Internet Steering object named <code>lab-internet-steering</code>:</p>
+          <figure><a href="./images/steering-object-internet-localbreakout.png" target="_blank"><img src="./images/steering-object-internet-localbreakout.png" alt="New Internet Steering dialog with Local Breakout Only" loading="lazy"></a></figure>
+          <ul>
+            <li>In <strong>Routing Preference</strong>, switch between <strong>Local Breakout Only</strong>, <strong>Backhaul Only</strong>, and <strong>Prioritize Local Breakout</strong> and watch the diagram change</li>
+            <li>In <strong>Steering Candidates</strong>, compare <strong>All Relevant WAN Links</strong> with <strong>Specific WAN Links</strong></li>
+            <li>In <strong>Criteria</strong>, review the latency, jitter, and packet-loss thresholds that make a link qualify or move traffic away from it</li>
+            <li>Click <strong>OK</strong></li>
+          </ul>
+          <p>Now create an Overlay Steering object named <code>lab-overlay-steering</code>, compare the two dialogs, and click <strong>OK</strong>. You don't use these objects later; delete them before you publish.</p>
+          <div class="callout tip"><span class="label">Think about it</span>
+            <p><strong>Question:</strong> What is the main difference between Internet Steering and Overlay Steering?</p>
+            <p><strong>Answer:</strong> Internet Steering handles traffic that goes to the Internet (local breakout, backhaul to HQ, or both). Overlay Steering handles traffic between SD-WAN gateways and picks which WAN link pairs carry the tunnels.</p>
+          </div>
+          <p>More detail: <a href="https://sc1.checkpoint.com/documents/SD-WAN-with-Smart1/Content/Topics-SD-WAN-Smart-1/9_2_Detailed_Internet_and_Overlay_Steering_Use_Cases.htm" target="_blank" rel="noopener noreferrer">Internet and Overlay Steering Use Cases</a></p>
         </div>
       </details>
 

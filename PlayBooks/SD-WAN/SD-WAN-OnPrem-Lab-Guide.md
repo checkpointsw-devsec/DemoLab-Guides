@@ -37,6 +37,7 @@ In this lab, you steer traffic across several WAN links with Check Point softwar
     - [2.1 Enable the blade and the interfaces on hq-exl](#21-enable-the-blade-and-the-interfaces-on-hq-exl)
     - [2.2 Repeat on branch-gw](#22-repeat-on-branch-gw)
     - [2.3 SD-WAN objects](#23-sd-wan-objects)
+    - [2.4 SD-WAN Steering Object](#24-sd-wan-steering-object)
   - [Part 3: Create the SD-WAN Policy](#part-3-create-the-sd-wan-policy)
     - [Read the default rules](#read-the-default-rules)
   - [Part 4: Configure VPN and Access Control for the overlay](#part-4-configure-vpn-and-access-control-for-the-overlay)
@@ -211,13 +212,7 @@ For more information about AWX or GitLab, see: [GitLab](https://github.com/check
 - Open branch-gw: set the `VPN domain` to `net_172.30.1.0_24`
 - In each gateway, open **IPSec VPN > Link Selection** and note the primary interface
 
-+ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-> **Why Link Selection matters.** i have to define something good here .
-+ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+> **Why Link Selection matters.** Link Selection decides which interface and IP address a gateway uses for each VPN tunnel. This matters most when a gateway has several ISP links, cloud VPN peers, or third-party IPsec peers. With **Enhanced Link Selection**, each link becomes its own VPN path: the gateways can build separate IPsec tunnels between those interfaces and spread connections across them. Confirm that **Enhanced Link Selection** is selected on both gateways.
 
 Install the `SD-WAN-DC` and `SD-WAN-Branch` policy packages and check the traffic from hq-client:
 
@@ -380,7 +375,7 @@ save config
 
 ## Part 2: Enable SD-WAN on hq-exl and branch-gw
 
-Time: 30 minutes
+Time: 40 minutes
 
 ### 2.1 Enable the blade and the interfaces on hq-exl
 | Interface | WAN Link | Next hop |
@@ -481,15 +476,40 @@ Time: 30 minutes
 
 For custom objects please refer to the SD-WAN documentation.
 
-The two main object types are:
+The three main object types are:
 
 | Object | What it is |
 |---|---|
 | **Circuit** | A WAN domain. Overlay tunnels form only between interfaces that share a circuit |
 | **WAN Link** | An SD-WAN object mapped to a gateway interface. Public (Internet) or private (MPLS) |
+| **Steering Object** | Defines how traffic is routed over the available WAN Links based on policies and conditions |
 
 [SD-WAN Objects and Topology](https://sc1.checkpoint.com/documents/SD-WAN-with-Smart1/Content/Topics-SD-WAN-Smart-1/5_Plan_SDWAN_Objects_and_Topology.htm)
 
+### 2.4 SD-WAN Steering Object
+
+A Steering object controls which WAN Links a rule may use and when to move traffic to another link. There are two types: **Internet Steering** and **Overlay Steering**.
+
+To create one, in the **Objects** pane click **New > More > SD-WAN Object > Steering**, then select **Internet Steering…** or **Overlay Steering…**.
+
+![steering-object-type](./images/steering-object-types.png)
+
+Create an Internet Steering object named `lab-internet-steering`:
+
+![steering-object-internet-localbreakout](./images/steering-object-internet-localbreakout.png)
+
+- In **Routing Preference**, switch between **Local Breakout Only**, **Backhaul Only**, and **Prioritize Local Breakout** and watch the diagram change.
+- In **Steering Candidates**, compare **All Relevant WAN Links** with **Specific WAN Links**.
+- In **Criteria**, review the latency, jitter, and packet-loss thresholds that make a link qualify or move traffic away from it.
+- Click **OK**.
+
+Now create an Overlay Steering object named `lab-overlay-steering`, compare the two dialogs, and click **OK**. You don't use these objects later; delete them before you publish.
+
+> **Question:** What is the main difference between Internet Steering and Overlay Steering?
+>
+> **Answer:** Internet Steering handles traffic that goes to the Internet (local breakout, backhaul to HQ, or both). Overlay Steering handles traffic between SD-WAN gateways and picks which WAN link pairs carry the tunnels.
+
+More detail: [Internet and Overlay Steering Use Cases](https://sc1.checkpoint.com/documents/SD-WAN-with-Smart1/Content/Topics-SD-WAN-Smart-1/9_2_Detailed_Internet_and_Overlay_Steering_Use_Cases.htm)
 
 ---
 
