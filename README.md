@@ -30,6 +30,8 @@ Before you start a Lab Guide, open the **Policy-Package.md** file in that playbo
 
 The scripts and Ansible code needed for the lab must also be copied (mirrored) to the lab’s GitLab server. The next section shows how.
 
+<details>
+<summary><b>Sync the Code from GitHub to GitLab</b> (click to expand)</summary>
 ## Sync the Code from GitHub to GitLab
 
 Open a PowerShell window.
@@ -51,6 +53,7 @@ If you want to delete the matching projects and recreate them from scratch, run 
 ```
 .\Sync-LabCodeToGitLab.ps1 -RecreateExisting -Confirm:$false
 ```
+</details>
 
 ## PlayBooks
 
