@@ -5,8 +5,8 @@
 - [DemoLab Guides](#demolab-guides)
   - [Contents](#contents)
   - [Getting Familiar with the Environment](#getting-familiar-with-the-environment)
-  - [Preparing the Lab](#preparing-the-lab)
-  - [Sync the Code from GitHub to GitLab](#sync-the-code-from-github-to-gitlab)
+    - [Preparing the Lab](#preparing-the-lab)
+    - [Sync the Code from GitHub to GitLab](#sync-the-code-from-github-to-gitlab)
   - [PlayBooks](#playbooks)
     - [SD-WAN](#sd-wan)
     - [AI-Workshop](#ai-workshop)
@@ -16,7 +16,9 @@
 
 Before you begin, read the <a href="https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/TechPoint_Environment.md" target="_blank" rel="noopener noreferrer">Environment-description (open in a new Tab)</a>. It explains how to connect to the lab environment and how to use it.
 
-## Preparing the Lab
+### Preparing the Lab
+<details>
+<summary><b>Preparing the Lab</b> (click to expand)</summary>
 
 All objects and policy packages for the lab are provided as Ansible playbooks in the GitHub repository.
 
@@ -29,10 +31,10 @@ Before you start a Lab Guide, open the **Policy-Package.md** file in that playbo
 </div>
 
 The scripts and Ansible code needed for the lab must also be copied (mirrored) to the lab’s GitLab server. The next section shows how.
-
+</details>
+### Sync the Code from GitHub to GitLab
 <details>
 <summary><b>Sync the Code from GitHub to GitLab</b> (click to expand)</summary>
-## Sync the Code from GitHub to GitLab
 
 Open a PowerShell window.
 Go to the folder that contains the script and run it:
