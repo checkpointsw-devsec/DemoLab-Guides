@@ -106,10 +106,7 @@ Your trainer gives you the login details for every lab machine through the lab p
 ### Lab values
 
 During the lab, you need additional information based on the topology of this lab.
-- [Lab network topology](https://checkpointsw-devsec.github.io/DemoLab-Guides/Notes/index.html)
-
-Hover to trace a connection, and click a device for its addresses.
-<div align="center">
+- [Lab network topology](https://checkpointsw-devsec.github.io/DemoLab-Guides/PlayBooks/Shared-Books/index.html)
 
 | Item | Value |
 |---|---|
@@ -156,7 +153,7 @@ Open the Firefox browser and click the prepared AWX (Ansible Works) bookmark.
 
 </div>
 
-For credentials, see [Lab network topology](https://checkpointsw-devsec.github.io/DemoLab-Guides/Notes/index.html)
+For credentials, see [Lab network topology](https://checkpointsw-devsec.github.io/DemoLab-Guides/PlayBooks/Shared-Books/index.html)
 
 
 Go to **Templates** and launch "Flow-SD-WAN".
