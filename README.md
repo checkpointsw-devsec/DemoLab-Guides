@@ -10,6 +10,7 @@
   - [PlayBooks](#playbooks)
     - [AI-Workshop](#ai-workshop)
     - [SD-WAN](#sd-wan)
+    - [More Information: AWX and GitLab](#more-information-awx-and-gitlab)
 
 ## Getting Familiar with the Environment
 
@@ -119,7 +120,7 @@ If you want to delete the matching projects and recreate them from scratch, run 
 
 </details>
 
-- More Information: AWX and GitLab
+### More Information: AWX and GitLab
 <details>
 <summary><b>AWX and GitLab</b> (click to expand)</summary>
 If you need help with the tools used to run the lab code, see:
