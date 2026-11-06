@@ -22,7 +22,7 @@ please open following LINK <a href="https://github.com/checkpointsw-devsec/DemoL
 - credentials
 
 <details>
-<summary>### Preparing the Lab (click to expand)</summary>
+### Preparing the Lab (click to expand)
 
 after opening shared link to your Virtual environment All objects and policy packages for the lab are provided as Ansible playbooks in the GitHub repository.
 
