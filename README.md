@@ -14,13 +14,17 @@
 
 ## Getting Familiar with the Environment
 
-Before you begin, read the <a href="https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/TechPoint_Environment.md" target="_blank" rel="noopener noreferrer">Environment-description (open in a new Tab)</a>. It explains how to connect to the lab environment and how to use it.
+please open following LINK <a href="https://github.com/checkpointsw-devsec/DemoLab-Guides/blob/main/PlayBooks/Shared-Books/TechPoint_Environment.md" target="_blank" rel="noopener noreferrer">Environment-description (open in a new Tab)</a> for:
 
-### Preparing the Lab
+- how the infratucture looks like
+- how to access different component.
+- how to revert or reset VM if necessary
+- credentials
+
 <details>
-<summary><b>Preparing the Lab</b> (click to expand)</summary>
+<summary>### Preparing the Lab (click to expand)</summary>
 
-All objects and policy packages for the lab are provided as Ansible playbooks in the GitHub repository.
+after opening shared link to your Virtual environment All objects and policy packages for the lab are provided as Ansible playbooks in the GitHub repository.
 
 Before you start a Lab Guide, open the **Policy-Package.md** file in that playbook’s folder and follow the instructions in it.
 
