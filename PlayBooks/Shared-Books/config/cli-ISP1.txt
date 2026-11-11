@@ -1,0 +1,160 @@
+=~=~=~=~=~=~=~=~=~=~=~= MobaXterm log 2026.10.29 16:04:32 =~=~=~=~=~=~=~=~=~=~=~=
+    
+                      MobaXterm Personal Edition v23.4                  
+                   (SSH client, X server and network tools)               
+                                                                          
+      SSH session to vyos@10.160.201.65                                  
+        Direct SSH      :                                               
+        SSH compression :                                               
+        SSH-browser     :                                               
+        X11-forwarding  :    (disabled or not supported by server)      
+                                                                          
+      For more info, ctrl+click on help or visit our website.            
+    
+
+Welcome to VyOS!
+
+Check out project news at https://blog.vyos.io
+and feel free to report bugs at https://vyos.dev
+
+You can change this banner using "set system login banner post-login" command.
+
+VyOS is a free software distribution that includes multiple components,
+you can check individual component licenses under /usr/share/doc/*/copyright
+Last login: Thu Oct 29 16:36:19 2026 from 10.160.201.20
+vyos@isp1-rtr:~$ show configuration commands 
+set firewall global-options all-ping 'enable'
+set firewall global-options broadcast-ping 'disable'
+set firewall global-options ip-src-route 'disable'
+set firewall global-options ipv6-receive-redirects 'disable'
+set firewall global-options ipv6-src-route 'disable'
+set firewall global-options log-martians 'enable'
+set firewall global-options receive-redirects 'disable'
+set firewall global-options send-redirects 'enable'
+set firewall global-options source-validation 'disable'
+set firewall global-options syn-cookies 'enable'
+set firewall global-options twa-hazards-protection 'disable'
+set firewall group ipv6-network-group Internal_Nets_v6 network '1000:160:11::/64'
+set firewall group ipv6-network-group Internal_Nets_v6 network '1000:160:12::/64'
+set firewall group ipv6-network-group Internal_Nets_v6 network '1000:160:21::/64'
+set firewall group ipv6-network-group Internal_Nets_v6 network '1000:160:22::/64'
+set firewall group ipv6-network-group Internal_Nets_v6 network '1000:160:31::/64'
+set firewall group ipv6-network-group Internal_Nets_v6 network '1000:160:32::/64'
+set firewall group ipv6-network-group Internal_Nets_v6 network '1000:160:41::/64'
+set firewall group ipv6-network-group Internal_Nets_v6 network '1000:160:42::/64'
+set firewall group network-group Internal_Nets network '10.160.11.0/24'
+set firewall group network-group Internal_Nets network '10.160.21.0/24'
+set firewall group network-group Internal_Nets network '10.160.31.0/24'
+set firewall group network-group Internal_Nets network '10.160.41.0/24'
+set firewall group network-group Internal_Nets network '10.160.12.0/24'
+set firewall group network-group Internal_Nets network '10.160.22.0/24'
+set firewall group network-group Internal_Nets network '10.160.32.0/24'
+set firewall group network-group Internal_Nets network '10.160.42.0/24'
+set firewall group network-group Internal_Nets network '192.168.30.0/24'
+set firewall group network-group Internal_Nets network '17.30.1.0/24'
+set firewall group network-group Internal_Nets network '17.40.1.0/24'
+set interfaces ethernet eth0 address '10.160.201.65/24'
+set interfaces ethernet eth0 address '1000:160:201::65/64'
+set interfaces ethernet eth0 hw-id '00:50:56:06:34:f7'
+set interfaces ethernet eth1 address '10.160.11.254/24'
+set interfaces ethernet eth1 address '1000:160:11::254/64'
+set interfaces ethernet eth1 hw-id '00:50:56:29:fe:58'
+set interfaces ethernet eth2 address '10.160.21.254/24'
+set interfaces ethernet eth2 address '1000:160:21::254/64'
+set interfaces ethernet eth2 hw-id '00:50:56:00:72:32'
+set interfaces ethernet eth3 address '10.160.31.254/24'
+set interfaces ethernet eth3 address '1000:160:31::254/64'
+set interfaces ethernet eth3 hw-id '00:50:56:1f:b2:be'
+set interfaces ethernet eth4 address '10.160.41.254/24'
+set interfaces ethernet eth4 address '1000:160:41::254/64'
+set interfaces ethernet eth4 hw-id '00:50:56:3c:a1:04'
+set nat source rule 10 description 'No SNAT for inter-ISP VPN underlay'
+:set nat source rule 10 destination group network-group 'Internal_Nets'
+set nat source rule 10 exclude
+set nat source rule 10 outbound-interface name 'eth0'
+set nat source rule 10 source group network-group 'Internal_Nets'
+set nat source rule 20 description 'Hide NAT internal networks via eth0'
+set nat source rule 20 destination address '0.0.0.0/0'
+set nat source rule 20 log
+set nat source rule 20 outbound-interface name 'eth0'
+set nat source rule 20 source group network-group 'Internal_Nets'
+set nat source rule 20 translation address 'masquerade'
+set policy route-map setmet rule 10 action 'permit'
+set policy route-map setmet rule 10 set as-path prepend '2 2 2'
+set protocols bgp address-family ipv4-unicast network 10.160.11.0/24
+set protocols bgp address-family ipv4-unicast network 10.160.12.0/24
+set protocols bgp address-family ipv4-unicast network 10.160.21.0/24
+set protocols bgp address-family ipv4-unicast network 10.160.22.0/24
+set protocols bgp address-family ipv4-unicast network 10.160.31.0/24
+set protocols bgp address-family ipv4-unicast network 10.160.32.0/24
+set protocols bgp address-family ipv4-unicast network 10.160.41.0/24
+set protocols bgp address-family ipv4-unicast network 10.160.42.0/24
+set protocols bgp address-family ipv6-unicast network 1000:160:11::/64
+set protocols bgp address-family ipv6-unicast network 1000:160:12::/64
+set protocols bgp address-family ipv6-unicast network 1000:160:21::/64
+set protocols bgp address-family ipv6-unicast network 1000:160:22::/64
+set protocols bgp address-family ipv6-unicast network 1000:160:31::/64
+set protocols bgp address-family ipv6-unicast network 1000:160:32::/64
+set protocols bgp address-family ipv6-unicast network 1000:160:41::/64
+set protocols bgp address-family ipv6-unicast network 1000:160:42::/64
+set protocols bgp neighbor 10.160.11.1 address-family ipv4-unicast as-override
+set protocols bgp neighbor 10.160.11.1 address-family ipv4-unicast default-originate
+set protocols bgp neighbor 10.160.11.1 remote-as '64551'
+set protocols bgp neighbor 10.160.21.1 address-family ipv4-unicast as-override
+set protocols bgp neighbor 10.160.21.1 address-family ipv4-unicast default-originate
+set protocols bgp neighbor 10.160.21.1 remote-as '64552'
+set protocols bgp neighbor 10.160.31.1 address-family ipv4-unicast as-override
+set protocols bgp neighbor 10.160.31.1 address-family ipv4-unicast default-originate
+set protocols bgp neighbor 10.160.31.1 remote-as '64553'
+set protocols bgp neighbor 10.160.41.1 address-family ipv4-unicast as-override
+set protocols bgp neighbor 10.160.41.1 address-family ipv4-unicast default-originate
+set protocols bgp neighbor 10.160.41.1 remote-as '64554'
+set protocols bgp neighbor 1000:160:11::1 address-family ipv6-unicast soft-reconfiguration inbound
+set protocols bgp neighbor 1000:160:11::1 remote-as '64551'
+set protocols bgp neighbor 1000:160:21::1 address-family ipv6-unicast soft-reconfiguration inbound
+set protocols bgp neighbor 1000:160:21::1 remote-as '64552'
+set protocols bgp neighbor 1000:160:31::1 address-family ipv6-unicast soft-reconfiguration inbound
+set protocols bgp neighbor 1000:160:31::1 remote-as '64553'
+:set protocols bgp neighbor 1000:160:41::1 address-family ipv6-unicast soft-reconfiguration inbound
+set protocols bgp neighbor 1000:160:41::1 remote-as '64554'
+set protocols bgp parameters graceful-restart stalepath-time '20'
+set protocols bgp parameters router-id '10.160.201.65'
+set protocols bgp system-as '64529'
+set protocols static route 0.0.0.0/0 next-hop 10.160.201.1
+set protocols static route 10.160.12.0/24 next-hop 10.160.201.66
+set protocols static route 10.160.22.0/24 next-hop 10.160.201.66
+set protocols static route 10.160.32.0/24 next-hop 10.160.201.66
+set protocols static route 10.160.42.0/24 next-hop 10.160.201.66
+set service ntp allow-client address '0.0.0.0/0'
+set service ntp allow-client address '::/0'
+set service ntp server 0.pool.ntp.org
+set service ntp server 1.pool.ntp.org
+set service ntp server 2.pool.ntp.org
+set service ssh port '22'
+set system config-management commit-revisions '100'
+set system conntrack modules ftp
+set system conntrack modules h323
+set system conntrack modules nfs
+set system conntrack modules pptp
+set system conntrack modules sip
+set system conntrack modules sqlnet
+set system conntrack modules tftp
+set system console device ttyS0 speed '9600'
+set system host-name 'isp1-rtr'
+set system login user vyos authentication encrypted-password '$6$QiCFitns$lz6kG6Uu7QBEZdwOTT1SK6WYIZoDYj0jtO9Kw2zbb2.ElQODsW2CUr0rpAALylnG9T/N04c34uyN8P.EqJoby.'
+set system login user vyos authentication plaintext-password ''
+set system name-server '1.1.1.1'
+set system syslog global facility all level 'info'
+set system syslog global facility local7 level 'debug'
+set system task-scheduler task monBGP crontab-spec '* * * * *'
+set system task-scheduler task monBGP executable path '/home/vyos/mon-bgp.sh'
+set system time-zone 'Europe/Berlin'
+vyos@isp1-rtr:~$    exit
+logout
+
+
+
+Session stopped
+    - Press <Return> to exit tab
+    - Press R to restart session
+    - Press S to save terminal output to file
