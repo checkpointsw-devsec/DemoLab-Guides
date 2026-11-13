@@ -1,4 +1,5 @@
-to start 
+objects that are used in this lab are defined over 
+
 on HQ-Windows machine open a powershell box and go to 
 
 C:\users\student\downloads
