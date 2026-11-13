@@ -37,7 +37,7 @@
           - "{{ n.gateway_branch }}"
 
         tunnel_granularity: "per_subnet"
-        vpn_routing: "to center other satellites and internet"
+        vpn_routing: "to center and to other satellites"
         ignore_warnings: "{{ ignore_warnings }}"
         ignore_errors: false
         state: present
