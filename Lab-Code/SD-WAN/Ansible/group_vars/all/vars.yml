@@ -11,8 +11,8 @@ dc_policy_package_name:          "SD-WAN-DC"
 
 # --- Unified resource name map ─────────────────────────────────────────
 resource_name_map: 
-  layer_branch_policy_network: "SD-WAN-Branch Network"
-  layer_dc_policy_network:     "SD-WAN-DC Network"
+  layer_branch_policy_network: "BranchOffice Network"
+  layer_dc_policy_network:     "DataCenter Network"
 
   host_hq_win10-v4:            "hq-win10-ipv4"
   host_hq_win10_ipv4:          "192.168.30.20"
