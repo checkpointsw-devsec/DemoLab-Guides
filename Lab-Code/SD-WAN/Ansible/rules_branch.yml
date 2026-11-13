@@ -113,7 +113,16 @@
         ignore_warnings: "{{ ignore_warnings }}"
         ignore_errors: false
         state: present
-
+        
+    - name: "DC | Section — {{ n.section_mcp_visibility }}"
+      check_point.mgmt.cp_mgmt_access_section:
+        name: "{{ n.section_mcp_visibility }}"
+        layer: "{{ n.layer_branch_policy_network }}"
+        position: bottom
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+        
     - name: "BRANCH | Section — {{ n.section_outbound }}"
       check_point.mgmt.cp_mgmt_access_section:
         name: "{{ n.section_outbound }}"
@@ -123,6 +132,15 @@
         ignore_errors: false
         state: present
 
+    - name: "DC | Section — {{ n.section_Monitor_other_traffic }}"
+      check_point.mgmt.cp_mgmt_access_section:
+        name: "{{ n.section_Monitor_other_traffic }}"
+        layer: "{{ n.layer_branch_policy_network }}"
+        position: bottom
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+        
     - name: "BRANCH | Section — {{ n.section_cleanup }}"
       check_point.mgmt.cp_mgmt_access_section:
         name: "{{ n.section_cleanup }}"
@@ -148,8 +166,9 @@
         source:
           - "{{ n.object_any }}"
         destination:
+          - "{{ n.gateway_datacenter }}"
           - "{{ n.gateway_branch }}"
-          - "{{ n['host_gw_back_int-v4'] }}"
+          - "{{ n.host_gw_back_int-v4 }}"
         service:
           - "{{ n.service_tcp_gaiawebui }}"
           - "{{ n.service_ssh }}"
