@@ -148,7 +148,9 @@ resource_name_map:
   section_isp_probing:              "ISP-Probing"
   section_services:                 "Services"
   section_vpn_overlay:              "VPN Overlay"
+  section_mcp_visibility:           "MCP Visibility"
   section_outbound:                 "Outbound"
+  section_Monitor_other_traffic:    "Monitor other Traffic"
   section_cleanup:                  "Cleanup"
 
   # ── Rule names (shared across both layers) ──────────────────────────
