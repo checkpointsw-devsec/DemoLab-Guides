@@ -305,6 +305,14 @@
         ignore_errors: "{{ n.val_false }}"
         state: present
 
+    - name: Create DNS domain paolo — {{ n.testDomain_object1 }}
+      check_point.mgmt.cp_mgmt_dns_domain:
+        name: "{{ n.testDomain_object1 }}"
+        is_sub_domain: "{{ n.val_true }}"
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: "{{ n.val_false }}"
+        state: present
+
 
     # ------------------------------------------------------------------
     # Publish
