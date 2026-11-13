@@ -126,6 +126,7 @@ resource_name_map:
   net_datacenter_ipv6:         "a192:168:30::"
 
   testDomain_object:          ".heise.de"
+  testDomain_object1:          ".gpt-paolo.openai.azure.com"
 
   # ── Pre-existing objects (must already exist on the target) ─────────
   object_any:                       "Any"
