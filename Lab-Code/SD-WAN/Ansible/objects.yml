@@ -112,6 +112,16 @@
         mask_length: 64
         ip_version: 6
 
+      - name: "{{ n.net_branch1_v4_AI }}"
+        subnet: "{{ n.net_branch1_ipv4_AI }}"
+        mask_length: 24
+        ip_version: 4
+
+      - name: "{{ n.net_branch1_v6_AI }}"
+        subnet: "{{ n.net_branch1_ipv6_AI }}"
+        mask_length: 64
+        ip_version: 6
+      
       - name: "{{ n.net_branch2_v4 }}"
         subnet: "{{ n.net_branch2_ipv4 }}"
         mask_length: 24
