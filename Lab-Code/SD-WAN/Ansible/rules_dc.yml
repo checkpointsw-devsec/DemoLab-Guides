@@ -126,6 +126,15 @@
         ignore_errors: false
         state: present
 
+    - name: "DC | Section — {{ n.section_mcp_visibility }}"
+      check_point.mgmt.cp_mgmt_access_section:
+        name: "{{ n.section_mcp_visibility }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        position: bottom
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
     - name: "DC | Section — {{ n.section_outbound }}"
       check_point.mgmt.cp_mgmt_access_section:
         name: "{{ n.section_outbound }}"
@@ -135,6 +144,15 @@
         ignore_errors: false
         state: present
 
+    - name: "DC | Section — {{ n.section_Monitor_other_traffic }}"
+      check_point.mgmt.cp_mgmt_access_section:
+        name: "{{ n.section_Monitor_other_traffic }}"
+        layer: "{{ n.layer_dc_policy_network }}"
+        position: bottom
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+    
     - name: "DC | Section — {{ n.section_cleanup }}"
       check_point.mgmt.cp_mgmt_access_section:
         name: "{{ n.section_cleanup }}"
