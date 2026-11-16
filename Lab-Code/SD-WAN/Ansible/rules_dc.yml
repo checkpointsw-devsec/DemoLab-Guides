@@ -180,7 +180,7 @@
         destination:
           - "{{ n.gateway_datacenter }}"
           - "{{ n.gateway_branch }}"
-          - "{{ n.host_gw_back_int-v4 }}"
+          - "{{ n['host_gw_back_int-v4'] }}"
         service:
           - "{{ n.service_tcp_gaiawebui }}"
           - "{{ n.service_ssh }}"
