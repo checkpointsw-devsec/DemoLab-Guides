@@ -58,7 +58,7 @@
         ignore_errors: false
         state: present
 
-    - name:  only Branch access layer to policy package — {{ branch_policy_package_name }}
+    - name: Attach only Branch access layer to policy package — {{ branch_policy_package_name }}
       check_point.mgmt.cp_mgmt_access_layer:
         name: "{{ n.layer_branch_policy_network }}"
         applications_and_url_filtering: true
@@ -66,6 +66,16 @@
         ignore_errors: false
         state: present
         
+    - name: Attach only DC access layer to policy package — {{ dc_policy_package_name }}
+      check_point.mgmt.cp_mgmt_package:
+        name: "{{ branch_policy_package_name }}"
+        access_layers:
+          value:
+            - "{{ n.layer_branch_policy_network }}"
+        ignore_warnings: "{{ ignore_warnings }}"
+        ignore_errors: false
+        state: present
+
     # ------------------------------------------------------------------
     # add sections first
     # ------------------------------------------------------------------
