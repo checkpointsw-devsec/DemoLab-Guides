@@ -220,6 +220,7 @@
         ignore_warnings: "{{ ignore_warnings }}"
         ignore_errors: "{{ n.val_false }}"
         state: present
+        auto_publish_session: yes
 
     # ------------------------------------------------------------------
     # ISP Host objects (prepared on Mgmt Server)
@@ -242,6 +243,7 @@
             subnet4: 10.160.41.254
             mask_length4: 32
         state: present
+        auto_publish_session: yes
 
     - name: Create ISP2 host with multiple interfaces
       check_point.mgmt.cp_mgmt_host:
@@ -261,6 +263,7 @@
             subnet4: 10.160.42.254
             mask_length4: 32
         state: present
+        auto_publish_session: yes
 
     # ------------------------------------------------------------------
     # Host objects
@@ -276,6 +279,7 @@
         ignore_warnings: "{{ ignore_warnings }}"
         ignore_errors: "{{ n.val_false }}"
         state: present
+        auto_publish_session: yes
       loop: "{{ checkpoint_host_objects }}"
       loop_control:
         loop_var: hostobj
@@ -292,6 +296,7 @@
         ignore_warnings: "{{ ignore_warnings }}"
         ignore_errors: "{{ n.val_false }}"
         state: present
+        auto_publish_session: yes
       loop: "{{ checkpoint_host_objects }}"
       loop_control:
         loop_var: hostobj
@@ -310,6 +315,7 @@
         ignore_warnings: "{{ ignore_warnings }}"
         ignore_errors: false
         state: present
+        auto_publish_session: yes
       loop: "{{ checkpoint_network_objects }}"
       loop_control:
         loop_var: netobj
@@ -324,6 +330,7 @@
         ignore_warnings: "{{ ignore_warnings }}"
         ignore_errors: false
         state: present
+        auto_publish_session: yes
       loop: "{{ checkpoint_network_objects }}"
       loop_control:
         loop_var: netobj
@@ -341,6 +348,7 @@
         ignore_warnings: "{{ ignore_warnings }}"
         ignore_errors: "{{ n.val_false }}"
         state: present
+        auto_publish_session: yes
 
     - name: Create DNS domain paolo — {{ n.testDomain_object1 }}
       check_point.mgmt.cp_mgmt_dns_domain:
@@ -349,6 +357,7 @@
         ignore_warnings: "{{ ignore_warnings }}"
         ignore_errors: "{{ n.val_false }}"
         state: present
+        auto_publish_session: yes
 
     # ------------------------------------------------------------------
     # Publish
