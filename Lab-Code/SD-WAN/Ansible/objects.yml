@@ -222,8 +222,38 @@
         state: present
 
     # ------------------------------------------------------------------
-    # Host objects
+    # ISP Host objects
     # ------------------------------------------------------------------
+    - name: Create ISP1 host with multiple interfaces
+      check_point.mgmt.cp_mgmt_host:
+        name: "{{ n.host_isp1_gw }}"
+        ip_address: 10.160.11.254
+        interfaces:
+          - name: eth0
+            ipv4_address: 10.160.11.254
+          - name: eth1
+            ipv4_address: 10.160.21.254
+          - name: eth2
+            ipv4_address: 10.160.31.254
+          - name: eth3
+            ipv4_address: 10.160.41.254
+        state: present
+
+    - name: Create ISP2 host with multiple interfaces
+      check_point.mgmt.cp_mgmt_host:
+        name: "{{ n.host_isp2_gw }}"
+        ip_address: 10.160.12.254
+        interfaces:
+          - name: eth0
+            ipv4_address: 10.160.12.254
+            
+          - name: eth1
+            ipv4_address: 10.160.22.254
+          - name: eth2
+            ipv4_address: 10.160.32.254
+          - name: eth3
+            ipv4_address: 10.160.42.254
+        state: present
 
     # ------------------------------------------------------------------
     # Host objects
