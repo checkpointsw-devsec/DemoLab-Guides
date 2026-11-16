@@ -5,8 +5,8 @@
   connection: httpapi
 
   vars_files:
-    - group_vars/vault.yml
-    - group_vars/vars.yml
+    - group_vars/all/vault.yml
+    - group_vars/all/vars.yml
 
   vars:
     n: "{{ resource_name_map }}"
