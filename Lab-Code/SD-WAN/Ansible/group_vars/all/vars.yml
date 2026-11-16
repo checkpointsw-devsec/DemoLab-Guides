@@ -32,7 +32,6 @@ resource_name_map:
   host_hq_lnx-v6:              "hq-Linux-ipv6"
   host_hq-lnx_ipv6:            "a192:168:30::40"
 
-
   host_gw_back_int-v4:         "Branch1-gw_magg1_int-v4"
   host_gw_back_int_ipv4:       "172.30.1.1"
 
