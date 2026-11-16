@@ -1,0 +1,16 @@
+
+$awxUrl = "https://192.168.30.40:8443"
+$token = "L1E0PmqdkbaXorH6fJhkERfW3NRMDv"
+$projectId = 8
+
+$headers = @{
+    Authorization = "Bearer $token"
+	"Content-Type" = "application/json"
+}
+		
+# Trigger project update
+$response = Invoke-RestMethod -Uri "$awxUrl/api/v2/projects/$projectId/update/" -Method Post -Headers $headers -Body "{}"
+						
+Write-Host "Project update triggered!"
+Write-Host "Update Job ID: $($response.id)"
+						
